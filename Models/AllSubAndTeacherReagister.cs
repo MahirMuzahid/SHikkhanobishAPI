@@ -61,5 +61,6 @@ namespace SHikkhanobishAPI.Models
         public int HSACC { get; set; }
         public int HSECO { get; set; }
         public int StudentID { get; set; }
+        public string TeacherName { get; set; }
     }
 }

@@ -147,7 +147,7 @@ namespace SHikkhanobishAPI.Controllers
             {
                 int c = 0;
                 Connection();
-                SqlCommand cmd = new SqlCommand("spTuitionHistoryStudentNew", conn);
+                SqlCommand cmd = new SqlCommand("[dbo].[spTuitionHistoryStudentNew]", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("StudentID", student.StundentID);
                 conn.Open();
@@ -281,6 +281,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@HSECO", registerTeacher.HSECO);
                 cmd.Parameters.AddWithValue("@StudentID", registerTeacher.StudentID);
                 cmd.Parameters.AddWithValue("@InstitutionID", registerTeacher.InstitutionID);
+                cmd.Parameters.AddWithValue("@TeacherName", registerTeacher.TeacherName);
 
 
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -325,6 +326,203 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     TeacherID T_ID = new TeacherID();
                     T_ID.teacherID = Convert.ToInt32(reader["TeacherID"]);
+                    
+                    if(subject.subject == "LSBAN01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSBAN01"]);
+                    }
+                    else if (subject.subject == "LSBAN02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSBAN02"]);
+                    }
+                    else if (subject.subject == "LSENG01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSENG01"]);
+                    }
+                    else if (subject.subject == "LSENG02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSENG02"]);
+                    }
+                    else if (subject.subject == "LSICT")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSICT"]);
+                    }
+                    else if (subject.subject == "LSAGR")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSAGR"]);
+                    }
+                    else if (subject.subject == "LSGSC")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSGSC"]);
+                    }
+                    else if (subject.subject == "LSMATH")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSMATH"]);
+                    }
+                    else if (subject.subject == "SBAN01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SBAN01"]);
+                    }
+                    else if (subject.subject == "SBAN02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SBAN02"]);
+                    }
+                    else if (subject.subject == "SENG01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SENG01"]);
+                    }
+                    else if (subject.subject == "LSBAN02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSBAN02"]);
+                    }
+                    else if (subject.subject == "SENG02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SENG02"]);
+                    }
+                    else if (subject.subject == "SGMATH")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SGMATH"]);
+                    }
+                    else if (subject.subject == "SICT")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SICT"]);
+                    }
+                    else if (subject.subject == "SGSC")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SGSC"]);
+                    }
+                    else if (subject.subject == "SPHY")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SPHY"]);
+                    }
+                    else if (subject.subject == "SCHE")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SCHE"]);
+                    }
+                    else if (subject.subject == "SBIO")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SBIO"]);
+                    }
+                    else if (subject.subject == "SHMATH")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SHMATH"]);
+                    }
+                    else if (subject.subject == "SECO")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SECO"]);
+                    }
+                    else if (subject.subject == "SACC")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SACC"]);
+                    }
+                    else if (subject.subject == "SFIN")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SFIN"]);
+                    }
+                    else if (subject.subject == "SAGR")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SAGR"]);
+                    }
+                    else if (subject.subject == "SHOM")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SHOM"]);
+                    }
+                    else if (subject.subject == "SBENT")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SBENT"]);
+                    }
+                    else if (subject.subject == "SCRE")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SCRE"]);
+                    }
+                    else if (subject.subject == "SBGS")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SBGS"]);
+                    }
+                    else if (subject.subject == "SGEO")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["SGEO"]);
+                    }
+                    else if (subject.subject == "HSBAN01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSBAN01"]);
+                    }
+                    else if (subject.subject == "HSBAN02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSBAN02"]);
+                    }
+                    else if (subject.subject == "HSENG01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSENG01"]);
+                    }
+                    else if (subject.subject == "HSENG02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSENG02"]);
+                    }
+                    else if (subject.subject == "HSPHY01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSPHY01"]);
+                    }
+                    else if (subject.subject == "HSPHY02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSPHY02"]);
+                    }
+                    else if (subject.subject == "HSCHE01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSCHE01"]);
+                    }
+                    else if (subject.subject == "HSCHE02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSCHE02"]);
+                    }
+                    else if (subject.subject == "HSBIO01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSBIO01"]);
+                    }
+                    else if (subject.subject == "HSBIO02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSBIO02"]);
+                    }
+                    else if (subject.subject == "HSMATH01")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSMATH01"]);
+                    }
+                    else if (subject.subject == "HSMATH02")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSMATH02"]);
+                    }
+                    else if (subject.subject == "HSICT")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSICT"]);
+                    }
+                    else if (subject.subject == "HSSTAT")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSSTAT"]);
+                    }
+                    else if (subject.subject == "HSLOG")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSLOG"]);
+                    }
+                    else if (subject.subject == "HSFIN")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSFIN"]);
+                    }
+                    else if (subject.subject == "HSACC")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSACC"]);
+                    }
+                    else if (subject.subject == "HSECO")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["HSECO"]);
+                    }
+                    else if (subject.subject == "LSCRE")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSCRE"]);
+                    }
+                    else if (subject.subject == "LSBGS")
+                    {
+                        T_ID.Point = Convert.ToInt32(reader["LSBGS"]);
+                    }
                     T_ID.response = "OK";
                     teacherIDList.Add(T_ID);
                 }
@@ -380,6 +578,53 @@ namespace SHikkhanobishAPI.Controllers
             }
             return teacherList;
         }
-        
+        [AcceptVerbs("GET","POST")]
+        public Response UpdateInfo(InfoForUpdate info)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("[dbo].[spUpdateTuitionInfoForTeacherAndStudent]", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TeacherID", info.TeacherID);
+                cmd.Parameters.AddWithValue("@IsActive", info.IsActive);
+                cmd.Parameters.AddWithValue("@IsOnTuition", info.IsOnTuition);
+                cmd.Parameters.AddWithValue("@StudentID", info.StudentID);
+                cmd.Parameters.AddWithValue("@Rating", info.Rating);
+                cmd.Parameters.AddWithValue("@InAppMin", info.InAppMin);
+                cmd.Parameters.AddWithValue("@Tuition_Point", info.Tuition_Point);
+                cmd.Parameters.AddWithValue("@Teacher_Rank", info.Teacher_Rank);
+                cmd.Parameters.AddWithValue("@Date", info.Date);
+                cmd.Parameters.AddWithValue("@Subject", info.Subject);
+                cmd.Parameters.AddWithValue("@SubjectName", info.SubjectName);
+                cmd.Parameters.AddWithValue("@Class", info.Class);
+                cmd.Parameters.AddWithValue("@IsPending", info.IsPenidng);
+                cmd.Parameters.AddWithValue("@Teacher_Name", info.Teacher_Name);
+                cmd.Parameters.AddWithValue("@Student_Name", info.Student_Name);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Info Update Success";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
     }
 }
