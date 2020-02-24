@@ -22,5 +22,6 @@ namespace SHikkhanobishAPI.Models
         public int IsPenidng { get; set; }
         public string Teacher_Name { get; set; }
         public string Student_Name { get; set; }
+        public int Cost { get; set; }
     }
 }

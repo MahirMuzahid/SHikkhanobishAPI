@@ -161,8 +161,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActiveState.cs" />
     <Compile Include="Models\AllSubAndTeacherReagister.cs" />
     <Compile Include="Models\InfoForUpdate.cs" />
+    <Compile Include="Models\IsPending.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentID.cs" />

@@ -602,6 +602,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@IsPending", info.IsPenidng);
                 cmd.Parameters.AddWithValue("@Teacher_Name", info.Teacher_Name);
                 cmd.Parameters.AddWithValue("@Student_Name", info.Student_Name);
+                cmd.Parameters.AddWithValue("@Cost", info.Cost);
 
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
@@ -620,11 +621,78 @@ namespace SHikkhanobishAPI.Controllers
             }
             catch (Exception ex)
             {
-                response.Massage = ex.Message;
+                response.Massage = ex.Message + " looooooooo";
                 response.Status = 1;
             }
             return response;
         }
+
+        [AcceptVerbs("GET", "POST")]
+        public Response ChangeStateofIsActive (ActiveState As)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("[dbo].[spTurnOnOrOffIsActive]", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TeacherID", As.TeacherID);
+                cmd.Parameters.AddWithValue("@state", As.State);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i == 1)
+                {
+                    response.Massage = " Active State change!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message ;
+                response.Status = 0;
+            }
+            return response;
+        }
+        [AcceptVerbs("GET", "POST")]
+        public Response ChangeStateofIsOnTuition(ActiveState As)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("[dbo].[spTurnOnOrOffIsOnTuition]", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TeacherID", As.TeacherID);
+                cmd.Parameters.AddWithValue("@state", As.State);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i == 1)
+                {
+                    response.Massage = "Tuition State change!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message ;
+                response.Status = 0;
+            }
+            return response;
+        }
+
+        
 
     }
 }
