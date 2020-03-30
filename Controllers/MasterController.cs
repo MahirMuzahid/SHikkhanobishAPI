@@ -651,6 +651,7 @@ namespace SHikkhanobishAPI.Controllers
                     response.Massage = "There is a problem";
                     response.Status = 1;
                 }
+                conn.Close();
             }
             catch (Exception ex)
             {
@@ -683,6 +684,7 @@ namespace SHikkhanobishAPI.Controllers
                     response.Massage = "There is a problem";
                     response.Status = 1;
                 }
+                conn.Close();
             }
             catch (Exception ex)
             {
@@ -692,7 +694,293 @@ namespace SHikkhanobishAPI.Controllers
             return response;
         }
 
-        
+        [AcceptVerbs("GET", "POST")]
+        public Response ReportTeacher(Report r)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.ReportTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StudentID", r.StudentID);
+                cmd.Parameters.AddWithValue("@TeacherID ", r.TeacherID);
+                cmd.Parameters.AddWithValue("@ReportType", r.ReportType);
+                cmd.Parameters.AddWithValue("@ReportText", r.ReportText);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Report Submitted";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public PremiumStudents GetPremiumStudent(PremiumStudents ps)
+        {
+            PremiumStudents PS = new PremiumStudents();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.GetPremiumStudent", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StudentID", ps.StudentID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+               while(reader.Read())
+                {
+                    PS.StudentID = Convert.ToInt32(reader["StudentID"]);
+                    PS.response = "Ok";
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                PS.response = ex.Message;
+            }
+            return PS;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public VoucherAndOffer GetVoucherInfo(VoucherAndOffer vs)
+        {
+            VoucherAndOffer VS = new VoucherAndOffer();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand(" Shikkhanobish.GetVoucherInfo", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Code", vs.Code);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    VS.StudentID = Convert.ToInt32(reader["StudentID"]);
+                    VS.Type = reader["Type"].ToString();
+                    VS.Amount = Convert.ToInt32(reader["Amount"]);
+                    VS.IsPremium = Convert.ToInt32(reader["IsPremium"]);
+                    VS.Response = "OK";
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                VS.Response = ex.Message;
+            }
+            return VS;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public Response RegisterParent(Parents parents)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.RegisterParrent", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ParentsName", parents.ParentName);
+                cmd.Parameters.AddWithValue("@ParentsMobileNumber ", parents.ParentMobileNumber);
+                cmd.Parameters.AddWithValue("@StudnetID", parents.StudentID);
+                cmd.Parameters.AddWithValue("@Password", parents.Password);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Report Submitted";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+
+        [AcceptVerbs("GET", "POST")]
+        public Response SetPremiumStudent(PremiumStudents ps)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetPremiumStudent", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StudnetID", ps.StudentID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Report Submitted";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public Student RecoverInfoStudent(Student s)
+        {
+            Student student = new Student();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("RecoverInfoStudent", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@phonenumber", s.PhoneNumber);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    student.UserName = reader["UserName"].ToString();
+                    student.Password = reader["Password"].ToString();
+                    student.Response = "ok";
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                student.Response = ex.Message;
+            }
+            return student;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public Teacher RecoverInfoTeacher(Teacher t)
+        {
+            Teacher teacher = new Teacher();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("RecoverInfoTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@phonenumber", t.PhoneNumber);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    teacher.UserName = reader["UserName"].ToString();
+                    teacher.Password = reader["Password"].ToString();
+                    teacher.response = "ok";
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                teacher.response = ex.Message;
+            }
+            return teacher;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public Response SetTeacherVideoCallAPi (TeacherVideoCallApi tva)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetTeacherVideoCallAPi", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TeacherID", tva.TeacherID);
+                cmd.Parameters.AddWithValue("@APIKey", tva.APIKey);
+                cmd.Parameters.AddWithValue("@SessionID", tva.SessionID);
+                cmd.Parameters.AddWithValue("@Token", tva.Token);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Session Created";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+            }
+            return response;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public TeacherVideoCallApi GerTeacherVideoCallAPi(TeacherVideoCallApi tva)
+        {
+            TeacherVideoCallApi TVA = new TeacherVideoCallApi();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.GerTeacherVideoCallAPi", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TeacherID", tva.TeacherID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    TVA.APIKey = Convert.ToInt32(reader["APIKey"]);
+                    TVA.SessionID = reader["SessionID"].ToString();
+                    TVA.Token = reader["Token"].ToString();
+                    TVA.Response = "ok";
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TVA.Response = ex.Message;
+            }
+            return TVA;
+        }
 
     }
 }

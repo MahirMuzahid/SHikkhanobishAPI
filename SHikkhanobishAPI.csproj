@@ -47,9 +47,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JWT, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\JWT.2.3.2\lib\net45\JWT.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTok, Version=3.1.6873.25151, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenTok.3.1.0\lib\net452\OpenTok.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -167,14 +173,19 @@
     <Compile Include="Models\AllSubAndTeacherReagister.cs" />
     <Compile Include="Models\InfoForUpdate.cs" />
     <Compile Include="Models\IsPending.cs" />
+    <Compile Include="Models\Parents.cs" />
+    <Compile Include="Models\PremiumStudents.cs" />
+    <Compile Include="Models\Report.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentID.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Models\TeacherID.cs" />
+    <Compile Include="Models\TeacherVideoCallApi.cs" />
     <Compile Include="Models\TuitionHistoryStudent.cs" />
     <Compile Include="Models\TuitionHistoryTeacher.cs" />
+    <Compile Include="Models\VoucherAndOffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
