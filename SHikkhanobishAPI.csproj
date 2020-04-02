@@ -176,6 +176,7 @@
     <Compile Include="Models\Parents.cs" />
     <Compile Include="Models\PremiumStudents.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ResetInfo.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentID.cs" />

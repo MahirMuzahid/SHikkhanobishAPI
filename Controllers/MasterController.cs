@@ -621,7 +621,7 @@ namespace SHikkhanobishAPI.Controllers
             }
             catch (Exception ex)
             {
-                response.Massage = ex.Message + " looooooooo";
+                response.Massage = ex.Message;
                 response.Status = 1;
             }
             return response;
@@ -656,7 +656,7 @@ namespace SHikkhanobishAPI.Controllers
             catch (Exception ex)
             {
                 response.Massage = ex.Message ;
-                response.Status = 0;
+                response.Status = 1;
             }
             return response;
         }
@@ -689,7 +689,7 @@ namespace SHikkhanobishAPI.Controllers
             catch (Exception ex)
             {
                 response.Massage = ex.Message ;
-                response.Status = 0;
+                response.Status = 1;
             }
             return response;
         }
@@ -948,12 +948,13 @@ namespace SHikkhanobishAPI.Controllers
             catch (Exception ex)
             {
                 response.Massage = ex.Message;
+                response.Status = 1;
             }
             return response;
         }
 
         [AcceptVerbs("GET", "POST")]
-        public TeacherVideoCallApi GerTeacherVideoCallAPi(TeacherVideoCallApi tva)
+        public TeacherVideoCallApi GetTeacherVideoCallAPi(TeacherVideoCallApi tva)
         {
             TeacherVideoCallApi TVA = new TeacherVideoCallApi();
             try
@@ -982,5 +983,166 @@ namespace SHikkhanobishAPI.Controllers
             return TVA;
         }
 
+        [AcceptVerbs("GET", "POST")]
+        public Teacher GetInfoByLoginTeacher(Teacher teacher)
+        {
+            //Response response = new Response();
+            Teacher T = new Teacher();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.GetInfoByUserNameAndPasswordTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UserName", teacher.UserName);
+                cmd.Parameters.AddWithValue("@Password", teacher.Password);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    
+                    T.TeacherID = Convert.ToInt32(reader["TeacherID"]);
+                    T.InstituitionID = reader["InstituitionID"].ToString();
+                    T.IsActive = Convert.ToInt32(reader["IsActive"]);
+                    T.IsOnTuition = Convert.ToInt32(reader["IsOnTuition"]);      
+                    T.Five_Star = Convert.ToInt32(reader["Five_Star"]);
+                    T.Four_Star = Convert.ToInt32(reader["Four_Star"]);
+                    T.Three_Star = Convert.ToInt32(reader["Three_Star"]);
+                    T.Two_Star = Convert.ToInt32(reader["Two_Star"]);
+                    T.One_Star = Convert.ToInt32(reader["One_Star"]);
+                    T.Total_Min = Convert.ToInt32(reader["Total_Min"]);
+                    T.Number_Of_Tution = Convert.ToInt32(reader["Number_Of_Tution"]);
+                    T.Tuition_Point = Convert.ToInt32(reader["Tuition_Point"]);
+                    T.Teacher_Rank = reader["Teacher_Rank"].ToString();
+                    T.TeacherName = reader["TeacherName"].ToString();                   
+                    T.UserName = reader["UserName"].ToString();
+                    T.Password = reader["Password"].ToString();
+                    T.PhoneNumber = reader["PhoneNumber"].ToString();
+                    T.Name = reader["Name"].ToString();
+                    T.Age = Convert.ToInt32(reader["Age"]);
+                    T.Class = reader["Class"].ToString();
+                    T.InstitutionName = reader["InstitutionName"].ToString();
+                    T.RechargedAmount = Convert.ToInt32(reader["RechargedAmount"]);
+                    T.response = "OK";
+
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                T.response = ex.Message;
+            }
+
+            return T;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public Response SetnewPasswordOrUsername(ResetInfo ri)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetnewPasswordOrUsername", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Username", ri.Username);
+                cmd.Parameters.AddWithValue("@IsTeacherorStudent", ri.IsTeacherorStudent);
+                cmd.Parameters.AddWithValue("@IsPasswordOrUsername", ri.IsPasswordOrUsername);
+                cmd.Parameters.AddWithValue("@NewpassOrUsername", ri.NewpassOrUsername);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Reset Done";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IsPending GetPending(IsPending ip)
+        {
+            IsPending IP = new IsPending();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.GetIsPending", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StudentID ", ip.StudentID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    IP.TeacherName = reader["TeacherName"].ToString();
+                    IP.TeacherID = Convert.ToInt32(reader["TeacherID"]);
+                    IP.Class = reader["Class"].ToString();
+                    IP.Subject = reader["Subject"].ToString();
+                    IP.Time = Convert.ToInt32(reader["Time"]);
+                    IP.Cost = Convert.ToInt32(reader["Cost"]);
+                    IP.Response = "ok";
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                IP.Response = ex.Message;
+            }
+            return IP;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public Response SetPending(IsPending ip)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetIsPending", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StudentID", ip.StudentID);
+                cmd.Parameters.AddWithValue("@TeacherName", ip.TeacherName);
+                cmd.Parameters.AddWithValue("@TeacherID", ip.TeacherID);
+                cmd.Parameters.AddWithValue("@Class", ip.Class);
+                cmd.Parameters.AddWithValue("@Subject", ip.Subject);
+                cmd.Parameters.AddWithValue("@Time", ip.Time);
+                cmd.Parameters.AddWithValue("@Cost", ip.Cost);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "set pending dome";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
     }
 }
