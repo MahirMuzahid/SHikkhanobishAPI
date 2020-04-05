@@ -3,17 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SHikkhanobishAPI.Controllers
 {
     public class MasterController : ApiController
     {
-
-        SqlConnection conn;
+        private SqlConnection conn;
 
         public void Connection()
         {
@@ -82,7 +78,6 @@ namespace SHikkhanobishAPI.Controllers
 
                 while (reader.Read())
                 {
-
                     student.StundentID = Convert.ToInt32(reader["StudentID"]);
                     student.UserName = reader["UserName"].ToString();
                     student.Password = reader["Password"].ToString();
@@ -96,7 +91,6 @@ namespace SHikkhanobishAPI.Controllers
                     student.TotalTeacherCount = Convert.ToInt32(reader["TotalTeacherCount"]);
                     student.TotalTuitionTIme = Convert.ToInt32(reader["TotalTuitionTIme"]);
                     student.AvarageRating = Convert.ToInt32(reader["AvarageRatting"]);
-
                 }
                 conn.Close();
             }
@@ -178,7 +172,6 @@ namespace SHikkhanobishAPI.Controllers
                 tuitionHistoryList.Add(T);
             }
             return tuitionHistoryList;
-
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -214,14 +207,13 @@ namespace SHikkhanobishAPI.Controllers
                 tuitionHistoryList.Add(T);
             }
             return tuitionHistoryList;
-
         }
 
         [AcceptVerbs("GET", "POST")]
         public Response RegisterTeacher(AllSubAndTeacherReagister registerTeacher)
         {
             Response response = new Response();
-            
+
             try
             {
                 Connection();
@@ -283,7 +275,6 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@InstitutionID", registerTeacher.InstitutionID);
                 cmd.Parameters.AddWithValue("@TeacherName", registerTeacher.TeacherName);
 
-
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
@@ -307,7 +298,6 @@ namespace SHikkhanobishAPI.Controllers
             }
 
             return response;
-
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -326,8 +316,8 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     TeacherID T_ID = new TeacherID();
                     T_ID.teacherID = Convert.ToInt32(reader["TeacherID"]);
-                    
-                    if(subject.subject == "LSBAN01")
+
+                    if (subject.subject == "LSBAN01")
                     {
                         T_ID.Point = Convert.ToInt32(reader["LSBAN01"]);
                     }
@@ -535,8 +525,8 @@ namespace SHikkhanobishAPI.Controllers
                 teacherIDList.Add(T_ID);
             }
             return teacherIDList;
-
         }
+
         [AcceptVerbs("GET")]
         public IEnumerable<Teacher> GetTeacher()
         {
@@ -578,7 +568,8 @@ namespace SHikkhanobishAPI.Controllers
             }
             return teacherList;
         }
-        [AcceptVerbs("GET","POST")]
+
+        [AcceptVerbs("GET", "POST")]
         public Response UpdateInfo(InfoForUpdate info)
         {
             Response response = new Response();
@@ -628,7 +619,7 @@ namespace SHikkhanobishAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public Response ChangeStateofIsActive (ActiveState As)
+        public Response ChangeStateofIsActive(ActiveState As)
         {
             Response response = new Response();
             try
@@ -655,11 +646,12 @@ namespace SHikkhanobishAPI.Controllers
             }
             catch (Exception ex)
             {
-                response.Massage = ex.Message ;
+                response.Massage = ex.Message;
                 response.Status = 1;
             }
             return response;
         }
+
         [AcceptVerbs("GET", "POST")]
         public Response ChangeStateofIsOnTuition(ActiveState As)
         {
@@ -688,7 +680,7 @@ namespace SHikkhanobishAPI.Controllers
             }
             catch (Exception ex)
             {
-                response.Massage = ex.Message ;
+                response.Massage = ex.Message;
                 response.Status = 1;
             }
             return response;
@@ -743,7 +735,7 @@ namespace SHikkhanobishAPI.Controllers
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
-               while(reader.Read())
+                while (reader.Read())
                 {
                     PS.StudentID = Convert.ToInt32(reader["StudentID"]);
                     PS.response = "Ok";
@@ -824,7 +816,6 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-
 
         [AcceptVerbs("GET", "POST")]
         public Response SetPremiumStudent(PremiumStudents ps)
@@ -918,7 +909,7 @@ namespace SHikkhanobishAPI.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public Response SetTeacherVideoCallAPi (TeacherVideoCallApi tva)
+        public Response SetTeacherVideoCallAPi(TeacherVideoCallApi tva)
         {
             Response response = new Response();
             try
@@ -1001,11 +992,10 @@ namespace SHikkhanobishAPI.Controllers
 
                 while (reader.Read())
                 {
-                    
                     T.TeacherID = Convert.ToInt32(reader["TeacherID"]);
                     T.InstituitionID = reader["InstituitionID"].ToString();
                     T.IsActive = Convert.ToInt32(reader["IsActive"]);
-                    T.IsOnTuition = Convert.ToInt32(reader["IsOnTuition"]);      
+                    T.IsOnTuition = Convert.ToInt32(reader["IsOnTuition"]);
                     T.Five_Star = Convert.ToInt32(reader["Five_Star"]);
                     T.Four_Star = Convert.ToInt32(reader["Four_Star"]);
                     T.Three_Star = Convert.ToInt32(reader["Three_Star"]);
@@ -1015,7 +1005,7 @@ namespace SHikkhanobishAPI.Controllers
                     T.Number_Of_Tution = Convert.ToInt32(reader["Number_Of_Tution"]);
                     T.Tuition_Point = Convert.ToInt32(reader["Tuition_Point"]);
                     T.Teacher_Rank = reader["Teacher_Rank"].ToString();
-                    T.TeacherName = reader["TeacherName"].ToString();                   
+                    T.TeacherName = reader["TeacherName"].ToString();
                     T.UserName = reader["UserName"].ToString();
                     T.Password = reader["Password"].ToString();
                     T.PhoneNumber = reader["PhoneNumber"].ToString();
@@ -1025,7 +1015,6 @@ namespace SHikkhanobishAPI.Controllers
                     T.InstitutionName = reader["InstitutionName"].ToString();
                     T.RechargedAmount = Convert.ToInt32(reader["RechargedAmount"]);
                     T.response = "OK";
-
                 }
                 conn.Close();
             }
@@ -1096,7 +1085,7 @@ namespace SHikkhanobishAPI.Controllers
                     IP.Cost = Convert.ToInt32(reader["Cost"]);
                     IP.Response = "ok";
                 }
-
+                
                 conn.Close();
             }
             catch (Exception ex)
