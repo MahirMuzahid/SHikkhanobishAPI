@@ -173,6 +173,7 @@ namespace SHikkhanobishAPI.Controllers
             }
             return tuitionHistoryList;
         }
+       
 
         [AcceptVerbs("GET", "POST")]
         public IEnumerable<TuitionHistoryTeacher> GetTuitionHistoryTeacher(TuitionHistoryTeacher teacher)
