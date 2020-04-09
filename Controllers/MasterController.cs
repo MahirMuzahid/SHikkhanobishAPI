@@ -121,7 +121,7 @@ namespace SHikkhanobishAPI.Controllers
     "TotalTeacherCount": 0,
     "AvarageRating": 0.0
 }
-             
+             tmi discord or facebook call e ashte parba?facebook e asi
              
              */
         [AcceptVerbs("GET", "POST")]
@@ -144,6 +144,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     student.UserName = reader["UserName"].ToString();
                     student.PhoneNumber = reader["PhoneNumber"].ToString();
+                    student.Response = "Matched";
                 }
                 conn.Close();
             }
@@ -853,6 +854,7 @@ namespace SHikkhanobishAPI.Controllers
             return PS;
         }
         //Tanvir:eitar table e value insert kora nai................
+        //Mahir:: Debug This
         [AcceptVerbs("GET", "POST")]
         public VoucherAndOffer GetVoucherInfo(VoucherAndOffer vs)
         {
@@ -860,7 +862,7 @@ namespace SHikkhanobishAPI.Controllers
             try
             {
                 Connection();
-                SqlCommand cmd = new SqlCommand(" Shikkhanobish.GetVoucherInfo", conn);
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.GetVoucherInfo", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Code", vs.Code);
                 conn.Open();
@@ -920,6 +922,7 @@ namespace SHikkhanobishAPI.Controllers
             return response;
         }
         //error in code
+        //Mahir::  Debug This
         [AcceptVerbs("GET", "POST")]
         public Response SetPremiumStudent(PremiumStudents ps)
         {
@@ -1086,6 +1089,7 @@ namespace SHikkhanobishAPI.Controllers
             return TVA;
         }
         //Tanvir::username and password is null in database......................{"UserName":"753292","Password":"753292"}
+        //Mahir:: Debug This
         [AcceptVerbs("GET", "POST")]
         public Teacher GetInfoByLoginTeacher(Teacher teacher)
         {
