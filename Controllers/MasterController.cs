@@ -855,6 +855,7 @@ namespace SHikkhanobishAPI.Controllers
         }
         //Tanvir:eitar table e value insert kora nai................
         //Mahir:: Debug This
+        //Tanvir::done
         [AcceptVerbs("GET", "POST")]
         public VoucherAndOffer GetVoucherInfo(VoucherAndOffer vs)
         {
@@ -923,6 +924,7 @@ namespace SHikkhanobishAPI.Controllers
         }
         //error in code
         //Mahir::  Debug This
+        //Tanvir:;done...............................
         [AcceptVerbs("GET", "POST")]
         public Response SetPremiumStudent(PremiumStudents ps)
         {
@@ -932,7 +934,7 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("Shikkhanobish.SetPremiumStudent", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@StudnetID", ps.StudentID);//error 
+                cmd.Parameters.AddWithValue("@StudentID", ps.StudentID);//error 
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
 
@@ -1090,6 +1092,7 @@ namespace SHikkhanobishAPI.Controllers
         }
         //Tanvir::username and password is null in database......................{"UserName":"753292","Password":"753292"}
         //Mahir:: Debug This
+        //tanvir::Done
         [AcceptVerbs("GET", "POST")]
         public Teacher GetInfoByLoginTeacher(Teacher teacher)
         {
