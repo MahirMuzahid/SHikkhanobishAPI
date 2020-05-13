@@ -174,9 +174,11 @@
     <Compile Include="Models\AllSubAndTeacherReagister.cs" />
     <Compile Include="Models\InfoForUpdate.cs" />
     <Compile Include="Models\IsPending.cs" />
+    <Compile Include="Models\Medhabi\MatchHistory.cs" />
     <Compile Include="Models\Medhabi\MatchMaking.cs" />
     <Compile Include="Models\Medhabi\medhabiStudent.cs" />
     <Compile Include="Models\Medhabi\medhabiTeacher.cs" />
+    <Compile Include="Models\Medhabi\PlayerHistory.cs" />
     <Compile Include="Models\Medhabi\QuestionMaker.cs" />
     <Compile Include="Models\Medhabi\Questions.cs" />
     <Compile Include="Models\Parents.cs" />

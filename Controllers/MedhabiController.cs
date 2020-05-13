@@ -593,6 +593,103 @@ namespace SHikkhanobishAPI.Controllers
 
             return response;
         }
-        
+        [AcceptVerbs("GET", "POST")]
+        public List<PlayerHistory> EditPlayerHistory(PlayerHistory ph)
+        {
+            List<PlayerHistory> playerHistoryList = new List<PlayerHistory>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkha1.EditPlayerHistory", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@matchID", ph.matchID);
+                cmd.Parameters.AddWithValue("@matchStatus", ph.matchStatus);
+                cmd.Parameters.AddWithValue("@q1", ph.q1);
+                cmd.Parameters.AddWithValue("@q2", ph.q2);
+                cmd.Parameters.AddWithValue("@q3", ph.q3);
+                cmd.Parameters.AddWithValue("@q4", ph.q4);
+                cmd.Parameters.AddWithValue("@q5", ph.q5);
+                cmd.Parameters.AddWithValue("@playerID", ph.playerID);
+                cmd.Parameters.AddWithValue("@whatToDO", ph.whatToDO);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    PlayerHistory PH = new PlayerHistory();
+                    PH.matchID = Convert.ToInt32(reader["matchID"]);
+                    PH.matchStatus = reader["matchStatus"].ToString();
+                    PH.q1 = Convert.ToInt32(reader["q1"]);
+                    PH.q2 = Convert.ToInt32(reader["q2"]);
+                    PH.q3 = Convert.ToInt32(reader["q3"]);
+                    PH.q4 = Convert.ToInt32(reader["q4"]);
+                    PH.q5 = Convert.ToInt32(reader["q5"]);
+                    PH.playerID = Convert.ToInt32(reader["playerID"]);
+                    ph.response = "OK";
+                    ph.status = 0;
+                    playerHistoryList.Add(PH);
+                }
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                PlayerHistory PH = new PlayerHistory();
+                ph.response = ex.Message ;
+                ph.status = 0;
+                playerHistoryList.Add(PH);
+            }
+
+            return playerHistoryList;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public List<MatchHistory> EditMatchHistory(MatchHistory mh)
+        {
+            List<MatchHistory> matchHistoryList = new List<MatchHistory>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkha1.EditPlayerHistory", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@matchID", mh.matchID);
+                cmd.Parameters.AddWithValue("@winnerPlayerID", mh.winnerPlayerID);
+                cmd.Parameters.AddWithValue("@looserPlayerID", mh.looserPlayerID);
+                cmd.Parameters.AddWithValue("@q1", mh.q1);
+                cmd.Parameters.AddWithValue("@q2", mh.q2);
+                cmd.Parameters.AddWithValue("@q3", mh.q3);
+                cmd.Parameters.AddWithValue("@q4", mh.q4);
+                cmd.Parameters.AddWithValue("@q5", mh.q5);
+                cmd.Parameters.AddWithValue("@whatToDO", mh.whatToDO);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    MatchHistory MH = new MatchHistory();
+                    MH.matchID = Convert.ToInt32(reader["matchID"]);
+                    MH.winnerPlayerID = Convert.ToInt32(reader["winnerPlayerID"]);
+                    MH.looserPlayerID = Convert.ToInt32(reader["looserPlayerID"]);
+                    MH.q1 = Convert.ToInt32(reader["q1"]);
+                    MH.q2 = Convert.ToInt32(reader["q2"]);
+                    MH.q3 = Convert.ToInt32(reader["q3"]);
+                    MH.q4 = Convert.ToInt32(reader["q4"]);
+                    MH.q5 = Convert.ToInt32(reader["q5"]);
+                    MH.response = "OK";
+                    MH.status = 0;
+                    matchHistoryList.Add(MH);
+                }
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                MatchHistory MH = new MatchHistory();
+                MH.response = ex.Message;
+                MH.status = 0;
+                matchHistoryList.Add(MH);
+            }
+
+            return matchHistoryList;
+        }
+
     }
 }
