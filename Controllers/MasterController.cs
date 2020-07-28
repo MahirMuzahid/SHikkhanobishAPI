@@ -1277,5 +1277,94 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
+        [AcceptVerbs("GET", "POST")]
+        public TeacherInfo GetTeacherInfo(TeacherInfo ti)
+        {
+            TeacherInfo TI = new TeacherInfo();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.GetTeacherInfo", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Username", ti.Username);
+                cmd.Parameters.AddWithValue("@Password", ti.Password);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+
+                    TI.Name = reader["Name"].ToString();
+                    TI.Age = Convert.ToInt32(reader["Age"]);
+                    TI.Institution = reader["Institution"].ToString();
+                    TI.PhoneNumber = Convert.ToInt32(reader["PhoneNumber"]);
+                    TI.Mail = reader["Mail"].ToString();
+                    TI.SubjectInfo = reader["SubjectInfo"].ToString();
+
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TI.response = ex.Message;
+            }
+            return TI;
+        }
+        [AcceptVerbs("GET", "POST")]
+        public Response SetTeacherInfo(TeacherInfo ti)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetTeacherInfo", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Username", ti.Username);//
+                cmd.Parameters.AddWithValue("@Password", ti.Password);//
+
+                cmd.Parameters.AddWithValue("@Age", ti.Age);           //
+
+                cmd.Parameters.AddWithValue("@Institution", ti.Institution);
+                cmd.Parameters.AddWithValue("@PhoneNumber", ti.PhoneNumber);
+                cmd.Parameters.AddWithValue("@Mail", ti.Mail);
+
+                cmd.Parameters.AddWithValue("@SubjectInfo", ti.SubjectInfo);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "successfully executed";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+
+
+
+
+
+
+
+
+
+
     }
 }
