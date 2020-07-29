@@ -165,6 +165,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Controllers\MedhabiController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -173,6 +174,13 @@
     <Compile Include="Models\AllSubAndTeacherReagister.cs" />
     <Compile Include="Models\InfoForUpdate.cs" />
     <Compile Include="Models\IsPending.cs" />
+    <Compile Include="Models\Medhabi\MatchHistory.cs" />
+    <Compile Include="Models\Medhabi\MatchMaking.cs" />
+    <Compile Include="Models\Medhabi\medhabiStudent.cs" />
+    <Compile Include="Models\Medhabi\medhabiTeacher.cs" />
+    <Compile Include="Models\Medhabi\PlayerHistory.cs" />
+    <Compile Include="Models\Medhabi\QuestionMaker.cs" />
+    <Compile Include="Models\Medhabi\Questions.cs" />
     <Compile Include="Models\Parents.cs" />
     <Compile Include="Models\PremiumStudents.cs" />
     <Compile Include="Models\Report.cs" />

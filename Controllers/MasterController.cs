@@ -101,33 +101,10 @@ namespace SHikkhanobishAPI.Controllers
 
             return student;
         }
-        /*some difficulties happen,,,,,no error..but,showing all values are null or 0.but i get response.........{get}
-         
-             {"UserName":"cbartloszk","PhoneNumber":"753-518-2292	"}
-             
-             {
-    "StundentID": 0,
-    "UserName": null,
-    "Password": null,
-    "PhoneNumber": null,
-    "Name": null,
-    "Age": 0,
-    "Class": null,
-    "InstitutionName": null,
-    "RechargedAmount": 0,
-    "IsPending": 0,
-    "Response": null,
-    "TotalTuitionTIme": 0,
-    "TotalTeacherCount": 0,
-    "AvarageRating": 0.0
-}
-             tmi discord or facebook call e ashte parba?facebook e asi
-             
-             */
+        //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public Student SearchUserName(Student studentm)
         {
-            //Response response = new Response();
             Student student = new Student();
             try
             {
@@ -197,24 +174,7 @@ namespace SHikkhanobishAPI.Controllers
             return tuitionHistoryList;
         }
 
-        /*All values shows null or 0....................................{get}
-         * 
-          {"TeacherID":"2"}
-
-          [
-    {
-        "StundentID": 0,
-        "TutionTeacherID": 0,
-        "Class": null,
-        "Subject": null,
-        "Time": null,
-        "Date": null,
-        "Ratting": 0,
-        "Response": "0"
-    }
-]
-         * 
-         */
+        //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public IEnumerable<TuitionHistoryTeacher> GetTuitionHistoryTeacher(TuitionHistoryTeacher teacher)
         {
@@ -643,12 +603,8 @@ namespace SHikkhanobishAPI.Controllers
             }
             return teacherList;
         }
-        /*PROBLEM....."Massage": "Incorrect syntax near '101'.",
-    "Status": 1............................................................................post...............
-    
-             {"TeacherID":"1000000","IsActive":"11","IsOnTuition":"1111","StudentID":"111","Rating":"1","InAppMin":"1","Tuition_Point":"1",
-             "Teacher_Rank":"1","Date":"12/10/19","Subject":"101","SubjectName":"Bangla",
-             "Class":"09","IsPenidng":"22","Teacher_Name":"SSS","Student_Name":"SSS","Cost":"20222"}*/
+        //PROBLEM....."Massage": "Incorrect syntax near '101'.",
+        //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public Response UpdateInfo(InfoForUpdate info)
         {
@@ -697,11 +653,8 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-        /*problem...... "Massage": "There is a problem",
-    "Status": 1............................................................................post..........
-    
-             {"TeacherID":"100","State":"11"}
-*/
+        //problem...... "Massage": "There is a problem",
+        //Mahir:: Works Perfectly   
 
         [AcceptVerbs("GET", "POST")]
         public Response ChangeStateofIsActive(ActiveState As)
@@ -736,16 +689,9 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-        /*Tanvir::problem occur here.doing post request.......
-        
-            {"TeacherID":"10","State":"11"}
-         
-            {
-    "Massage": "There is a problem",
-    "Status": 1
-}
-             
-             */
+        //Tanvir::problem occur here.doing post request.......
+        //Mahir:: Works Perfectly   
+
         [AcceptVerbs("GET", "POST")]
         public Response ChangeStateofIsOnTuition(ActiveState As)
         {
@@ -780,6 +726,7 @@ namespace SHikkhanobishAPI.Controllers
             return response;
         }
         //Tanvir:Work perfectly.......................post
+        //Mahir:: Works Perfectly   
         [AcceptVerbs("GET", "POST")]
         public Response ReportTeacher(Report r)
         {
@@ -815,17 +762,8 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-        /*Tanvir::problem ........get request.....
-         
-            {"StudentID":"1000000"}
-
-            {
-    "StudentID": 0,
-    "response": null
-}
-         
-             
-             */
+        //Tanvir::problem ........get request.....
+        //Mahir:: Works Perfectly   
         [AcceptVerbs("GET", "POST")]
         public PremiumStudents GetPremiumStudent(PremiumStudents ps)
         {
@@ -856,6 +794,7 @@ namespace SHikkhanobishAPI.Controllers
         //Tanvir:eitar table e value insert kora nai................
         //Mahir:: Debug This
         //Tanvir::done
+        //Mahir:: Works Perfectly   
         [AcceptVerbs("GET", "POST")]
         public VoucherAndOffer GetVoucherInfo(VoucherAndOffer vs)
         {
@@ -887,6 +826,7 @@ namespace SHikkhanobishAPI.Controllers
             return VS;
         }
         //work perfectly...........................................................post.........
+        //Mahir:: Works Perfectly   
         [AcceptVerbs("GET", "POST")]
         public Response RegisterParent(Parents parents)
         {
@@ -925,6 +865,7 @@ namespace SHikkhanobishAPI.Controllers
         //error in code
         //Mahir::  Debug This
         //Tanvir:;done...............................
+        //Mahir:: Works Perfectly   
         [AcceptVerbs("GET", "POST")]
         public Response SetPremiumStudent(PremiumStudents ps)
         {
@@ -934,7 +875,7 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("Shikkhanobish.SetPremiumStudent", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@StudentID", ps.StudentID);//error 
+                cmd.Parameters.AddWithValue("@StudentID", ps.StudentID);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
 
@@ -987,6 +928,7 @@ namespace SHikkhanobishAPI.Controllers
             return student;
         }
         //Phone number is null in Database
+        //Mahir:: Works Perfectly   
         [AcceptVerbs("GET", "POST")]
         public Teacher RecoverInfoTeacher(Teacher t)
         {
@@ -1015,24 +957,16 @@ namespace SHikkhanobishAPI.Controllers
             }
             return teacher;
         }
-        /*Tanvir:: ...........problem occured......post request
-         
-             {"TeacherID":"753292","APIKey":"7532292","SessionID":"753-2292","Token":"7518-2292"}
 
-             {
-    "Massage": "There is a problem",
-    "Status": 1
-}
-             
-             */
+        //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
-        public Response SetTeacherVideoCallAPi(TeacherVideoCallApi tva)
+        public Response CreateTeacherVideoApiColumn(TeacherVideoCallApi tva)
         {
             Response response = new Response();
             try
             {
                 Connection();
-                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetTeacherVideoCallAPi", conn);
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.CreateTeacherVideoApiColumn", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@TeacherID", tva.TeacherID);
                 cmd.Parameters.AddWithValue("@APIKey", tva.APIKey);
@@ -1060,7 +994,44 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
+        //Mahir:: Works Perfectly            
+        [AcceptVerbs("GET", "POST")]
+        public Response SetTeacherVideoCallAPi(TeacherVideoCallApi tva)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetTeacherVideoCallAPi", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TeacherID", tva.TeacherID);
+                cmd.Parameters.AddWithValue("@APIKey", tva.APIKey);
+                cmd.Parameters.AddWithValue("@SessionID", tva.SessionID);
+                cmd.Parameters.AddWithValue("@Token", tva.Token);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "Problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Session Set";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
         //Tanvir::Database Table is Empty............................get request
+        //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public TeacherVideoCallApi GetTeacherVideoCallAPi(TeacherVideoCallApi tva)
         {
@@ -1090,13 +1061,10 @@ namespace SHikkhanobishAPI.Controllers
             }
             return TVA;
         }
-        //Tanvir::username and password is null in database......................{"UserName":"753292","Password":"753292"}
-        //Mahir:: Debug This
-        //tanvir::Done
+        //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public Teacher GetInfoByLoginTeacher(Teacher teacher)
         {
-            //Response response = new Response();
             Teacher T = new Teacher();
             try
             {
@@ -1144,15 +1112,7 @@ namespace SHikkhanobishAPI.Controllers
 
             return T;
         }
-        /*Tanvir::problem...........post request............
-         
-         {"Username":"7hhhh2","IsTeacherorStudent":"12555","IsPasswordOrUsername":"1","NewpassOrUsername":"7532jjh92"}
-             
-            {
-    "Massage": "There is a problem",
-    "Status": 1
-}
-             */
+        //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public Response SetnewPasswordOrUsername(ResetInfo ri)
         {
@@ -1188,24 +1148,7 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-        /* Tanvir:;get response.......
-         
-             {"StudentID":"125551"}
-
-             {
-    "StudentID": 0,                      why student id show 0??
-    "TeacherName": "hgggg1",
-    "TeacherID": 122222,
-    "Class": "10",
-    "Subject": "mmm",
-    "Time": 11,
-    "Cost": 1122,
-    "Response": "ok"
-}
-             
-             
-             
-             */
+        //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public IsPending GetPending(IsPending ip)
         {
