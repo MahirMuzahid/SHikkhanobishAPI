@@ -1259,6 +1259,7 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("Shikkhanobish.SetTeacherInfo", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Name", ti.Name);
                 cmd.Parameters.AddWithValue("@Username", ti.Username);//
                 cmd.Parameters.AddWithValue("@Password", ti.Password);//
 
