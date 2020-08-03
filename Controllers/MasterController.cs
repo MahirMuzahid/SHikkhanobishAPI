@@ -1231,7 +1231,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@Username", ti.Username);
-                cmd.Parameters.AddWithValue("@Password", ti.Password);
+                cmd.Parameters.AddWithValue("@PhoneNumber", ti.PhoneNumber);
 
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -1239,14 +1239,7 @@ namespace SHikkhanobishAPI.Controllers
 
                 while (reader.Read())
                 {
-
                     TI.Name = reader["Name"].ToString();
-                    TI.Age = Convert.ToInt32(reader["Age"]);
-                    TI.Institution = reader["Institution"].ToString();
-                    TI.PhoneNumber = Convert.ToInt32(reader["PhoneNumber"]);
-                    TI.Mail = reader["Mail"].ToString();
-                    TI.SubjectInfo = reader["SubjectInfo"].ToString();
-
                 }
 
                 conn.Close();
