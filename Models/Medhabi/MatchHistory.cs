@@ -7,7 +7,7 @@ namespace SHikkhanobishAPI.Models.Medhabi
 {
     public class MatchHistory
     {
-        public string matchID { get; set; }
+        public int matchID { get; set; }
         public int winnerPlayerID { get; set; }
         public int looserPlayerID { get; set; }
         public int q1 { get; set; }
