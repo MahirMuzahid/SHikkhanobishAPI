@@ -191,6 +191,7 @@
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Models\TeacherID.cs" />
+    <Compile Include="Models\TeacherInfo.cs" />
     <Compile Include="Models\TeacherVideoCallApi.cs" />
     <Compile Include="Models\TuitionHistoryStudent.cs" />
     <Compile Include="Models\TuitionHistoryTeacher.cs" />
