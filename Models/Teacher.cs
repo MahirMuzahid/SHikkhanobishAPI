@@ -9,7 +9,6 @@ namespace SHikkhanobishAPI.Models
     {
         public int TeacherID { get; set; }
         public string InstituitionID { get; set; }
-        public int StudentID { get; set; }
         public int IsActive { get; set; }
         public int IsOnTuition { get; set; }
         public int Five_Star { get; set; }
@@ -27,7 +26,6 @@ namespace SHikkhanobishAPI.Models
         public string UserName { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-        public string Name { get; set; }
         public int Age { get; set; }
         public string Class { get; set; }
         public string InstitutionName { get; set; }

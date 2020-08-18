@@ -579,7 +579,6 @@ namespace SHikkhanobishAPI.Controllers
                     T.InstituitionID = reader["InstituitionID"].ToString();
                     T.IsActive = Convert.ToInt32(reader["IsActive"]);
                     T.IsOnTuition = Convert.ToInt32(reader["IsOnTuition"]);
-                    T.StudentID = Convert.ToInt32(reader["StudentID"]);
                     T.Five_Star = Convert.ToInt32(reader["Five_Star"]);
                     T.Four_Star = Convert.ToInt32(reader["Four_Star"]);
                     T.Three_Star = Convert.ToInt32(reader["Three_Star"]);
@@ -590,6 +589,14 @@ namespace SHikkhanobishAPI.Controllers
                     T.Tuition_Point = Convert.ToInt32(reader["Tuition_Point"]);
                     T.Teacher_Rank = reader["Teacher_Rank"].ToString();
                     T.TeacherName = reader["TeacherName"].ToString();
+                    T.UserName = reader [ "UserName" ].ToString ();
+                    T.Age = Convert.ToInt32 ( reader [ "Age" ] );
+                    T.Class = reader [ "Class" ].ToString ();
+                    T.Password = reader [ "Password" ].ToString ();
+                    T.PhoneNumber = reader [ "PhoneNumber" ].ToString ();
+                    T.RechargedAmount = Convert.ToInt32 ( reader [ "RechargedAmount" ] );
+                    T.InstitutionName = reader [ "InstitutionName" ].ToString ();
+
                     T.response = "OK";
                     teacherList.Add(T);
                 }
