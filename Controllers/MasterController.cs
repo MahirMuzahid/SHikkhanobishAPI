@@ -143,12 +143,13 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("[dbo].[spTuitionHistoryStudentNew]", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("StudentID", student.StundentID);
+                cmd.Parameters.AddWithValue("Teacher_Name", student.Teacher_Name);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     TuitionHistoryStudent tuitionHistory = new TuitionHistoryStudent();
+                    tuitionHistory.Teacher_Name = reader["Teacher_Name"].ToString();
                     tuitionHistory.StundentID = Convert.ToInt32(reader["StudentID"]);
                     tuitionHistory.TutionTeacherID = Convert.ToInt32(reader["TutionTeacherID"]);
                     tuitionHistory.Class = reader["Class"].ToString();
@@ -174,7 +175,56 @@ namespace SHikkhanobishAPI.Controllers
             return tuitionHistoryList;
         }
 
-        //Mahir:: Works Perfectly
+
+        [AcceptVerbs("GET", "POST")]
+        public Response SetTuitionHistoryStudent(TuitionHistoryStudent t)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.TuitionHistoryStudent", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StundentID", t.StundentID);//
+                cmd.Parameters.AddWithValue("@TutionTeacherID", t.TutionTeacherID);//
+
+                cmd.Parameters.AddWithValue("@Class", t.Class);           //
+
+                cmd.Parameters.AddWithValue("@Subject", t.Subject);
+                cmd.Parameters.AddWithValue("@Time", t.Time);
+                cmd.Parameters.AddWithValue("@Date", t.Date);
+
+                cmd.Parameters.AddWithValue("@Ratting", t.Ratting);
+
+                cmd.Parameters.AddWithValue("@Teacher_Name", t.Teacher_Name);
+
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i <= 0)
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "successfully executed";
+                    response.Status = 0;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+
+
+         //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public IEnumerable<TuitionHistoryTeacher> GetTuitionHistoryTeacher(TuitionHistoryTeacher teacher)
         {
@@ -1227,7 +1277,7 @@ namespace SHikkhanobishAPI.Controllers
             try
             {
                 Connection();
-                SqlCommand cmd = new SqlCommand("Shikkhanobish.GetTeacherInfo", conn);
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.TeacherInfo", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@Username", ti.Username);
@@ -1264,7 +1314,7 @@ namespace SHikkhanobishAPI.Controllers
             try
             {
                 Connection();
-                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetTeacherInfo", conn);
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.TeacherInfo", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Username", ti.Username);//
                 cmd.Parameters.AddWithValue("@Password", ti.Password);//
@@ -1298,15 +1348,6 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-
-
-
-
-
-
-
-
-
 
 
     }
