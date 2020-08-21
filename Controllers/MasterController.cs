@@ -1103,7 +1103,6 @@ namespace SHikkhanobishAPI.Controllers
                     T.UserName = reader["UserName"].ToString();
                     T.Password = reader["Password"].ToString();
                     T.PhoneNumber = reader["PhoneNumber"].ToString();
-                    T.Name = reader["Name"].ToString();
                     T.Age = Convert.ToInt32(reader["Age"]);
                     T.Class = reader["Class"].ToString();
                     T.InstitutionName = reader["InstitutionName"].ToString();
