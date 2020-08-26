@@ -8,7 +8,6 @@ namespace SHikkhanobishAPI.Models
     public class AllSubAndTeacherReagister
     {
         public int TeacherID { get; set; }
-        public string InstitutionID { get; set; }
         public int LSBAN01 { get; set; }
         public int LSBAN02 { get; set; }
         public int LSENG01 { get; set; }

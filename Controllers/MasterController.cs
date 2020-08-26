@@ -320,9 +320,8 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@HSFIN", registerTeacher.HSFIN);
                 cmd.Parameters.AddWithValue("@HSACC", registerTeacher.HSACC);
                 cmd.Parameters.AddWithValue("@HSECO", registerTeacher.HSECO);
-                cmd.Parameters.AddWithValue ( "@TeacherID" , registerTeacher.TeacherID );
 
-                cmd.Parameters.AddWithValue("@InstitutionID", registerTeacher.InstitutionID);
+                cmd.Parameters.AddWithValue("@InstituitionID" , registerTeacher.InstituitionID);
                 cmd.Parameters.AddWithValue("@TeacherName", registerTeacher.TeacherName);
                 cmd.Parameters.AddWithValue("UserName" , registerTeacher.UserName ); ;
                 cmd.Parameters.AddWithValue("Password" , registerTeacher.Password );
