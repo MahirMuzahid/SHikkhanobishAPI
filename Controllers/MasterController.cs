@@ -269,8 +269,6 @@ namespace SHikkhanobishAPI.Controllers
             {
                 Connection();
                 SqlCommand cmd = new SqlCommand("spInsertSubject", conn);
-
-                cmd.Parameters.AddWithValue("@TeacherID", registerTeacher.TeacherID);
                 cmd.Parameters.AddWithValue("@LSBAN01", registerTeacher.LSBAN01);
                 cmd.Parameters.AddWithValue("@LSBAN02", registerTeacher.LSBAN02);
                 cmd.Parameters.AddWithValue("@LSENG01", registerTeacher.LSENG01);
@@ -322,9 +320,17 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@HSFIN", registerTeacher.HSFIN);
                 cmd.Parameters.AddWithValue("@HSACC", registerTeacher.HSACC);
                 cmd.Parameters.AddWithValue("@HSECO", registerTeacher.HSECO);
-                cmd.Parameters.AddWithValue("@StudentID", registerTeacher.StudentID);
+                cmd.Parameters.AddWithValue ( "@TeacherID" , registerTeacher.TeacherID );
+
                 cmd.Parameters.AddWithValue("@InstitutionID", registerTeacher.InstitutionID);
                 cmd.Parameters.AddWithValue("@TeacherName", registerTeacher.TeacherName);
+                cmd.Parameters.AddWithValue("UserName" , registerTeacher.UserName ); ;
+                cmd.Parameters.AddWithValue("Password" , registerTeacher.Password );
+                cmd.Parameters.AddWithValue("PhoneNumber" , registerTeacher.PhoneNumber );
+                cmd.Parameters.AddWithValue("Age" , registerTeacher.Age );
+                cmd.Parameters.AddWithValue("Class" , registerTeacher.Class );
+                cmd.Parameters.AddWithValue("InstitutionName" , registerTeacher.InstitutionName );
+                cmd.Parameters.AddWithValue("RechargedAmount" , registerTeacher.RechargedAmount );
 
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 conn.Open();
