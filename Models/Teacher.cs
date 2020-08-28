@@ -30,6 +30,7 @@ namespace SHikkhanobishAPI.Models
         public string Class { get; set; }
         public string InstitutionName { get; set; }
         public int RechargedAmount { get; set; }
+        public int isFounder { get; set; }
         public string response { get; set; }
     }
 }

@@ -650,6 +650,7 @@ namespace SHikkhanobishAPI.Controllers
                     T.Password = reader [ "Password" ].ToString ();
                     T.PhoneNumber = reader [ "PhoneNumber" ].ToString ();
                     T.RechargedAmount = Convert.ToInt32 ( reader [ "RechargedAmount" ] );
+                    T.isFounder = Convert.ToInt32 ( reader [ "isFounder" ] );
                     T.InstitutionName = reader [ "InstitutionName" ].ToString ();
 
                     T.response = "OK";
