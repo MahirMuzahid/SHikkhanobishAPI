@@ -20,6 +20,7 @@ namespace SHikkhanobishAPI.Models
         public string Response { get; set; }
         public int TotalTuitionTIme { get; set; }
         public int TotalTeacherCount { get; set; }
+        public int ParentCode { get; set; }
         public float AvarageRating { get; set; }
     }
 }

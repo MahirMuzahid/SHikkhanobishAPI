@@ -91,6 +91,7 @@ namespace SHikkhanobishAPI.Controllers
                     student.TotalTeacherCount = Convert.ToInt32(reader["TotalTeacherCount"]);
                     student.TotalTuitionTIme = Convert.ToInt32(reader["TotalTuitionTIme"]);
                     student.AvarageRating = Convert.ToInt32(reader["AvarageRatting"]);
+                    student.ParentCode = Convert.ToInt32 ( reader ["ParentCode"] );
                 }
                 conn.Close();
             }
