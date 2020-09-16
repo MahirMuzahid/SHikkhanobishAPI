@@ -102,6 +102,47 @@ namespace SHikkhanobishAPI.Controllers
 
             return student;
         }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Student GetInfoByStudentID ( Student studentm )
+        {
+            //Response response = new Response();
+            Student student = new Student ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.getInfoByStudentID" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@StudentID " , studentm.StundentID );
+
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+                while ( reader.Read () )
+                {
+                    student.StundentID = Convert.ToInt32 ( reader [ "StudentID" ] );
+                    student.UserName = reader [ "UserName" ].ToString ();
+                    student.Password = reader [ "Password" ].ToString ();
+                    student.PhoneNumber = reader [ "PhoneNumber" ].ToString ();
+                    student.Name = reader [ "Name" ].ToString ();
+                    student.Age = Convert.ToInt32 ( reader [ "Age" ] );
+                    student.Class = reader [ "Class" ].ToString ();
+                    student.InstitutionName = reader [ "InstitutionName" ].ToString ();
+                    student.RechargedAmount = Convert.ToInt32 ( reader [ "RechargedAmount" ] );
+                    student.IsPending = Convert.ToInt32 ( reader [ "IsPending" ] );
+                    student.TotalTeacherCount = Convert.ToInt32 ( reader [ "TotalTeacherCount" ] );
+                    student.TotalTuitionTIme = Convert.ToInt32 ( reader [ "TotalTuitionTIme" ] );
+                    student.AvarageRating = Convert.ToInt32 ( reader [ "AvarageRatting" ] );
+                    student.ParentCode = Convert.ToInt32 ( reader [ "ParentCode" ] );
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                student.Response = ex.Message;
+            }
+
+            return student;
+        }
         //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public Student SearchUserName(Student studentm)
@@ -1175,6 +1216,54 @@ namespace SHikkhanobishAPI.Controllers
 
             return T;
         }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Teacher GetInfoByTeacherID ( Teacher teacher )
+        {
+            Teacher T = new Teacher ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.getInfoByTeacherID" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@TeacherID " , teacher.TeacherID );
+
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+                while ( reader.Read () )
+                {
+                    T.TeacherID = Convert.ToInt32 ( reader [ "TeacherID" ] );
+                    T.InstituitionID = reader [ "InstituitionID" ].ToString ();
+                    T.IsActive = Convert.ToInt32 ( reader [ "IsActive" ] );
+                    T.IsOnTuition = Convert.ToInt32 ( reader [ "IsOnTuition" ] );
+                    T.Five_Star = Convert.ToInt32 ( reader [ "Five_Star" ] );
+                    T.Four_Star = Convert.ToInt32 ( reader [ "Four_Star" ] );
+                    T.Three_Star = Convert.ToInt32 ( reader [ "Three_Star" ] );
+                    T.Two_Star = Convert.ToInt32 ( reader [ "Two_Star" ] );
+                    T.One_Star = Convert.ToInt32 ( reader [ "One_Star" ] );
+                    T.Total_Min = Convert.ToInt32 ( reader [ "Total_Min" ] );
+                    T.Number_Of_Tution = Convert.ToInt32 ( reader [ "Number_Of_Tution" ] );
+                    T.Tuition_Point = Convert.ToInt32 ( reader [ "Tuition_Point" ] );
+                    T.Teacher_Rank = reader [ "Teacher_Rank" ].ToString ();
+                    T.TeacherName = reader [ "TeacherName" ].ToString ();
+                    T.UserName = reader [ "UserName" ].ToString ();
+                    T.Password = reader [ "Password" ].ToString ();
+                    T.PhoneNumber = reader [ "PhoneNumber" ].ToString ();
+                    T.Age = Convert.ToInt32 ( reader [ "Age" ] );
+                    T.Class = reader [ "Class" ].ToString ();
+                    T.InstitutionName = reader [ "InstitutionName" ].ToString ();
+                    T.RechargedAmount = Convert.ToInt32 ( reader [ "RechargedAmount" ] );
+                    T.response = "OK";
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                T.response = ex.Message;
+            }
+
+            return T;
+        }
         //Mahir:: Works Perfectly
         [AcceptVerbs("GET", "POST")]
         public Response SetnewPasswordOrUsername(ResetInfo ri)
@@ -1277,6 +1366,38 @@ namespace SHikkhanobishAPI.Controllers
                 conn.Close();
             }
             catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response DeletePending ( IsPending ip )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.DeletePending" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@StudentID" , ip.StudentID );
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "delete pending done";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
             {
                 response.Massage = ex.Message;
                 response.Status = 1;
