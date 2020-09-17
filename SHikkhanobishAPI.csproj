@@ -181,6 +181,7 @@
     <Compile Include="Models\Medhabi\PlayerHistory.cs" />
     <Compile Include="Models\Medhabi\QuestionMaker.cs" />
     <Compile Include="Models\Medhabi\Questions.cs" />
+    <Compile Include="Models\OfferAndVoucherSource.cs" />
     <Compile Include="Models\Parents.cs" />
     <Compile Include="Models\PremiumStudents.cs" />
     <Compile Include="Models\Report.cs" />
@@ -196,6 +197,8 @@
     <Compile Include="Models\TuitionHistoryStudent.cs" />
     <Compile Include="Models\TuitionHistoryTeacher.cs" />
     <Compile Include="Models\VoucherAndOffer.cs" />
+    <Compile Include="Models\WalletHistoryStudent.cs" />
+    <Compile Include="Models\WalletHistoryTeacher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

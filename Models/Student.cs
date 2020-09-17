@@ -22,5 +22,6 @@ namespace SHikkhanobishAPI.Models
         public int TotalTeacherCount { get; set; }
         public int ParentCode { get; set; }
         public float AvarageRating { get; set; }
+        public int FreeMin { get; set; }
     }
 }

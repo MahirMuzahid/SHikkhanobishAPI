@@ -92,6 +92,7 @@ namespace SHikkhanobishAPI.Controllers
                     student.TotalTuitionTIme = Convert.ToInt32(reader["TotalTuitionTIme"]);
                     student.AvarageRating = Convert.ToInt32(reader["AvarageRatting"]);
                     student.ParentCode = Convert.ToInt32 ( reader ["ParentCode"] );
+                    student.FreeMin = Convert.ToInt32 ( reader [ "FreeMin" ] );
                 }
                 conn.Close();
             }
@@ -133,6 +134,7 @@ namespace SHikkhanobishAPI.Controllers
                     student.TotalTuitionTIme = Convert.ToInt32 ( reader [ "TotalTuitionTIme" ] );
                     student.AvarageRating = Convert.ToInt32 ( reader [ "AvarageRatting" ] );
                     student.ParentCode = Convert.ToInt32 ( reader [ "ParentCode" ] );
+                    student.FreeMin = Convert.ToInt32 ( reader [ "FreeMin" ] );
                 }
                 conn.Close ();
             }
@@ -1478,5 +1480,304 @@ namespace SHikkhanobishAPI.Controllers
         }
 
 
+        //New 17.10.2020
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response SetTeacherWalletInfo ( WalletHistoryTeacher wh )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.setTeacherWalletInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@TeacherID" , wh.TeacherID );
+                cmd.Parameters.AddWithValue ( "@WithdrawAmount" , wh.WithdrawAmount );//
+                cmd.Parameters.AddWithValue ( "@Phonenumber" , wh.Phonenumber );//
+
+                cmd.Parameters.AddWithValue ( "@TrxID" , wh.TrxID );           //
+
+                cmd.Parameters.AddWithValue ( "@Date" , wh.Date );
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "successfully executed";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public List<WalletHistoryTeacher> GetTeacherWalletInfo ( WalletHistoryTeacher wh )
+        {
+            List<WalletHistoryTeacher> walletHistoryList = new List<WalletHistoryTeacher> ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.getTeacherWalletInfo " , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue ( "@TeacherID" , wh.TeacherID );
+
+
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+
+                while ( reader.Read () )
+                {
+                    WalletHistoryTeacher walletHistory = new WalletHistoryTeacher ();
+                    walletHistory.TeacherID = Convert.ToInt32 ( reader [ "TeacherID" ] );
+                    walletHistory.WithdrawAmount = Convert.ToInt32 ( reader [ "WithdrawAmount" ] );
+                    walletHistory.Phonenumber = Convert.ToInt32 ( reader [ "Phonenumber" ] );
+                    walletHistory.TrxID = reader [ "TrxID" ].ToString ();
+                    walletHistory.Date = reader [ "Date" ].ToString ();
+                    walletHistory.IsPending = Convert.ToInt32 ( reader [ "IsPending" ] );
+                    walletHistoryList.Add ( walletHistory );
+                }
+
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                WalletHistoryTeacher walletHistory = new WalletHistoryTeacher ();
+                walletHistory.Response = ex.Message;
+                walletHistoryList.Add ( walletHistory );
+            }
+            return walletHistoryList;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response SetStudentWalletInfo ( WalletHistoryStudent wh )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.setStudentWalletInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@StudentID" , wh.StudentID );
+                cmd.Parameters.AddWithValue ( "@WithdrawAmount" , wh.WithdrawAmount );//
+                cmd.Parameters.AddWithValue ( "@Phonenumber" , wh.Phonenumber );//
+
+                cmd.Parameters.AddWithValue ( "@TrxID" , wh.TrxID );           //
+
+                cmd.Parameters.AddWithValue ( "@Date" , wh.Date );
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "successfully executed";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public List<WalletHistoryStudent> GetStudentWalletInfo ( WalletHistoryStudent wh )
+        {
+            List<WalletHistoryStudent> walletHistoryList = new List<WalletHistoryStudent> ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.getStudentWalletInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue ( "@StudentID" , wh.StudentID );
+
+
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+
+                while ( reader.Read () )
+                {
+                    WalletHistoryStudent walletHistory = new WalletHistoryStudent ();
+                    walletHistory.StudentID = Convert.ToInt32 ( reader [ "StudentID" ] );
+                    walletHistory.WithdrawAmount = Convert.ToInt32 ( reader [ "WithdrawAmount" ] );
+                    walletHistory.Phonenumber = Convert.ToInt32 ( reader [ "Phonenumber" ] );
+                    walletHistory.TrxID = reader [ "TrxID" ].ToString ();
+                    walletHistory.Date = reader [ "Date" ].ToString ();
+                    walletHistory.IsPending = Convert.ToInt32 ( reader [ "IsPending" ] );
+                    walletHistoryList.Add ( walletHistory );
+                }
+
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                WalletHistoryStudent walletHistory = new WalletHistoryStudent ();
+                walletHistory.Response = ex.Message;
+                walletHistoryList.Add ( walletHistory );
+            }
+            return walletHistoryList;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response UpdateStudentInfo ( Student s )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.UpdateStudentInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@StudentID" , s.StundentID );
+                cmd.Parameters.AddWithValue ( "@Name" , s.Name );//
+                cmd.Parameters.AddWithValue ( "@Age" , s.Age );//
+
+                cmd.Parameters.AddWithValue ( "@Class" , s.Class );           //
+
+                cmd.Parameters.AddWithValue ( "@InstitutionName" , s.InstitutionName );
+                cmd.Parameters.AddWithValue ( "@UserName" , s.UserName );
+                cmd.Parameters.AddWithValue ( "@Password" , s.Password );
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "successfully executed";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response UpdateTeacherInfo ( Teacher t )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.setTeacherWalletInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@TeacherID" , t.TeacherID );
+                cmd.Parameters.AddWithValue ( "@TeacherName" , t.TeacherName );//
+                cmd.Parameters.AddWithValue ( "@Age" , t.Age );//
+
+                cmd.Parameters.AddWithValue ( "@Class" , t.Class );           //
+
+                cmd.Parameters.AddWithValue ( "@InstitutionName" , t.InstitutionName );
+                cmd.Parameters.AddWithValue ( "@UserName" , t.UserName );
+                cmd.Parameters.AddWithValue ( "@Password" , t.Password );
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "successfully executed";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public OfferAndVoucherSource GetVoucherSource ( OfferAndVoucherSource of )
+        {
+            OfferAndVoucherSource OF = new OfferAndVoucherSource ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetIsPending" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+                while ( reader.Read () )
+                {
+                    OF.code = reader [ "code" ].ToString ();
+                    OF.type = reader [ "type" ].ToString ();
+                    OF.limit = Convert.ToInt32 ( reader [ "limit" ] );
+                    OF.amount = Convert.ToInt32 ( reader [ "amount" ] );
+                    OF.imageSource = reader [ "imageSource" ].ToString ();
+                    OF.response = "ok";
+                }
+
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                OF.response = ex.Message;
+            }
+            return OF;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response SetFreeMinToStudent ( Student s )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.SetFreeMinToStudent" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@StudentID" , s.StundentID );
+                cmd.Parameters.AddWithValue ( "@FreeMin" , s.FreeMin );
+
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "successfully executed";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
     }
 }
