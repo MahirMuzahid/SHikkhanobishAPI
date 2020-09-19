@@ -78,7 +78,7 @@ namespace SHikkhanobishAPI.Controllers
 
                 while (reader.Read())
                 {
-                    student.StundentID = Convert.ToInt32(reader["StudentID"]);
+                    student.StudentID = Convert.ToInt32(reader["StudentID"]);
                     student.UserName = reader["UserName"].ToString();
                     student.Password = reader["Password"].ToString();
                     student.PhoneNumber = reader["PhoneNumber"].ToString();
@@ -113,14 +113,14 @@ namespace SHikkhanobishAPI.Controllers
                 Connection ();
                 SqlCommand cmd = new SqlCommand ( "Shikkhanobish.getInfoByStudentID" , conn );
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue ( "@StudentID " , studentm.StundentID );
+                cmd.Parameters.AddWithValue ( "@StudentID " , studentm.StudentID );
 
                 conn.Open ();
                 SqlDataReader reader = cmd.ExecuteReader ();
 
                 while ( reader.Read () )
                 {
-                    student.StundentID = Convert.ToInt32 ( reader [ "StudentID" ] );
+                    student.StudentID = Convert.ToInt32 ( reader [ "StudentID" ] );
                     student.UserName = reader [ "UserName" ].ToString ();
                     student.Password = reader [ "Password" ].ToString ();
                     student.PhoneNumber = reader [ "PhoneNumber" ].ToString ();
@@ -187,14 +187,14 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("[dbo].[spTuitionHistoryStudentNew]", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue( "@StudentID" , student.StundentID);
+                cmd.Parameters.AddWithValue( "@StudentID" , student.StudentID );
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     TuitionHistoryStudent tuitionHistory = new TuitionHistoryStudent();
                     tuitionHistory.Teacher_Name = reader["Teacher_Name"].ToString();
-                    tuitionHistory.StundentID = Convert.ToInt32(reader["StudentID"]);
+                    tuitionHistory.StudentID = Convert.ToInt32(reader["StudentID"]);
                     tuitionHistory.TutionTeacherID = Convert.ToInt32(reader["TutionTeacherID"]);
                     tuitionHistory.Class = reader["Class"].ToString();
                     tuitionHistory.Subject = reader["Subject"].ToString();
@@ -229,7 +229,7 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("Shikkhanobish.TuitionHistoryStudent", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@StundentID", t.StundentID);//
+                cmd.Parameters.AddWithValue("@StudentID", t.StudentID );//
                 cmd.Parameters.AddWithValue("@TutionTeacherID", t.TutionTeacherID);//
 
                 cmd.Parameters.AddWithValue("@Class", t.Class);           //
@@ -285,7 +285,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     TuitionHistoryTeacher tuitionHistory = new TuitionHistoryTeacher();
                     tuitionHistory.TeacherID = Convert.ToInt32(reader["TeacherID"]);
-                    tuitionHistory.TuitionStundentID = Convert.ToInt32(reader["TuitionStudentID"]);
+                    tuitionHistory.TuitionStudentID = Convert.ToInt32(reader["TuitionStudentID"]);
                     tuitionHistory.Class = reader["Class"].ToString();
                     tuitionHistory.Subject = reader["Subject"].ToString();
                     tuitionHistory.Time = reader["Time"].ToString();
@@ -1568,7 +1568,7 @@ namespace SHikkhanobishAPI.Controllers
                 SqlCommand cmd = new SqlCommand ( "Shikkhanobish.setStudentWalletInfo" , conn );
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue ( "@StudentID" , wh.StudentID );
-                cmd.Parameters.AddWithValue ( "@WithdrawAmount" , wh.WithdrawAmount );//
+                cmd.Parameters.AddWithValue ( "@RechargedAmount" , wh.RechargedAmount );//
                 cmd.Parameters.AddWithValue ( "@Phonenumber" , wh.Phonenumber );//
 
                 cmd.Parameters.AddWithValue ( "@TrxID" , wh.TrxID );           //
@@ -1617,7 +1617,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     WalletHistoryStudent walletHistory = new WalletHistoryStudent ();
                     walletHistory.StudentID = Convert.ToInt32 ( reader [ "StudentID" ] );
-                    walletHistory.WithdrawAmount = Convert.ToInt32 ( reader [ "WithdrawAmount" ] );
+                    walletHistory.RechargedAmount = Convert.ToInt32 ( reader [ "RechargedAmount" ] );
                     walletHistory.Phonenumber = Convert.ToInt32 ( reader [ "Phonenumber" ] );
                     walletHistory.TrxID = reader [ "TrxID" ].ToString ();
                     walletHistory.Date = reader [ "Date" ].ToString ();
@@ -1642,13 +1642,13 @@ namespace SHikkhanobishAPI.Controllers
             try
             {
                 Connection ();
-                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.UpdateStudentInfo" , conn );
+                SqlCommand cmd = new SqlCommand ( "dbo.UpdateStudentInfo" , conn ); //Shikkhanobish.UpdateStudentInfo 
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue ( "@StudentID" , s.StundentID );
+                cmd.Parameters.AddWithValue ( "@StudentID" , s.StudentID );
                 cmd.Parameters.AddWithValue ( "@Name" , s.Name );//
                 cmd.Parameters.AddWithValue ( "@Age" , s.Age );//
 
-                cmd.Parameters.AddWithValue ( "@Class" , s.Class );           //
+                cmd.Parameters.AddWithValue ( "@Class" , s.Class );   //Class Class Class Class
 
                 cmd.Parameters.AddWithValue ( "@InstitutionName" , s.InstitutionName );
                 cmd.Parameters.AddWithValue ( "@UserName" , s.UserName );
@@ -1754,7 +1754,7 @@ namespace SHikkhanobishAPI.Controllers
                 Connection ();
                 SqlCommand cmd = new SqlCommand ( "Shikkhanobish.SetFreeMinToStudent" , conn );
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue ( "@StudentID" , s.StundentID );
+                cmd.Parameters.AddWithValue ( "@StudentID" , s.StudentID );
                 cmd.Parameters.AddWithValue ( "@FreeMin" , s.FreeMin );
 
                 conn.Open ();
@@ -1779,5 +1779,76 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response SetParentInfo ( Parents p )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.SetParentsInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@ParentID" , p.ParentID );
+                cmd.Parameters.AddWithValue ( "@ParentName" , p.ParentName );
+                cmd.Parameters.AddWithValue ( "@ParentMobileNumber" , p.ParentMobileNumber );
+                cmd.Parameters.AddWithValue ( "@StudentID" , p.StudentID );
+                cmd.Parameters.AddWithValue ( "@Password" , p.Password );
+                cmd.Parameters.AddWithValue ( "@FatherorMother" , p.FatherorMother );
+
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "successfully executed";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        public Parents GetParentInfo ( Parents p )
+        {
+            Parents parent = new Parents ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetParentsInfo " , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@ParentID" , p.ParentID );
+                cmd.Parameters.AddWithValue ( "@Password" , p.Password );
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+                while ( reader.Read () )
+                {
+                    parent.ParentID = Convert.ToInt32 ( reader [ "ParentID" ] );
+                    parent.ParentName = reader [ "ParentName" ].ToString ();
+                    parent.ParentMobileNumber = Convert.ToInt32 ( reader [ "ParentMobileNumber" ] );
+                    parent.StudentID = Convert.ToInt32 ( reader [ "StudentID" ] );
+                    parent.Password = reader [ "Password" ].ToString ();
+                    parent.FatherorMother = reader [ "FatherorMother" ].ToString ();
+                    parent.Response = "ok";
+                }
+
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                parent.Response = ex.Message;
+            }
+            return parent;
+        }
+
     }
 }

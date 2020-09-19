@@ -7,7 +7,7 @@ namespace SHikkhanobishAPI.Models
 {
     public class TuitionHistoryStudent
     {
-        public int StundentID { get; set; }
+        public int StudentID { get; set; }
         public int TutionTeacherID { get; set; }
         public string Class { get; set; }
         public string Subject { get; set; }
