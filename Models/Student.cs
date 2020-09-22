@@ -15,7 +15,7 @@ namespace SHikkhanobishAPI.Models
         public int Age { get; set; }
         public string Class { get; set; }
         public string InstitutionName { get; set; }
-        public int RechargedAmount { get; set; }
+        public float RechargedAmount { get; set; }
         public int IsPending { get; set; }
         public string Response { get; set; }
         public int TotalTuitionTIme { get; set; }

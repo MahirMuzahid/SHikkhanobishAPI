@@ -201,6 +201,7 @@ namespace SHikkhanobishAPI.Controllers
                     tuitionHistory.Time = reader["Time"].ToString();
                     tuitionHistory.Date = reader["Date"].ToString();
                     tuitionHistory.Ratting = Convert.ToInt32(reader["Rating"]);
+                    tuitionHistory.Cost = Convert.ToInt32 ( reader [ "Cost" ] );
                     tuitionHistoryList.Add(tuitionHistory);
                     c++;
                 }
@@ -241,7 +242,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@Ratting", t.Ratting);
 
                 cmd.Parameters.AddWithValue("@Teacher_Name", t.Teacher_Name);
-
+                cmd.Parameters.AddWithValue ( "@Cost" , t.Cost );
 
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
@@ -736,7 +737,8 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@IsPending", info.IsPenidng);
                 cmd.Parameters.AddWithValue("@Teacher_Name", info.Teacher_Name);
                 cmd.Parameters.AddWithValue("@Student_Name", info.Student_Name);
-                cmd.Parameters.AddWithValue("@Cost", info.Cost);
+                cmd.Parameters.AddWithValue("@StudentCost" , info.StudentCost);
+                cmd.Parameters.AddWithValue ("@TeacherEarn" , info.TeacherEarn );
 
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
@@ -1817,6 +1819,8 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
+        [AcceptVerbs ( "GET" , "POST" )]
+
         public Parents GetParentInfo ( Parents p )
         {
             Parents parent = new Parents ();
@@ -1849,6 +1853,154 @@ namespace SHikkhanobishAPI.Controllers
             }
             return parent;
         }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Student GetStudentFromParentCode ( Parents p )
+        {
+            Student student = new Student ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetStudentFromParentCode" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@ParentID" , p.ParentID );
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
 
+                while ( reader.Read () )
+                {
+                    student.StudentID = Convert.ToInt32 ( reader [ "StudentID" ] );
+                    student.UserName = reader [ "UserName" ].ToString ();
+                    student.Password = reader [ "Password" ].ToString ();
+                    student.PhoneNumber = reader [ "PhoneNumber" ].ToString ();
+                    student.Name = reader [ "Name" ].ToString ();
+                    student.Age = Convert.ToInt32 ( reader [ "Age" ] );
+                    student.Class = reader [ "Class" ].ToString ();
+                    student.InstitutionName = reader [ "InstitutionName" ].ToString ();
+                    student.RechargedAmount = Convert.ToInt32 ( reader [ "RechargedAmount" ] );
+                    student.IsPending = Convert.ToInt32 ( reader [ "IsPending" ] );
+                    student.TotalTeacherCount = Convert.ToInt32 ( reader [ "TotalTeacherCount" ] );
+                    student.TotalTuitionTIme = Convert.ToInt32 ( reader [ "TotalTuitionTIme" ] );
+                    student.AvarageRating = Convert.ToInt32 ( reader [ "AvarageRatting" ] );
+                    student.ParentCode = Convert.ToInt32 ( reader [ "ParentCode" ] );
+                    student.FreeMin = Convert.ToInt32 ( reader [ "FreeMin" ] );
+
+                }
+
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                student.Response = ex.Message;
+            }
+            return student;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response TransferPoint ( TransferPoint tp )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.transferPoint" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@TeacherEarn" , tp.TeacherEarn );
+                cmd.Parameters.AddWithValue ( "@StudentCost" , tp.StudentCost );
+                cmd.Parameters.AddWithValue ( "@StudentID" , tp.StudentID );
+                cmd.Parameters.AddWithValue ( "@TeacherID" , tp.TeacherEarn );
+
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+                if ( i > 0 )
+                {
+                    response.Massage = "Transfered point";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response SetCostinIspending ( IsPending p )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.SetCostInIsPending" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@StudentID" , p.StudentID );
+                cmd.Parameters.AddWithValue ( "@Cost" , p.Cost );
+                cmd.Parameters.AddWithValue ( "@Time" , p.Time );
+                cmd.Parameters.AddWithValue ( "@StudentCostMin" , p.StudentCostMin );
+                cmd.Parameters.AddWithValue ( "@TeacherEarnMin" , p.TeacherEarnMin );
+                cmd.Parameters.AddWithValue ( "@TeacherID" , p.TeacherID );
+
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+                if ( i > 0 )
+                {
+                    response.Massage = "Set Cost";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public List<IsPending> GetPendingForTeacher ( IsPending ip )
+        {
+            List<IsPending> IPList = new List<IsPending> ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.getPendingForTeacher" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@TeacherID " , ip.TeacherID );
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+                while ( reader.Read () )
+                {
+                    IsPending IP = new IsPending ();
+                    IP.TeacherName = reader [ "TeacherName" ].ToString ();
+                    IP.TeacherID = Convert.ToInt32 ( reader [ "TeacherID" ] );
+                    IP.Class = reader [ "Class" ].ToString ();
+                    IP.Subject = reader [ "Subject" ].ToString ();
+                    IP.Time = Convert.ToInt32 ( reader [ "Time" ] );
+                    IP.Cost = Convert.ToInt32 ( reader [ "Cost" ] );
+                    IP.Response = "ok";
+                    IPList.Add ( IP );
+                }
+
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                IsPending IP = new IsPending ();
+                IP.Response = ex.Message;
+                IPList.Add ( IP );
+            }
+            return IPList;
+        }
     }
 }

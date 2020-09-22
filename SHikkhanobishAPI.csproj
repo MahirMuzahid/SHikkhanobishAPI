@@ -194,6 +194,7 @@
     <Compile Include="Models\TeacherID.cs" />
     <Compile Include="Models\TeacherInfo.cs" />
     <Compile Include="Models\TeacherVideoCallApi.cs" />
+    <Compile Include="Models\TransferPoint.cs" />
     <Compile Include="Models\TuitionHistoryStudent.cs" />
     <Compile Include="Models\TuitionHistoryTeacher.cs" />
     <Compile Include="Models\VoucherAndOffer.cs" />
