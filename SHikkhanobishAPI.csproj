@@ -172,6 +172,7 @@
     </Compile>
     <Compile Include="Models\ActiveState.cs" />
     <Compile Include="Models\AllSubAndTeacherReagister.cs" />
+    <Compile Include="Models\ApiKey.cs" />
     <Compile Include="Models\InfoForUpdate.cs" />
     <Compile Include="Models\IsPending.cs" />
     <Compile Include="Models\Medhabi\MatchHistory.cs" />

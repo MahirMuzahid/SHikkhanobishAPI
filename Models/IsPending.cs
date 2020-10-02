@@ -14,8 +14,8 @@ namespace SHikkhanobishAPI.Models
         public string Subject { get; set; }
         public int Time { get; set; }
         public float Cost { get; set; }       
-        public int TeacherEarnMin { get; set; }
-        public int StudentCostMin { get; set; }
+        public float TeacherEarnMin { get; set; }
+        public float StudentCostMin { get; set; }
         public string Response { get; set; }
     }
 }
