@@ -1701,35 +1701,38 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-        [AcceptVerbs ( "GET" , "POST" )]
-        public OfferAndVoucherSource GetVoucherSource ( OfferAndVoucherSource of )
+        [AcceptVerbs ( "GET")]
+        public IEnumerable<OfferAndVoucherSource> GetVoucherSource ( OfferAndVoucherSource of )
         {
-            OfferAndVoucherSource OF = new OfferAndVoucherSource ();
+           List<OfferAndVoucherSource> OFList = new List<OfferAndVoucherSource> ();
             try
             {
                 Connection ();
-                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetIsPending" , conn );
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetVoucherSource" , conn );
                 conn.Open ();
                 SqlDataReader reader = cmd.ExecuteReader ();
 
                 while ( reader.Read () )
                 {
+                    OfferAndVoucherSource OF = new OfferAndVoucherSource ();
                     OF.code = reader [ "code" ].ToString ();
                     OF.type = reader [ "type" ].ToString ();
                     OF.limit = Convert.ToInt32 ( reader [ "limit" ] );
                     OF.amount = Convert.ToInt32 ( reader [ "amount" ] );
                     OF.imageSource = reader [ "imageSource" ].ToString ();
                     OF.response = "ok";
+                    OFList.Add (OF);
                 }
 
                 conn.Close ();
             }
             catch ( Exception ex )
             {
+                OfferAndVoucherSource OF = new OfferAndVoucherSource ();
                 OF.response = ex.Message;
+                OFList.Add ( OF );
             }
-            return OF;
+            return OFList;
         }
         [AcceptVerbs ( "GET" , "POST" )]
         public Response SetFreeMinToStudent ( Student s )
