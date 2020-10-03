@@ -13,5 +13,6 @@ namespace SHikkhanobishAPI.Models
         public int amount { get; set; }
         public string imageSource { get; set; }
         public string  response { get; set; }
+        public int voucherID { get; set; }
     }
 }

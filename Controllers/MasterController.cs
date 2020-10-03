@@ -865,16 +865,13 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("Shikkhanobish.GetVoucherInfo", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Code", vs.Code);
+                cmd.Parameters.AddWithValue( "@voucherID" , vs.voucherID );
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
                     VS.StudentID = Convert.ToInt32(reader["StudentID"]);
-                    VS.Type = reader["Type"].ToString();
-                    VS.Amount = Convert.ToInt32(reader["Amount"]);
-                    VS.IsPremium = Convert.ToInt32(reader["IsPremium"]);
                     VS.Response = "OK";
                 }
 
@@ -885,6 +882,39 @@ namespace SHikkhanobishAPI.Controllers
                 VS.Response = ex.Message;
             }
             return VS;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response SetVoucherInfo ( VoucherAndOffer vs )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.SetVoucherInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@voucherID" , vs.voucherID );
+                cmd.Parameters.AddWithValue ( "@StudentID " , vs.StudentID );
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Procedure Exicuted";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -1701,8 +1731,8 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-        [AcceptVerbs ( "GET")]
-        public IEnumerable<OfferAndVoucherSource> GetVoucherSource ( OfferAndVoucherSource of )
+        [AcceptVerbs ( "GET" , "POST" )]
+        public List<OfferAndVoucherSource> GetVoucherSource ( OfferAndVoucherSource of )
         {
            List<OfferAndVoucherSource> OFList = new List<OfferAndVoucherSource> ();
             try
@@ -1720,6 +1750,7 @@ namespace SHikkhanobishAPI.Controllers
                     OF.limit = Convert.ToInt32 ( reader [ "limit" ] );
                     OF.amount = Convert.ToInt32 ( reader [ "amount" ] );
                     OF.imageSource = reader [ "imageSource" ].ToString ();
+                    OF.voucherID = Convert.ToInt32 ( reader [ "voucherID" ] );
                     OF.response = "ok";
                     OFList.Add (OF);
                 }
@@ -1988,7 +2019,6 @@ namespace SHikkhanobishAPI.Controllers
             }
             return IPList;
         }
-
         [AcceptVerbs ( "GET" , "POST" )]
         public ApiKey GetKeys ()
         {
@@ -2018,6 +2048,40 @@ namespace SHikkhanobishAPI.Controllers
                 keys.Response = ex.Message;
             }
             return keys;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response AddMinOrAddFundStudent ( AddMinOrAddFundStudent AddFundOrMin )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.AddMinOrAddFundStudent" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@StudentID" , AddFundOrMin.StudentID );
+                cmd.Parameters.AddWithValue ( "@Counter" , AddFundOrMin.Counter );
+                cmd.Parameters.AddWithValue ( "@Amount" , AddFundOrMin.Amount );
+
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+                if ( i > 0 )
+                {
+                    response.Massage = "Exicuted";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
         }
 
     }
