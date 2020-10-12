@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web.Http;
+using OpenTokSDK;
 
 namespace SHikkhanobishAPI.Controllers
 {
     public class MasterController : ApiController
     {
         private SqlConnection conn;
-
         public void Connection()
         {
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
@@ -41,7 +41,7 @@ namespace SHikkhanobishAPI.Controllers
 
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
-                if (i == 1)
+                if (i != 0)
                 {
                     response.Massage = "Registretion Succesfull!";
                     response.Status = 0;
@@ -287,6 +287,7 @@ namespace SHikkhanobishAPI.Controllers
                     tuitionHistory.Time = reader["Time"].ToString();
                     tuitionHistory.Date = reader["Date"].ToString();
                     tuitionHistory.Ratting = Convert.ToInt32(reader["Ratting"]);
+                    tuitionHistory.Student_Name = reader [ "Student_Name" ].ToString ();
                     tuitionHistoryList.Add(tuitionHistory);
                 }
                 conn.Close();
@@ -856,66 +857,8 @@ namespace SHikkhanobishAPI.Controllers
             return PS;
         }
  
-        [AcceptVerbs("GET", "POST")]
-        public VoucherAndOffer GetVoucherInfo(VoucherAndOffer vs)
-        {
-            VoucherAndOffer VS = new VoucherAndOffer();
-            try
-            {
-                Connection();
-                SqlCommand cmd = new SqlCommand("Shikkhanobish.GetVoucherInfo", conn);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue( "@voucherID" , vs.voucherID );
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    VS.StudentID = Convert.ToInt32(reader["StudentID"]);
-                    VS.Response = "OK";
-                }
-
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                VS.Response = ex.Message;
-            }
-            return VS;
-        }
-        [AcceptVerbs ( "GET" , "POST" )]
-        public Response SetVoucherInfo ( VoucherAndOffer vs )
-        {
-            Response response = new Response ();
-            try
-            {
-                Connection ();
-                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.SetVoucherInfo" , conn );
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue ( "@voucherID" , vs.voucherID );
-                cmd.Parameters.AddWithValue ( "@StudentID " , vs.StudentID );
-                conn.Open ();
-                int i = cmd.ExecuteNonQuery ();
-
-                if ( i <= 0 )
-                {
-                    response.Massage = "There is a problem";
-                    response.Status = 1;
-                }
-                else
-                {
-                    response.Massage = "Procedure Exicuted";
-                    response.Status = 0;
-                }
-                conn.Close ();
-            }
-            catch ( Exception ex )
-            {
-                response.Massage = ex.Message;
-                response.Status = 1;
-            }
-            return response;
-        }
+        
+        
 
         [AcceptVerbs("GET", "POST")]
         public Response RegisterParent(Parents parents)
@@ -1731,40 +1674,7 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-        [AcceptVerbs ( "GET" , "POST" )]
-        public List<OfferAndVoucherSource> GetVoucherSource ( OfferAndVoucherSource of )
-        {
-           List<OfferAndVoucherSource> OFList = new List<OfferAndVoucherSource> ();
-            try
-            {
-                Connection ();
-                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetVoucherSource" , conn );
-                conn.Open ();
-                SqlDataReader reader = cmd.ExecuteReader ();
-
-                while ( reader.Read () )
-                {
-                    OfferAndVoucherSource OF = new OfferAndVoucherSource ();
-                    OF.code = reader [ "code" ].ToString ();
-                    OF.type = reader [ "type" ].ToString ();
-                    OF.limit = Convert.ToInt32 ( reader [ "limit" ] );
-                    OF.amount = Convert.ToInt32 ( reader [ "amount" ] );
-                    OF.imageSource = reader [ "imageSource" ].ToString ();
-                    OF.voucherID = Convert.ToInt32 ( reader [ "voucherID" ] );
-                    OF.response = "ok";
-                    OFList.Add (OF);
-                }
-
-                conn.Close ();
-            }
-            catch ( Exception ex )
-            {
-                OfferAndVoucherSource OF = new OfferAndVoucherSource ();
-                OF.response = ex.Message;
-                OFList.Add ( OF );
-            }
-            return OFList;
-        }
+        
         [AcceptVerbs ( "GET" , "POST" )]
         public Response SetFreeMinToStudent ( Student s )
         {
@@ -1961,6 +1871,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue ( "@StudentCostMin" , p.StudentCostMin );
                 cmd.Parameters.AddWithValue ( "@TeacherEarnMin" , p.TeacherEarnMin );
                 cmd.Parameters.AddWithValue ( "@TeacherID" , p.TeacherID );
+                cmd.Parameters.AddWithValue ( "@FreeMinMinus" , p.FreeMinMinus );
 
                 conn.Open ();
                 int i = cmd.ExecuteNonQuery ();
@@ -2026,7 +1937,7 @@ namespace SHikkhanobishAPI.Controllers
             try
             {
                 Connection ();
-                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetParentsInfo " , conn );
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetKeys" , conn );
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 conn.Open ();
                 SqlDataReader reader = cmd.ExecuteReader ();
@@ -2050,6 +1961,104 @@ namespace SHikkhanobishAPI.Controllers
             return keys;
         }
         [AcceptVerbs ( "GET" , "POST" )]
+        public Response SetVoucherInfo ( VoucherAndOffer vs )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.SetVoucherInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@voucherID" , vs.voucherID );
+                cmd.Parameters.AddWithValue ( "@StudentID " , vs.StudentID );
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+
+                if ( i <= 0 )
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                else
+                {
+                    response.Massage = "Procedure Exicuted";
+                    response.Status = 0;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public List<VoucherAndOffer> GetVoucherInfo ( VoucherAndOffer vs )
+        {
+            List<VoucherAndOffer> VSList = new List<VoucherAndOffer> ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetVoucherInfo" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@StudentID" , vs.StudentID );
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+                while ( reader.Read () )
+                {
+                    VoucherAndOffer VS = new VoucherAndOffer ();
+                    VS.voucherID = Convert.ToInt32 ( reader [ "voucherID" ] );
+                    VS.Response = "OK";
+                    VSList.Add ( VS );
+                }
+
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                VoucherAndOffer VS = new VoucherAndOffer ();
+                VS.Response = ex.Message;
+                VSList.Add ( VS );
+            }
+            return VSList;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
+        public List<OfferAndVoucherSource> GetVoucherSource ( OfferAndVoucherSource of )
+        {
+            List<OfferAndVoucherSource> OFList = new List<OfferAndVoucherSource> ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.GetVoucherSource" , conn );
+                conn.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+
+                while ( reader.Read () )
+                {
+                    OfferAndVoucherSource OF = new OfferAndVoucherSource ();
+                    OF.code = reader [ "code" ].ToString ();
+                    OF.type = reader [ "type" ].ToString ();
+                    OF.limit = Convert.ToInt32 ( reader [ "limit" ] );
+                    OF.amount = Convert.ToInt32 ( reader [ "amount" ] );
+                    OF.imageSource = reader [ "imageSource" ].ToString ();
+                    OF.voucherID = Convert.ToInt32 ( reader [ "voucherID" ] );
+                    OF.response = "ok";
+                    OFList.Add ( OF );
+                }
+
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                OfferAndVoucherSource OF = new OfferAndVoucherSource ();
+                OF.response = ex.Message;
+                OFList.Add ( OF );
+            }
+            return OFList;
+        }
+        [AcceptVerbs ( "GET" , "POST" )]
         public Response AddMinOrAddFundStudent ( AddMinOrAddFundStudent AddFundOrMin )
         {
             Response response = new Response ();
@@ -2061,6 +2070,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue ( "@StudentID" , AddFundOrMin.StudentID );
                 cmd.Parameters.AddWithValue ( "@Counter" , AddFundOrMin.Counter );
                 cmd.Parameters.AddWithValue ( "@Amount" , AddFundOrMin.Amount );
+                cmd.Parameters.AddWithValue ( "@TeacherID" , AddFundOrMin.Amount );
 
                 conn.Open ();
                 int i = cmd.ExecuteNonQuery ();
@@ -2083,6 +2093,106 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
+
+        [AcceptVerbs ( "GET" , "POST" )]
+        public Response AddAmountOnAcceptedVoucher ( ActOnVoucherCode act )
+        {
+            Response response = new Response ();
+            try
+            {
+                Connection ();
+                SqlCommand cmd = new SqlCommand ( "Shikkhanobish.AddAmountOnAcceptedVoucher" , conn );
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue ( "@studentID" , act.studentID );
+                cmd.Parameters.AddWithValue ( "@amount" , act.amount );
+
+                conn.Open ();
+                int i = cmd.ExecuteNonQuery ();
+                if ( i > 0 )
+                {
+                    response.Massage = "Exicuted";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                conn.Close ();
+            }
+            catch ( Exception ex )
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+
+        [AcceptVerbs("GET", "POST")]
+        public List<AllFoundingTeacherCode> GetCodesOfFounderTeacher()
+        {
+            List<AllFoundingTeacherCode> keysList = new List<AllFoundingTeacherCode>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.GetFounderTeacherCode", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    AllFoundingTeacherCode keys = new AllFoundingTeacherCode();
+                    keys.Code = Convert.ToInt32(reader["Code"]);
+                    keys.Response = "ok";
+                    keysList.Add(keys);
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                AllFoundingTeacherCode keys = new AllFoundingTeacherCode();
+                keys.Response = ex.Message;
+                keysList.Add(keys);
+            }
+            return keysList;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public Response DeleteFouningTeacherCode(AllFoundingTeacherCode ft)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.DeleteFounderTeacherCode", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Code", ft.Code);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i > 0)
+                {
+                    response.Massage = "Exicuted";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
 
     }
 }
