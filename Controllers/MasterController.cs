@@ -2192,6 +2192,37 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
+        public Response SetFoundingTeacherToOne(Teacher t)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetFoundingTeacherToOne", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TeacherID", t.TeacherID);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i > 0)
+                {
+                    response.Massage = "Exicuted";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "There is a problem";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
 
 
     }

@@ -166,6 +166,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\MedhabiController.cs" />
+    <Compile Include="Controllers\SiliconController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,6 +192,15 @@
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ResetInfo.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Sillicon\Contructor.cs" />
+    <Compile Include="Models\Sillicon\IssueVoucher.cs" />
+    <Compile Include="Models\Sillicon\Item.cs" />
+    <Compile Include="Models\Sillicon\ReceiptVoucher.cs" />
+    <Compile Include="Models\Sillicon\ReturnVoucher.cs" />
+    <Compile Include="Models\Sillicon\StockData.cs" />
+    <Compile Include="Models\Sillicon\Supplier.cs" />
+    <Compile Include="Models\Sillicon\Warehouse.cs" />
+    <Compile Include="Models\Sillicon\WorkOrder.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentID.cs" />
     <Compile Include="Models\Subject.cs" />
@@ -365,6 +375,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Silicon\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
