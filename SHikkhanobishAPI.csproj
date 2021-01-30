@@ -199,6 +199,7 @@
     <Compile Include="Models\Sillicon\ReturnVoucher.cs" />
     <Compile Include="Models\Sillicon\StockData.cs" />
     <Compile Include="Models\Sillicon\Supplier.cs" />
+    <Compile Include="Models\Sillicon\User.cs" />
     <Compile Include="Models\Sillicon\Warehouse.cs" />
     <Compile Include="Models\Sillicon\WorkOrder.cs" />
     <Compile Include="Models\Student.cs" />

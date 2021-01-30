@@ -584,9 +584,10 @@ namespace SHikkhanobishAPI.Controllers
                     ob.cause = reader["cause"].ToString();
                     ob.isPrinted = Convert.ToInt32(reader["isPrinted"]);
                     ob.wareHouseID = Convert.ToInt32(reader["wareHouseID"]);
-                    ob.ItemNo = Convert.ToInt32(reader["ItemNo"]);
+                    ob.ItemNo = reader["ItemNo"].ToString();
                     ob.Description = reader["Description"].ToString();
                     ob.quentity = Convert.ToInt32(reader["quentity"]);
+                    ob.workOrderNo = reader["workOrderNo"].ToString();
                     ob.Response = "OK";
 
                     obList.Add(ob);
@@ -609,17 +610,19 @@ namespace SHikkhanobishAPI.Controllers
             try
             {
                 Connection();
-                SqlCommand cmd = new SqlCommand("Shikkhanobish.setRRVooucherPrinted", conn);
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.SetReturnVoucher", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@returnDate", ob.returnDate);
                 cmd.Parameters.AddWithValue("@retID", ob.retID);
                 cmd.Parameters.AddWithValue("@wareHouseID", ob.wareHouseID);
+                cmd.Parameters.AddWithValue("@ret_warehouse", ob.ret_warehouse);
                 cmd.Parameters.AddWithValue("@cause", ob.cause);
                 cmd.Parameters.AddWithValue("@ret_type", ob.ret_type);
                 cmd.Parameters.AddWithValue("@condition", ob.condition);
                 cmd.Parameters.AddWithValue("@contructor", ob.contructor);
                 cmd.Parameters.AddWithValue("@ItemNo", ob.ItemNo);
                 cmd.Parameters.AddWithValue("@Description", ob.Description);
+                cmd.Parameters.AddWithValue("@workOrderNo", ob.workOrderNo);
                 cmd.Parameters.AddWithValue("@quentity", ob.quentity);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
@@ -642,8 +645,7 @@ namespace SHikkhanobishAPI.Controllers
             return response;
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public Response RemoveReturnVoucher
-            (ReturnVoucher ob)
+        public Response RemoveReturnVoucher(ReturnVoucher ob)
         {
             Response response = new Response();
             try
@@ -704,6 +706,37 @@ namespace SHikkhanobishAPI.Controllers
                 response.Status = 0;
             }
             return response;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public User GetUserName()
+        {
+            User user = new User();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkha1.getUserName", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    user.userID = Convert.ToInt32(reader["userID"]);
+                    user.userName = reader["userName"].ToString();
+                    user.password = reader["password"].ToString(); 
+                    user.userType = reader["userType"].ToString();
+                    user.response ="ok";
+                }
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                user.response = ex.Message;
+            }
+
+            return user;
         }
     }
 }
