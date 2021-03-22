@@ -786,6 +786,7 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("Shikkhanobish.Sillicon_SetSupplier", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@supplierID", ob.supplierID);
                 cmd.Parameters.AddWithValue("@supplierName", ob.supplierName);
                 cmd.Parameters.AddWithValue("@supplierAddress", ob.supplierAddress);
                 cmd.Parameters.AddWithValue("@supplierPhone", ob.supplierPhone);
@@ -819,6 +820,7 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("Shikkhanobish.Sillicon_SetWareHouse", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@wareHouseID", ob.wareHouseID);
                 cmd.Parameters.AddWithValue("@wareHouseName", ob.wareHouseName);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
@@ -850,10 +852,46 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("Shikkhanobish.Sillicon_SetWorkOrder", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@workOrderID", ob.workOrderID);
                 cmd.Parameters.AddWithValue("@workOrderNo", ob.workOrderNo);
                 cmd.Parameters.AddWithValue("@workOrderDate", ob.workOrderDate);
                 cmd.Parameters.AddWithValue("@contructorID", ob.contructorID);
                 cmd.Parameters.AddWithValue("@contructorName", ob.contructorName);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response SetContructor(Contructor ob)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("Shikkhanobish.Sillicon_SetContructor", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@contructorID", ob.contructorID);
+                cmd.Parameters.AddWithValue("@contructorName", ob.contructorName);
+                cmd.Parameters.AddWithValue("@contructorAddress", ob.contructorAddress);
+                cmd.Parameters.AddWithValue("@contructorPhone", ob.contructorPhone);
+
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
