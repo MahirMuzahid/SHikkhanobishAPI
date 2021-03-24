@@ -260,6 +260,7 @@
     <Compile Include="Models\AllFoundingTeacherCode.cs" />
     <Compile Include="Models\AllSubAndTeacherReagister.cs" />
     <Compile Include="Models\ApiKey.cs" />
+    <Compile Include="Models\ApiMaker\ApiMaker.cs" />
     <Compile Include="Models\InfoForUpdate.cs" />
     <Compile Include="Models\IsPending.cs" />
     <Compile Include="Models\Medhabi\MatchHistory.cs" />
