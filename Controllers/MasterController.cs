@@ -43,12 +43,12 @@ namespace SHikkhanobishAPI.Controllers
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
                 {
-                    response.Massage = "Registretion Succesfull!";
+                    response.Massage = "Succesfull!";
                     response.Status = 0;
                 }
                 else
                 {
-                    response.Massage = "Registretion Unsuccesfull!";
+                    response.Massage = "Unsuccesfull!";
                     response.Status = 1;
                 }
             }

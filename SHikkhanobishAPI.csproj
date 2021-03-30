@@ -249,6 +249,7 @@
     <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\MatchMakingAIController.cs" />
     <Compile Include="Controllers\MedhabiController.cs" />
+    <Compile Include="Controllers\ShikkhanobishLoginController.cs" />
     <Compile Include="Controllers\SiliconController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -276,6 +277,7 @@
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ResetInfo.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Shikkhanobish\ShikkhanobishUser.cs" />
     <Compile Include="Models\Sillicon\Contructor.cs" />
     <Compile Include="Models\Sillicon\IssueVoucher.cs" />
     <Compile Include="Models\Sillicon\Item.cs" />
@@ -464,6 +466,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\ApiMaker\" />
     <Folder Include="Views\MatchMakingAI\" />
+    <Folder Include="Views\ShikkhanobishLogin\" />
     <Folder Include="Views\Silicon\" />
   </ItemGroup>
   <ItemGroup>

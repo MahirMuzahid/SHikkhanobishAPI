@@ -6,11 +6,12 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace SHikkhanobishAPI.Controllers
 {
-    public class ApiMakerController : Controller
+    public class ApiMakerController : ApiController
     {
         private SqlConnection conn;
         public void Connection()
@@ -19,7 +20,7 @@ namespace SHikkhanobishAPI.Controllers
             conn = new SqlConnection(conString);
         }
 
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Response setAPiMaker(ApiMaker ob)
         {
             Response response = new Response();
@@ -50,6 +51,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@pr18n", ob.pr18n);
                 cmd.Parameters.AddWithValue("@pr19n", ob.pr19n);
                 cmd.Parameters.AddWithValue("@pr20n", ob.pr20n);
+                cmd.Parameters.AddWithValue("@ID", ob.ID);
 
 
                 conn.Open();
@@ -72,7 +74,7 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Response setAPiMakerInSingleColumn(ApiMaker ob)
         {
             Response response = new Response();
@@ -127,7 +129,7 @@ namespace SHikkhanobishAPI.Controllers
             return response;
         }
 
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public List<ApiMaker> getAPiMaker()
         {
             List<ApiMaker> obList = new List<ApiMaker>();
