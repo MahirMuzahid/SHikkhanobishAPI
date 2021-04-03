@@ -246,6 +246,8 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ApiMakerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KhelaghorGameController.cs" />
+    <Compile Include="Controllers\KhelaghorRegisterController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\MatchMakingAIController.cs" />
     <Compile Include="Controllers\MedhabiController.cs" />
@@ -277,7 +279,13 @@
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ResetInfo.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Shikkhanobish\Checkers.cs" />
+    <Compile Include="Models\Shikkhanobish\Futoshiki.cs" />
+    <Compile Include="Models\Shikkhanobish\KhelaGhorUser.cs" />
     <Compile Include="Models\Shikkhanobish\ShikkhanobishUser.cs" />
+    <Compile Include="Models\Shikkhanobish\Slitherlink.cs" />
+    <Compile Include="Models\Shikkhanobish\Suduko.cs" />
+    <Compile Include="Models\Shikkhanobish\UltimateTicTacToe.cs" />
     <Compile Include="Models\Sillicon\Contructor.cs" />
     <Compile Include="Models\Sillicon\IssueVoucher.cs" />
     <Compile Include="Models\Sillicon\Item.cs" />
@@ -465,6 +473,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\ApiMaker\" />
+    <Folder Include="Views\KhelaghorGame\" />
+    <Folder Include="Views\KhelaghorRegister\" />
     <Folder Include="Views\MatchMakingAI\" />
     <Folder Include="Views\ShikkhanobishLogin\" />
     <Folder Include="Views\Silicon\" />

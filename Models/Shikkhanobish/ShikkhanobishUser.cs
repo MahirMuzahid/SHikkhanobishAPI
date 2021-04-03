@@ -8,7 +8,6 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
     public class ShikkhanobishUser
     {
         public int UserID { get; set; }
-        public int KhID { get; set; }
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
