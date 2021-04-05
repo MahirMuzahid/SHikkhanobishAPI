@@ -282,6 +282,8 @@
     <Compile Include="Models\Shikkhanobish\Checkers.cs" />
     <Compile Include="Models\Shikkhanobish\Futoshiki.cs" />
     <Compile Include="Models\Shikkhanobish\KhelaGhorUser.cs" />
+    <Compile Include="Models\Shikkhanobish\RegUserInAllGame.cs" />
+    <Compile Include="Models\Shikkhanobish\ShikkhanobishCoin.cs" />
     <Compile Include="Models\Shikkhanobish\ShikkhanobishUser.cs" />
     <Compile Include="Models\Shikkhanobish\Slitherlink.cs" />
     <Compile Include="Models\Shikkhanobish\Suduko.cs" />

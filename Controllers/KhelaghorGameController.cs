@@ -6,11 +6,12 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace SHikkhanobishAPI.Controllers
 {
-    public class KhelaghorGameController : Controller
+    public class KhelaghorGameController : ApiController
     {
         private SqlConnection conn;
         public void Connection()
