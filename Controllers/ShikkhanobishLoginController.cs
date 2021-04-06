@@ -155,6 +155,32 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public ShikkhanobishUser LoginInShikkhanboish(ShikkhanobishUser obj)
+        {
+            ShikkhanobishUser objR = new ShikkhanobishUser();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("LoginInShikkhanboish", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@PhoneNumber", obj.PhoneNumber);
+                cmd.Parameters.AddWithValue("@Password", obj.Password);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.UserID = Convert.ToInt32(reader["UserID"]);
+                    objR.Name = reader["Name"].ToString();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
         #endregion
     }
 }
