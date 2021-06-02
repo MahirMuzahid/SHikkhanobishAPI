@@ -726,7 +726,8 @@ namespace SHikkhanobishAPI.Controllers
                     objAdd.title = reader["title"].ToString();
                     objAdd.name = reader["name"].ToString();
                     objAdd.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
-                    objAdd.indexNo = Convert.ToInt32(reader["indexNo "]);
+                    objAdd.avgRatting = Convert.ToDouble(reader["avgRatting"]);
+                    objAdd.indexNo = Convert.ToInt32(reader["indexNo"]);
                     objRList.Add(objAdd);
                 }
                 conn.Close();
@@ -758,6 +759,7 @@ namespace SHikkhanobishAPI.Controllers
                     objR.title = reader["title"].ToString();
                     objR.name = reader["name"].ToString();
                     objR.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
+                    objR.avgRatting = Convert.ToInt32(reader["avgRatting"]);
                     objR.indexNo = Convert.ToInt32(reader["indexNo "]);
 
                 }
