@@ -257,15 +257,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ActiveState.cs" />
-    <Compile Include="Models\ActOnVoucherCode.cs" />
-    <Compile Include="Models\AddMinOrAddFundStudent.cs" />
-    <Compile Include="Models\AllFoundingTeacherCode.cs" />
-    <Compile Include="Models\AllSubAndTeacherReagister.cs" />
-    <Compile Include="Models\ApiKey.cs" />
     <Compile Include="Models\ApiMaker\ApiMaker.cs" />
-    <Compile Include="Models\InfoForUpdate.cs" />
-    <Compile Include="Models\IsPending.cs" />
     <Compile Include="Models\Medhabi\MatchHistory.cs" />
     <Compile Include="Models\Medhabi\MatchMaking.cs" />
     <Compile Include="Models\Medhabi\medhabiStudent.cs" />
@@ -273,21 +265,20 @@
     <Compile Include="Models\Medhabi\PlayerHistory.cs" />
     <Compile Include="Models\Medhabi\QuestionMaker.cs" />
     <Compile Include="Models\Medhabi\Questions.cs" />
-    <Compile Include="Models\OfferAndVoucherSource.cs" />
-    <Compile Include="Models\Parents.cs" />
-    <Compile Include="Models\PremiumStudents.cs" />
-    <Compile Include="Models\Report.cs" />
-    <Compile Include="Models\ResetInfo.cs" />
     <Compile Include="Models\Response.cs" />
-    <Compile Include="Models\Shikkhanobish\Checkers.cs" />
-    <Compile Include="Models\Shikkhanobish\Futoshiki.cs" />
-    <Compile Include="Models\Shikkhanobish\KhelaGhorUser.cs" />
-    <Compile Include="Models\Shikkhanobish\RegUserInAllGame.cs" />
-    <Compile Include="Models\Shikkhanobish\ShikkhanobishCoin.cs" />
-    <Compile Include="Models\Shikkhanobish\ShikkhanobishUser.cs" />
-    <Compile Include="Models\Shikkhanobish\Slitherlink.cs" />
-    <Compile Include="Models\Shikkhanobish\Suduko.cs" />
-    <Compile Include="Models\Shikkhanobish\UltimateTicTacToe.cs" />
+    <Compile Include="Models\Shikkhanobish\Chapter.cs" />
+    <Compile Include="Models\Shikkhanobish\ClassInfo.cs" />
+    <Compile Include="Models\Shikkhanobish\Course.cs" />
+    <Compile Include="Models\Shikkhanobish\Degree.cs" />
+    <Compile Include="Models\Shikkhanobish\Institution.cs" />
+    <Compile Include="Models\Shikkhanobish\SelectPattern.cs" />
+    <Compile Include="Models\Shikkhanobish\Student.cs" />
+    <Compile Include="Models\Shikkhanobish\StudentPaymentHistory.cs" />
+    <Compile Include="Models\Shikkhanobish\StudentTuitionHistory.cs" />
+    <Compile Include="Models\Shikkhanobish\Subject.cs" />
+    <Compile Include="Models\Shikkhanobish\UniversityName.cs" />
+    <Compile Include="Models\Shikkhanobish\Voucher.cs" />
+    <Compile Include="Models\Shikkhanobish\VoucherHistory.cs" />
     <Compile Include="Models\Sillicon\Contructor.cs" />
     <Compile Include="Models\Sillicon\IssueVoucher.cs" />
     <Compile Include="Models\Sillicon\Item.cs" />
@@ -298,19 +289,6 @@
     <Compile Include="Models\Sillicon\User.cs" />
     <Compile Include="Models\Sillicon\Warehouse.cs" />
     <Compile Include="Models\Sillicon\WorkOrder.cs" />
-    <Compile Include="Models\Student.cs" />
-    <Compile Include="Models\StudentID.cs" />
-    <Compile Include="Models\Subject.cs" />
-    <Compile Include="Models\Teacher.cs" />
-    <Compile Include="Models\TeacherID.cs" />
-    <Compile Include="Models\TeacherInfo.cs" />
-    <Compile Include="Models\TeacherVideoCallApi.cs" />
-    <Compile Include="Models\TransferPoint.cs" />
-    <Compile Include="Models\TuitionHistoryStudent.cs" />
-    <Compile Include="Models\TuitionHistoryTeacher.cs" />
-    <Compile Include="Models\VoucherAndOffer.cs" />
-    <Compile Include="Models\WalletHistoryStudent.cs" />
-    <Compile Include="Models\WalletHistoryTeacher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

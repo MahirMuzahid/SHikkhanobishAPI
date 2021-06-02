@@ -5,10 +5,11 @@ using System.Web;
 
 namespace SHikkhanobishAPI.Models.Shikkhanobish
 {
-    public class ShikkhanobishCoin
+    public class VoucherHistory
     {
-        public int UserID { get; set; }
-        public int Coin { get; set; }
+        public int studentID { get; set; }
+        public int voucherHistoryID { get; set; }
+        public int paymentID { get; set; }
         public string Response { get; set; }
     }
 }
