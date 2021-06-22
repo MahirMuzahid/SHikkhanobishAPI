@@ -36,7 +36,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     Student objAdd = new Student();
                     objAdd.studentID = Convert.ToInt32(reader["studentID"]);
-                    objAdd.phonenumber = Convert.ToInt32(reader["phonenumber"]);
+                    objAdd.phonenumber = reader["phonenumber"].ToString();
                     objAdd.password = reader["password"].ToString();
                     objAdd.totalSpent = Convert.ToInt32(reader["totalSpent"]);
                     objAdd.totalTuitionTime = Convert.ToInt32(reader["totalTuitionTime"]);
@@ -57,6 +57,41 @@ namespace SHikkhanobishAPI.Controllers
             }
             return objRList;
         }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Student LoginStudent(Student obj)
+        {
+            Student objR = new Student();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("LoginStudent", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@phonenumber", obj.phonenumber);
+                cmd.Parameters.AddWithValue("@password", obj.password);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.phonenumber = reader["phonenumber"].ToString();
+                    objR.password = reader["password"].ToString();
+                    objR.totalSpent = Convert.ToInt32(reader["totalSpent"]);
+                    objR.totalTuitionTime = Convert.ToInt32(reader["totalTuitionTime"]);
+                    objR.coin = Convert.ToInt32(reader["coin"]);
+                    objR.freemin = Convert.ToInt32(reader["freemin"]);
+                    objR.city = reader["city"].ToString();
+                    objR.name = reader["name"].ToString();
+                    objR.institutionName = reader["institutionName"].ToString();
+
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Student getStudentWithID(Student obj)
@@ -73,7 +108,7 @@ namespace SHikkhanobishAPI.Controllers
                 while (reader.Read())
                 {
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
-                    objR.phonenumber = Convert.ToInt32(reader["phonenumber"]);
+                    objR.phonenumber = reader["phonenumber"].ToString();
                     objR.password = reader["password"].ToString();
                     objR.totalSpent = Convert.ToInt32(reader["totalSpent"]);
                     objR.totalTuitionTime = Convert.ToInt32(reader["totalTuitionTime"]);
@@ -142,6 +177,15 @@ namespace SHikkhanobishAPI.Controllers
                 SqlCommand cmd = new SqlCommand("updateStudent", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                cmd.Parameters.AddWithValue("@phonenumber", obj.phonenumber);
+                cmd.Parameters.AddWithValue("@password", obj.password);
+                cmd.Parameters.AddWithValue("@totalSpent", obj.totalSpent);
+                cmd.Parameters.AddWithValue("@totalTuitionTime", obj.totalTuitionTime);
+                cmd.Parameters.AddWithValue("@coin", obj.coin);
+                cmd.Parameters.AddWithValue("@freemin", obj.freemin);
+                cmd.Parameters.AddWithValue("@city", obj.city);
+                cmd.Parameters.AddWithValue("@name", obj.name);
+                cmd.Parameters.AddWithValue("@institutionName", obj.institutionName);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -184,9 +228,10 @@ namespace SHikkhanobishAPI.Controllers
                     objAdd.chapterID = Convert.ToInt32(reader["chapterID"]);
                     objAdd.classID = Convert.ToInt32(reader["classID"]);
                     objAdd.title = reader["title"].ToString();
+                    objAdd.avgRatting = Convert.ToDouble(reader["avgRatting"]);
                     objAdd.name = reader["name"].ToString();
                     objAdd.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
-                    objAdd.indexNo = Convert.ToInt32(reader["indexNo "]);
+                    objAdd.indexNo = Convert.ToInt32(reader["indexNo"]);
                     objRList.Add(objAdd);
                 }
                 conn.Close();
@@ -321,8 +366,9 @@ namespace SHikkhanobishAPI.Controllers
                     objAdd.classID = Convert.ToInt32(reader["classID"]);
                     objAdd.title = reader["title"].ToString();
                     objAdd.name = reader["name"].ToString();
+                    objAdd.avgRatting = Convert.ToDouble(reader["avgRatting"]);
                     objAdd.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
-                    objAdd.indexNo = Convert.ToInt32(reader["indexNo "]);
+                    objAdd.indexNo = Convert.ToInt32(reader["indexNo"]);
                     objRList.Add(objAdd);
                 }
                 conn.Close();
@@ -456,8 +502,9 @@ namespace SHikkhanobishAPI.Controllers
                     objAdd.title = reader["title"].ToString();
                     objAdd.name = reader["name"].ToString();
                     objAdd.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
+                    objAdd.avgRatting = Convert.ToDouble(reader["avgRatting"]);
                     objAdd.uniNameID = Convert.ToInt32(reader["uniNameID"]);
-                    objAdd.indexNo = Convert.ToInt32(reader["indexNo "]);
+                    objAdd.indexNo = Convert.ToInt32(reader["indexNo"]);
                     objRList.Add(objAdd);
                 }
                 conn.Close();
@@ -592,8 +639,9 @@ namespace SHikkhanobishAPI.Controllers
                     objAdd.degreeID = Convert.ToInt32(reader["degreeID"]);
                     objAdd.title = reader["title"].ToString();
                     objAdd.name = reader["name"].ToString();
+                    objAdd.avgRatting = Convert.ToDouble(reader["avgRatting"]);
                     objAdd.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
-                    objAdd.indexNo = Convert.ToInt32(reader["indexNo "]);
+                    objAdd.indexNo = Convert.ToInt32(reader["indexNo"]);
                     objRList.Add(objAdd);
                 }
                 conn.Close();
@@ -1029,6 +1077,7 @@ namespace SHikkhanobishAPI.Controllers
                     objR.amountCoin = Convert.ToInt32(reader["amountCoin"]);
                     objR.medium = Convert.ToInt32(reader["medium"]);
                     objR.isVoucherUsed = Convert.ToInt32(reader["isVoucherUsed"]);
+                    objR.name = reader["name"].ToString();
                     objR.voucherID = Convert.ToInt32(reader["voucherID"]);
 
                 }
@@ -1174,6 +1223,9 @@ namespace SHikkhanobishAPI.Controllers
                     objR.secondChoiceID = reader["secondChoiceID"].ToString();
                     objR.thirdChoiceID = reader["thirdChoiceID"].ToString();
                     objR.forthChoiceID = reader["forthChoiceID"].ToString();
+                    objR.studentName = reader["studentName"].ToString();
+                    objR.teacherName = reader["teacherName"].ToString();
+                    objR.date = reader["date"].ToString();
 
                 }
                 conn.Close();
@@ -1275,9 +1327,10 @@ namespace SHikkhanobishAPI.Controllers
                     objAdd.classID = Convert.ToInt32(reader["classID"]);
                     objAdd.subjectID = Convert.ToInt32(reader["subjectID"]);
                     objAdd.title = reader["title"].ToString();
+                    objAdd.avgRatting = Convert.ToDouble(reader["avgRatting"]);
                     objAdd.name = reader["name"].ToString();
                     objAdd.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
-                    objAdd.indexNo = Convert.ToInt32(reader["indexNo "]);
+                    objAdd.indexNo = Convert.ToInt32(reader["indexNo"]);
                     objRList.Add(objAdd);
                 }
                 conn.Close();
@@ -1409,8 +1462,9 @@ namespace SHikkhanobishAPI.Controllers
                     objAdd.uniNameID = Convert.ToInt32(reader["uniNameID"]);
                     objAdd.title = reader["title"].ToString();
                     objAdd.name = reader["name"].ToString();
+                    objAdd.avgRatting = Convert.ToDouble(reader["avgRatting"]);
                     objAdd.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
-                    objAdd.indexNo = Convert.ToInt32(reader["indexNo "]);
+                    objAdd.indexNo = Convert.ToInt32(reader["indexNo"]);
                     objRList.Add(objAdd);
                 }
                 conn.Close();
@@ -1442,7 +1496,7 @@ namespace SHikkhanobishAPI.Controllers
                     objR.title = reader["title"].ToString();
                     objR.name = reader["name"].ToString();
                     objR.tuitionRequest = Convert.ToInt32(reader["tuitionRequest"]);
-                    objR.indexNo = Convert.ToInt32(reader["indexNo "]);
+                    objR.indexNo = Convert.ToInt32(reader["indexNo"]);
 
                 }
                 conn.Close();
