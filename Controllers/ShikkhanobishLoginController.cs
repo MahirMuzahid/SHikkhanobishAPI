@@ -1,10 +1,12 @@
-﻿using SHikkhanobishAPI.Models;
+﻿using Flurl.Http;
+using SHikkhanobishAPI.Models;
 using SHikkhanobishAPI.Models.Shikkhanobish;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -20,6 +22,47 @@ namespace SHikkhanobishAPI.Controllers
             conn = new SqlConnection(conString);
         }
 
+        #region Send Msg
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task<SendSms> SendSmsAsync(SendSms obj)
+        {
+            importantKeyAndnfoTable allKey = new importantKeyAndnfoTable();
+            SendSms res = new SendSms();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getllimpKey", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    allKey.smsApiKey = reader["smsApiKey"].ToString();
+
+                }
+                conn.Close();
+
+
+                string apiKey = allKey.smsApiKey;
+                string uri = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey+"&to=" + obj.number+ "&from=8804445620753&sms=" + obj.msg;
+                res = await uri.GetJsonAsync<SendSms>();
+                if(res.code == "ok")
+                {
+                    res.respose = "ok";
+                }
+                else
+                {
+                    res.respose = allKey.smsApiKey;
+                }
+            }
+            catch
+            {                
+                res.code = "not ok";
+            }
+            return res;
+        }
+
+        #endregion
         #region Student
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public List<Student> getStudent()

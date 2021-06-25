@@ -48,6 +48,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Flurl, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Flurl.3.0.2\lib\net472\Flurl.dll</HintPath>
+    </Reference>
+    <Reference Include="Flurl.Http, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Flurl.Http.3.2.0\lib\net472\Flurl.Http.dll</HintPath>
+    </Reference>
     <Reference Include="JWT, Version=8.0.0.0, Culture=neutral, PublicKeyToken=6f98bca0f40f2ecf, processorArchitecture=MSIL">
       <HintPath>packages\JWT.8.1.0\lib\net46\JWT.dll</HintPath>
     </Reference>
@@ -128,7 +134,9 @@
     <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data" />
+    <Reference Include="System.Data">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
@@ -265,8 +273,10 @@
     <Compile Include="Models\Shikkhanobish\ClassInfo.cs" />
     <Compile Include="Models\Shikkhanobish\Course.cs" />
     <Compile Include="Models\Shikkhanobish\Degree.cs" />
+    <Compile Include="Models\Shikkhanobish\importantKeyAndnfoTable.cs" />
     <Compile Include="Models\Shikkhanobish\Institution.cs" />
     <Compile Include="Models\Shikkhanobish\SelectPattern.cs" />
+    <Compile Include="Models\Shikkhanobish\SendSms.cs" />
     <Compile Include="Models\Shikkhanobish\Student.cs" />
     <Compile Include="Models\Shikkhanobish\StudentPaymentHistory.cs" />
     <Compile Include="Models\Shikkhanobish\StudentTuitionHistory.cs" />
