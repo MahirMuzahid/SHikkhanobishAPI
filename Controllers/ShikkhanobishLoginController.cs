@@ -1100,9 +1100,9 @@ namespace SHikkhanobishAPI.Controllers
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public StudentPaymentHistory getStudentPaymentHistoryWithID(StudentPaymentHistory obj)
+        public List<StudentPaymentHistory> getStudentPaymentHistoryWithID(StudentPaymentHistory obj)
         {
-            StudentPaymentHistory objR = new StudentPaymentHistory();
+            List<StudentPaymentHistory> objRList = new List<StudentPaymentHistory>();
             try
             {
                 Connection();
@@ -1113,6 +1113,7 @@ namespace SHikkhanobishAPI.Controllers
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    StudentPaymentHistory objR = new StudentPaymentHistory();
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
                     objR.paymentID = Convert.ToInt32(reader["paymentID"]);
                     objR.date = reader["date"].ToString();
@@ -1123,15 +1124,18 @@ namespace SHikkhanobishAPI.Controllers
                     objR.isVoucherUsed = Convert.ToInt32(reader["isVoucherUsed"]);
                     objR.name = reader["name"].ToString();
                     objR.voucherID = Convert.ToInt32(reader["voucherID"]);
+                    objRList.Add(objR);
 
                 }
                 conn.Close();
             }
             catch (Exception ex)
             {
+                StudentPaymentHistory objR = new StudentPaymentHistory();
                 objR.Response = ex.Message;
+                objRList.Add(objR);
             }
-            return objR;
+            return objRList;
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
@@ -1244,9 +1248,9 @@ namespace SHikkhanobishAPI.Controllers
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public StudentTuitionHistory getStudentTuitionHistoryWithID(StudentTuitionHistory obj)
+        public List<StudentTuitionHistory> getStudentTuitionHistoryWithID(StudentTuitionHistory obj)
         {
-            StudentTuitionHistory objR = new StudentTuitionHistory();
+            List<StudentTuitionHistory> objRList = new List<StudentTuitionHistory>();
             try
             {
                 Connection();
@@ -1257,6 +1261,7 @@ namespace SHikkhanobishAPI.Controllers
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    StudentTuitionHistory objR = new StudentTuitionHistory();
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
                     objR.tuitionID = Convert.ToInt32(reader["tuitionID"]);
                     objR.time = reader["time"].ToString();
@@ -1270,15 +1275,17 @@ namespace SHikkhanobishAPI.Controllers
                     objR.studentName = reader["studentName"].ToString();
                     objR.teacherName = reader["teacherName"].ToString();
                     objR.date = reader["date"].ToString();
-
+                    objRList.Add(objR);
                 }
                 conn.Close();
             }
             catch (Exception ex)
             {
+                StudentTuitionHistory objR = new StudentTuitionHistory();
                 objR.Response = ex.Message;
+                objRList.Add(objR);
             }
-            return objR;
+            return objRList;
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]

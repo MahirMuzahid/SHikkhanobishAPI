@@ -21,5 +21,10 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
         public string studentName { get; set; }
         public string teacherName { get; set; }
         public string Response { get; set; }
+
+        public static implicit operator List<object>(StudentTuitionHistory v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
