@@ -165,6 +165,9 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@sub4", obj.sub4);
                 cmd.Parameters.AddWithValue("@sub5", obj.sub5);
                 cmd.Parameters.AddWithValue("@sub6", obj.sub6);
+                cmd.Parameters.AddWithValue("@sub7", obj.sub7);
+                cmd.Parameters.AddWithValue("@sub8", obj.sub8);
+                cmd.Parameters.AddWithValue("@sub9", obj.sub9);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
