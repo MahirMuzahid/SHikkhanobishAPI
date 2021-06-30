@@ -1267,7 +1267,7 @@ namespace SHikkhanobishAPI.Controllers
                     objR.time = reader["time"].ToString();
                     objR.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objR.cost = Convert.ToInt32(reader["cost"]);
-                    objR.ratting = Convert.ToInt32(reader["ratting"]);
+                    objR.ratting = Convert.ToDouble(reader["ratting"]);
                     objR.firstChoiceID = reader["firstChoiceID"].ToString();
                     objR.secondChoiceID = reader["secondChoiceID"].ToString();
                     objR.thirdChoiceID = reader["thirdChoiceID"].ToString();
@@ -1275,6 +1275,10 @@ namespace SHikkhanobishAPI.Controllers
                     objR.studentName = reader["studentName"].ToString();
                     objR.teacherName = reader["teacherName"].ToString();
                     objR.date = reader["date"].ToString();
+                    objR.firstChoiceName = reader["firstChoiceName"].ToString();
+                    objR.secondChoiceName = reader["secondChoiceName"].ToString();
+                    objR.thirdChoiceName = reader["thirdChoiceName"].ToString();
+                    objR.forthChoiceName = reader["forthChoiceName"].ToString();
                     objRList.Add(objR);
                 }
                 conn.Close();

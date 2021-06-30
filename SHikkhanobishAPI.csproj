@@ -255,6 +255,7 @@
     <Compile Include="Controllers\ApiMakerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShikkhanobishLoginController.cs" />
+    <Compile Include="Controllers\ShikkhanobishTeacherController.cs" />
     <Compile Include="Controllers\SiliconController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -272,6 +273,7 @@
     <Compile Include="Models\Shikkhanobish\Chapter.cs" />
     <Compile Include="Models\Shikkhanobish\ClassInfo.cs" />
     <Compile Include="Models\Shikkhanobish\Course.cs" />
+    <Compile Include="Models\Shikkhanobish\CousrList.cs" />
     <Compile Include="Models\Shikkhanobish\Degree.cs" />
     <Compile Include="Models\Shikkhanobish\importantKeyAndnfoTable.cs" />
     <Compile Include="Models\Shikkhanobish\Institution.cs" />
@@ -281,6 +283,8 @@
     <Compile Include="Models\Shikkhanobish\StudentPaymentHistory.cs" />
     <Compile Include="Models\Shikkhanobish\StudentTuitionHistory.cs" />
     <Compile Include="Models\Shikkhanobish\Subject.cs" />
+    <Compile Include="Models\Shikkhanobish\SubList.cs" />
+    <Compile Include="Models\Shikkhanobish\Teacher.cs" />
     <Compile Include="Models\Shikkhanobish\UniversityName.cs" />
     <Compile Include="Models\Shikkhanobish\Voucher.cs" />
     <Compile Include="Models\Shikkhanobish\VoucherHistory.cs" />
@@ -462,6 +466,7 @@
     <Folder Include="Views\KhelaghorRegister\" />
     <Folder Include="Views\MatchMakingAI\" />
     <Folder Include="Views\ShikkhanobishLogin\" />
+    <Folder Include="Views\ShikkhanobishTeacher\" />
     <Folder Include="Views\Silicon\" />
   </ItemGroup>
   <ItemGroup>
