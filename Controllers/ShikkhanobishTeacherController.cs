@@ -1,4 +1,5 @@
-﻿using SHikkhanobishAPI.Models.Shikkhanobish;
+﻿using SHikkhanobishAPI.Models;
+using SHikkhanobishAPI.Models.Shikkhanobish;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -224,6 +225,38 @@ namespace SHikkhanobishAPI.Controllers
                 objRList.Add(objR);
             }
             return objRList;
+        }
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response activeTeacher(Teacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("activeTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
         }
 
         #endregion
