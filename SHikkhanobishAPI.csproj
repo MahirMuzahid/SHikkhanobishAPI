@@ -270,6 +270,7 @@
     <Compile Include="Models\Medhabi\QuestionMaker.cs" />
     <Compile Include="Models\Medhabi\Questions.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Shikkhanobish\ChangeTeacherInfo.cs" />
     <Compile Include="Models\Shikkhanobish\Chapter.cs" />
     <Compile Include="Models\Shikkhanobish\ClassInfo.cs" />
     <Compile Include="Models\Shikkhanobish\Course.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="Models\Shikkhanobish\Subject.cs" />
     <Compile Include="Models\Shikkhanobish\SubList.cs" />
     <Compile Include="Models\Shikkhanobish\Teacher.cs" />
+    <Compile Include="Models\Shikkhanobish\TeacherWithdrawHistory.cs" />
     <Compile Include="Models\Shikkhanobish\UniversityName.cs" />
     <Compile Include="Models\Shikkhanobish\Voucher.cs" />
     <Compile Include="Models\Shikkhanobish\VoucherHistory.cs" />

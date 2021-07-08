@@ -57,7 +57,7 @@ namespace SHikkhanobishAPI.Controllers
                 conn.Close();
             }
             catch (Exception ex)
-            {                
+            {
                 objR.Response = ex.Message;
             }
             return objR;
@@ -105,6 +105,200 @@ namespace SHikkhanobishAPI.Controllers
             }
             return objR;
         }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response activeTeacher(Teacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("activeTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response changeTeacherInf0(ChangeTeacherInfo obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("changeTeacherInf0", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@info", obj.info);
+                cmd.Parameters.AddWithValue("@index", obj.index);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+
+        }
+        #endregion
+
+        #region Tuitio & Withdraw History 
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<StudentTuitionHistory> getTeacherTuitionHistoryWithID(StudentTuitionHistory obj)
+        {
+            List<StudentTuitionHistory> objRList = new List<StudentTuitionHistory>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTeacherTuitionHistoryWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    StudentTuitionHistory objR = new StudentTuitionHistory();
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.tuitionID = Convert.ToInt32(reader["tuitionID"]);
+                    objR.time = reader["time"].ToString();
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.cost = Convert.ToInt32(reader["cost"]);
+                    objR.ratting = Convert.ToDouble(reader["ratting"]);
+                    objR.firstChoiceID = reader["firstChoiceID"].ToString();
+                    objR.secondChoiceID = reader["secondChoiceID"].ToString();
+                    objR.thirdChoiceID = reader["thirdChoiceID"].ToString();
+                    objR.forthChoiceID = reader["forthChoiceID"].ToString();
+                    objR.studentName = reader["studentName"].ToString();
+                    objR.teacherName = reader["teacherName"].ToString();
+                    objR.date = reader["date"].ToString();
+                    objR.firstChoiceName = reader["firstChoiceName"].ToString();
+                    objR.secondChoiceName = reader["secondChoiceName"].ToString();
+                    objR.thirdChoiceName = reader["thirdChoiceName"].ToString();
+                    objR.forthChoiceName = reader["forthChoiceName"].ToString();
+                    objRList.Add(objR);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                StudentTuitionHistory objR = new StudentTuitionHistory();
+                objR.Response = ex.Message;
+                objRList.Add(objR);
+            }
+            return objRList;
+        }
+        #endregion
+
+        #region Tuitio & Withdraw History 
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setTeacherWithdrawHistory(TeacherWithdrawHistory obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTeacherWithdrawHistory", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@withdrawID", obj.withdrawID);
+                cmd.Parameters.AddWithValue("@date", obj.date);
+                cmd.Parameters.AddWithValue("@trxID", obj.trxID);
+                cmd.Parameters.AddWithValue("@amountTaka", obj.amountTaka);
+                cmd.Parameters.AddWithValue("@phoneNumber", obj.phoneNumber);
+                cmd.Parameters.AddWithValue("@medium", obj.medium);
+                cmd.Parameters.AddWithValue("@status", obj.status);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<TeacherWithdrawHistory> getTeacherWithdrawHistoryWithID(TeacherWithdrawHistory obj)
+        {
+            List<TeacherWithdrawHistory> objRList = new List<TeacherWithdrawHistory>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTeacherWithdrawHistoryWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TeacherWithdrawHistory objR = new TeacherWithdrawHistory();
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.trxID = reader["trxID"].ToString();
+                    objR.date = reader["date"].ToString();
+                    objR.withdrawID = Convert.ToInt32(reader["withdrawID"]);
+                    objR.amountTaka = Convert.ToInt32(reader["amountTaka"]);
+                    objR.medium = reader["medium"].ToString(); ;
+                    objR.phoneNumber = reader["phoneNumber"].ToString();
+                    objR.status = Convert.ToInt32(reader["status"]);
+                    objR.response = "ok";
+                    objRList.Add(objR);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TeacherWithdrawHistory objR = new TeacherWithdrawHistory();
+                objR.response = ex.Message;
+                objRList.Add(objR);
+            }
+            return objRList;
+        }
         #endregion
 
         #region CourseList
@@ -129,6 +323,9 @@ namespace SHikkhanobishAPI.Controllers
                     objR.sub4 = Convert.ToInt32(reader["sub4"]);
                     objR.sub5 = Convert.ToInt32(reader["sub5"]);
                     objR.sub6 = Convert.ToInt32(reader["sub6"]);
+                    objR.sub7 = Convert.ToInt32(reader["sub7"]);
+                    objR.sub8 = Convert.ToInt32(reader["sub8"]);
+                    objR.sub9 = Convert.ToInt32(reader["sub9"]);
                     objR.crs1 = Convert.ToInt32(reader["crs1"]);
                     objR.crs2 = Convert.ToInt32(reader["crs2"]);
                     objR.crs3 = Convert.ToInt32(reader["crs3"]);
@@ -220,6 +417,7 @@ namespace SHikkhanobishAPI.Controllers
 
                 }
                 conn.Close();
+                conn.Close();
             }
             catch (Exception ex)
             {
@@ -231,36 +429,7 @@ namespace SHikkhanobishAPI.Controllers
         }
 
 
-        [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public Response activeTeacher(Teacher obj)
-        {
-            Response response = new Response();
-            try
-            {
-                Connection();
-                SqlCommand cmd = new SqlCommand("activeTeacher", conn);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
-                conn.Open();
-                int i = cmd.ExecuteNonQuery();
-                if (i != 0)
-                {
-                    response.Massage = "Succesfull!";
-                    response.Status = 0;
-                }
-                else
-                {
-                    response.Massage = "Unsuccesfull!";
-                    response.Status = 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                response.Massage = ex.Message;
-                response.Status = 0;
-            }
-            return response;
-        }
+
 
         #endregion
     }
