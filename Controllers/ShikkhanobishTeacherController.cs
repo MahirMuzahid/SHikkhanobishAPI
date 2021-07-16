@@ -1,10 +1,12 @@
-﻿using SHikkhanobishAPI.Models;
+﻿using Flurl.Http;
+using SHikkhanobishAPI.Models;
 using SHikkhanobishAPI.Models.Shikkhanobish;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -19,7 +21,19 @@ namespace SHikkhanobishAPI.Controllers
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
             conn = new SqlConnection(conString);
         }
+        public float CalculateRatting(float fs, float fos, float th, float to, float on)
+        {
+            float toalRating = 0 ;
 
+            float totalSum = fs * 5 + fos * 4 + th * 3 + to * 2 + on;
+
+            toalRating = totalSum / (fs + fos + th + to + on);
+
+            return toalRating;
+        }
+        
+
+        
         #region Teacher
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Teacher getTeacherWithID(Teacher obj)
@@ -106,6 +120,31 @@ namespace SHikkhanobishAPI.Controllers
             return objR;
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Teacher checkRegphonenumber(Teacher obj)
+        {
+            Teacher objR = new Teacher();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("checkRegphonenumber", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@phonenumber", obj.phonenumber);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    obj.Response = "ok";
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Response activeTeacher(Teacher obj)
         {
             Response response = new Response();
@@ -116,6 +155,50 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
                 cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response SetTeacher(setTeacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@name", obj.name);
+                cmd.Parameters.AddWithValue("@phonenumber", obj.phonenumber);
+                cmd.Parameters.AddWithValue("@password", obj.password);
+                cmd.Parameters.AddWithValue("@sub1", obj.sub1);
+                cmd.Parameters.AddWithValue("@sub2", obj.sub2);
+                cmd.Parameters.AddWithValue("@sub3", obj.sub3);
+                cmd.Parameters.AddWithValue("@sub4", obj.sub4);
+                cmd.Parameters.AddWithValue("@sub5", obj.sub5);
+                cmd.Parameters.AddWithValue("@sub6", obj.sub6);
+                cmd.Parameters.AddWithValue("@sub7", obj.sub7);
+                cmd.Parameters.AddWithValue("@sub8", obj.sub8);
+                cmd.Parameters.AddWithValue("@sub9", obj.sub9);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -431,6 +514,238 @@ namespace SHikkhanobishAPI.Controllers
 
 
 
+        #endregion
+
+        #region Favourite Teacher
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task<List<favouriteTeacher>> getFavouriteTeacherwithStudentIDForPopUp(favouriteTeacher obj)
+        {
+            List<favouriteTeacher> filteredTeacher = new List<favouriteTeacher>();
+            List<favouriteTeacher> objRList = new List<favouriteTeacher>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getFavouriteTeacherwithStudentID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    favouriteTeacher objR = new favouriteTeacher();
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objRList.Add(objR);
+                }
+                conn.Close();
+               
+                for (int i = 0; i < objRList.Count; i++)
+                {
+                    Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = objRList[i].teacherID })
+          .ReceiveJson<Teacher>();
+                    if(thisTeacher.activeStatus == 1)
+                    {
+                        CousrList thiscrsList = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getCousrListWithID".PostUrlEncodedAsync(new { teacherID = objRList[i].teacherID })
+           .ReceiveJson<CousrList>();
+                        bool found = false;
+                        if (thiscrsList.sub1 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        else if (thiscrsList.sub2 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        else if (thiscrsList.sub3 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        else if (thiscrsList.sub4 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        else if (thiscrsList.sub5 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        else if (thiscrsList.sub6 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        else if (thiscrsList.sub7 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        else if (thiscrsList.sub8 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        else if (thiscrsList.sub9 == obj.subjectID)
+                        {
+                            found = true;
+                        }
+                        if (found == true)
+                        {
+                            filteredTeacher.Add(objRList[i]);
+                            filteredTeacher[i].teacherName = thisTeacher.name;
+                            filteredTeacher[i].teacherTotalTuition = thisTeacher.totalTuition;
+                            if (thisTeacher.totalTuition == 0)
+                            {
+                                filteredTeacher[i].teacherRatting = 0;
+                            }
+                            else
+                            {
+                                filteredTeacher[i].teacherRatting = CalculateRatting(thisTeacher.fiveStar, thisTeacher.fourStar, thisTeacher.threeStar, thisTeacher.twoStar, thisTeacher.oneStar);
+                            }
+                        }
+                    }
+                                     
+                }              
+            }
+            catch (Exception ex)
+            {
+                favouriteTeacher objR = new favouriteTeacher();
+                objR.Response = ex.Message;
+                filteredTeacher.Add(objR);
+            }
+            return filteredTeacher;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task<List<favouriteTeacher>> getFavouriteTeacherwithStudentID(favouriteTeacher obj)
+        {
+            List<favouriteTeacher> objRList = new List<favouriteTeacher>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getFavouriteTeacherwithStudentID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    favouriteTeacher objR = new favouriteTeacher();
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objRList.Add(objR);
+                }
+                conn.Close();
+                for (int i = 0; i < objRList.Count; i++)
+                {
+                    Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = objRList[i].teacherID })
+          .ReceiveJson<Teacher>();
+                    objRList[i].teacherName = thisTeacher.name;
+                    objRList[i].teacherTotalTuition = thisTeacher.totalTuition;
+                    if (thisTeacher.totalTuition == 0)
+                    {
+                        objRList[i].teacherRatting = 0;
+                    }
+                    else
+                    {
+                        objRList[i].teacherRatting = CalculateRatting(thisTeacher.fiveStar, thisTeacher.fourStar, thisTeacher.threeStar, thisTeacher.twoStar, thisTeacher.oneStar);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                favouriteTeacher objR = new favouriteTeacher();
+                objR.Response = ex.Message;
+                objRList.Add(objR);
+            }
+            return objRList;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response removeFavTeacherWithTeacherID(favouriteTeacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("removeFavTeacherWithTeacherID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<favouriteTeacher> getFavouriteTeacherwithTeacherID(favouriteTeacher obj)
+        {
+            List<favouriteTeacher> objRList = new List<favouriteTeacher>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getFavouriteTeacherwithTeacherID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    favouriteTeacher objR = new favouriteTeacher();
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.studentName = reader["studentName"].ToString();
+                    objR.teacherName = reader["teacherName"].ToString();
+                    objR.teacherTotalTuition = Convert.ToInt32(reader["teacherTotalTuition"]);
+                    objR.teacherRatting = Convert.ToDouble(reader["teacherRatting"]);
+                    objRList.Add(objR);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                favouriteTeacher objR = new favouriteTeacher();
+                objR.Response = ex.Message;
+                objRList.Add(objR);
+            }
+            return objRList;
+        }
+        #endregion
+
+        #region Premium Teacher 
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public PremiumStudent getPremiumStudentWithID(PremiumStudent obj)
+        {
+            PremiumStudent objR = new PremiumStudent();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getPremiumStudentWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
         #endregion
     }
 }

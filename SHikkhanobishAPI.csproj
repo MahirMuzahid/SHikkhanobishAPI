@@ -276,10 +276,13 @@
     <Compile Include="Models\Shikkhanobish\Course.cs" />
     <Compile Include="Models\Shikkhanobish\CousrList.cs" />
     <Compile Include="Models\Shikkhanobish\Degree.cs" />
+    <Compile Include="Models\Shikkhanobish\favouriteTeacher.cs" />
     <Compile Include="Models\Shikkhanobish\importantKeyAndnfoTable.cs" />
     <Compile Include="Models\Shikkhanobish\Institution.cs" />
+    <Compile Include="Models\Shikkhanobish\PremiumStudent.cs" />
     <Compile Include="Models\Shikkhanobish\SelectPattern.cs" />
     <Compile Include="Models\Shikkhanobish\SendSms.cs" />
+    <Compile Include="Models\Shikkhanobish\setTeacher.cs" />
     <Compile Include="Models\Shikkhanobish\Student.cs" />
     <Compile Include="Models\Shikkhanobish\StudentPaymentHistory.cs" />
     <Compile Include="Models\Shikkhanobish\StudentTuitionHistory.cs" />
