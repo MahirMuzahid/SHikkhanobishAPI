@@ -277,6 +277,7 @@
     <Compile Include="Models\Shikkhanobish\CousrList.cs" />
     <Compile Include="Models\Shikkhanobish\Degree.cs" />
     <Compile Include="Models\Shikkhanobish\favouriteTeacher.cs" />
+    <Compile Include="Models\Shikkhanobish\HireTeacher.cs" />
     <Compile Include="Models\Shikkhanobish\importantKeyAndnfoTable.cs" />
     <Compile Include="Models\Shikkhanobish\Institution.cs" />
     <Compile Include="Models\Shikkhanobish\PremiumStudent.cs" />

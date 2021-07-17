@@ -55,7 +55,7 @@ namespace SHikkhanobishAPI.Controllers
                     objR.phonenumber = reader["phonenumber"].ToString();
                     objR.selectionStatus = Convert.ToInt32(reader["selectionStatus"]);
                     objR.monetizetionStatus = Convert.ToInt32(reader["monetizetionStatus"]);
-                    objR.activeStatus = Convert.ToInt32(reader["activeStatus"]);
+                    objR.activeStatus = reader["activeStatus"].ToString();
                     objR.totalMinuite = Convert.ToInt32(reader["totalMinuite"]);
                     objR.favTeacherCount = Convert.ToInt32(reader["favTeacherCount"]);
                     objR.reportCount = Convert.ToInt32(reader["reportCount"]);
@@ -98,7 +98,7 @@ namespace SHikkhanobishAPI.Controllers
                     objR.phonenumber = reader["phonenumber"].ToString();
                     objR.selectionStatus = Convert.ToInt32(reader["selectionStatus"]);
                     objR.monetizetionStatus = Convert.ToInt32(reader["monetizetionStatus"]);
-                    objR.activeStatus = Convert.ToInt32(reader["activeStatus"]);
+                    objR.activeStatus = reader["activeStatus"].ToString();
                     objR.totalMinuite = Convert.ToInt32(reader["totalMinuite"]);
                     objR.favTeacherCount = Convert.ToInt32(reader["favTeacherCount"]);
                     objR.reportCount = Convert.ToInt32(reader["reportCount"]);
@@ -153,6 +153,10 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("activeTeacher", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                if(obj.activeStatus != "0")
+                {
+                    obj.activeStatus = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                }
                 cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
                 cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
                 conn.Open();
@@ -543,7 +547,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = objRList[i].teacherID })
           .ReceiveJson<Teacher>();
-                    if(thisTeacher.activeStatus == 1)
+                    if(thisTeacher.activeStatus != "0")
                     {
                         CousrList thiscrsList = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getCousrListWithID".PostUrlEncodedAsync(new { teacherID = objRList[i].teacherID })
            .ReceiveJson<CousrList>();

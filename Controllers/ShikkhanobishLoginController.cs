@@ -1897,5 +1897,52 @@ namespace SHikkhanobishAPI.Controllers
             return response;
         }
         #endregion
+
+        #region Hire Teacher 
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task<Response> HireTeacherAsync(HireTeacher obj)
+        {
+            Response objR = new Response();
+            List<Teacher> matchedTeacherList = new List<Teacher>();
+
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTeacherIDWithSubID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@subID", obj.subID);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Teacher matchedTeacher = new Teacher();
+                    matchedTeacher.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    matchedTeacherList.Add(matchedTeacher);
+                }
+                conn.Close();
+
+                List<Teacher> SelectedTeacherList = new List<Teacher>();
+                List<int> teacherPointList = new List<int>();
+                int pointListCount = 0;
+                for (int i = 0; i < matchedTeacherList.Count; i++)
+                {
+                    Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = matchedTeacherList[i].teacherID })
+          .ReceiveJson<Teacher>();
+                    if(thisTeacher.activeStatus != "0")
+                    {
+                        SelectedTeacherList.Add(matchedTeacherList[i]);
+                    }
+                }
+                
+                    
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return objR;
+        }
+        #endregion
     }
 }
