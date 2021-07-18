@@ -21,7 +21,16 @@ namespace SHikkhanobishAPI.Controllers
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
             conn = new SqlConnection(conString);
         }
+        public float CalculateRatting(float fs, float fos, float th, float to, float on)
+        {
+            float toalRating = 0;
 
+            float totalSum = fs * 5 + fos * 4 + th * 3 + to * 2 + on;
+
+            toalRating = totalSum / (fs + fos + th + to + on);
+
+            return toalRating;
+        }
         #region Send Msg
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public async Task<SendSms> SendSmsAsync(SendSms obj)
@@ -1918,24 +1927,44 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     Teacher matchedTeacher = new Teacher();
                     matchedTeacher.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    matchedTeacher.activeTime = reader["activeTime"].ToString();
                     matchedTeacherList.Add(matchedTeacher);
                 }
                 conn.Close();
 
                 List<Teacher> SelectedTeacherList = new List<Teacher>();
-                List<int> teacherPointList = new List<int>();
+                List<float> teacherPointList = new List<float>();
                 int pointListCount = 0;
+
                 for (int i = 0; i < matchedTeacherList.Count; i++)
                 {
                     Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = matchedTeacherList[i].teacherID })
           .ReceiveJson<Teacher>();
-                    if(thisTeacher.activeStatus != "0")
+                    if(thisTeacher.activeStatus == 0)
                     {
                         SelectedTeacherList.Add(matchedTeacherList[i]);
+                        SelectedTeacherList[i].activeTime = matchedTeacherList[i].activeTime;
                     }
                 }
-                
-                    
+
+                var SortedList = SelectedTeacherList.OrderBy(x => x.activeTime).ToList();
+
+                for(int i = 0; i < SortedList.Count; i++)
+                {
+                    teacherPointList[i] = (5 - i)*2 + CalculateRatting(SortedList[i].fiveStar, SortedList[i].fourStar, SortedList[i].threeStar, SortedList[i].twoStar, SortedList[i].oneStar)*4.1f ;
+                }
+                float max = teacherPointList[0];
+                int SelectedIndex = 0;
+                for (int i = 0; i < teacherPointList.Count; i++)
+                {
+                    if(max < teacherPointList[i])
+                    {
+                        max = teacherPointList[i];
+                        SelectedIndex = i;
+                    }
+                }
+
+                Teacher SelectedTuitionTeacherToCall = SortedList[SelectedIndex];
             }
             catch (Exception ex)
             {

@@ -13,7 +13,7 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
         public string phonenumber { get; set; }
         public int selectionStatus { get; set; }
         public int monetizetionStatus { get; set; }
-        public string activeStatus { get; set; }
+        public int activeStatus { get; set; }
         public int totalMinuite { get; set; }
         public int favTeacherCount { get; set; }
         public int reportCount { get; set; }
@@ -24,6 +24,7 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
         public int twoStar { get; set; }
         public int oneStar { get; set; }
         public double amount { get; set; }
+        public string activeTime { get; set; }
         public string Response { get; set; }
     }
 
