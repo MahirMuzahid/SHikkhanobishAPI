@@ -23,11 +23,19 @@ namespace SHikkhanobishAPI.Controllers
         }
         public float CalculateRatting(float fs, float fos, float th, float to, float on)
         {
-            float toalRating = 0;
+            float toalRating;
 
             float totalSum = fs * 5 + fos * 4 + th * 3 + to * 2 + on;
-
-            toalRating = totalSum / (fs + fos + th + to + on);
+            float totalNum = fs + fos + th + to + on;
+            if(totalNum == 0)
+            {
+                toalRating = 0;
+            }
+            else
+            {
+                toalRating = totalSum / (fs + fos + th + to + on);
+            }
+           
 
             return toalRating;
         }
@@ -1909,11 +1917,15 @@ namespace SHikkhanobishAPI.Controllers
 
         #region Hire Teacher 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public async Task<Response> HireTeacherAsync(HireTeacher obj)
+        public async Task<Teacher> HireTeacherAsync(HireTeacher obj)
         {
             Response objR = new Response();
+            Teacher SelectedTuitionTeacherToCall = new Teacher();
             List<Teacher> matchedTeacherList = new List<Teacher>();
-
+            int SelectedIndex = 0;
+            List<Teacher> SortedList = new List<Teacher>();
+            List<Teacher> SelectedTeacherList = new List<Teacher>();
+            List<float> teacherPointList = new List<float>();
             try
             {
                 Connection();
@@ -1932,29 +1944,36 @@ namespace SHikkhanobishAPI.Controllers
                 }
                 conn.Close();
 
-                List<Teacher> SelectedTeacherList = new List<Teacher>();
-                List<float> teacherPointList = new List<float>();
+                
+              
                 int pointListCount = 0;
-
-                for (int i = 0; i < matchedTeacherList.Count; i++)
+                SortedList = matchedTeacherList.OrderBy(x => x.activeTime).ToList();
+                for (int i = 0; i < 5; i++)
                 {
-                    Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = matchedTeacherList[i].teacherID })
+                    Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = SortedList[i].teacherID })
           .ReceiveJson<Teacher>();
-                    if(thisTeacher.activeStatus == 0)
+                    if(thisTeacher.activeStatus == 1)
                     {
-                        SelectedTeacherList.Add(matchedTeacherList[i]);
+                        SelectedTeacherList.Add(thisTeacher);
                         SelectedTeacherList[i].activeTime = matchedTeacherList[i].activeTime;
                     }
-                }
+                    if (i == SortedList.Count - 1)
+                    {
+                        break;
+                    }
+                }              
 
-                var SortedList = SelectedTeacherList.OrderBy(x => x.activeTime).ToList();
-
-                for(int i = 0; i < SortedList.Count; i++)
+                for(int i = 0; i < 5; i++)
                 {
-                    teacherPointList[i] = (5 - i)*2 + CalculateRatting(SortedList[i].fiveStar, SortedList[i].fourStar, SortedList[i].threeStar, SortedList[i].twoStar, SortedList[i].oneStar)*4.1f ;
+                    float thispoint = (5 - i) * 2f + CalculateRatting(SelectedTeacherList[i].fiveStar, SelectedTeacherList[i].fourStar, SelectedTeacherList[i].threeStar, SelectedTeacherList[i].twoStar, SelectedTeacherList[i].oneStar) * 4.1f;
+                    teacherPointList.Add (thispoint) ;
+                    if (i == SortedList.Count-1)
+                    {
+                        break;
+                    }
                 }
                 float max = teacherPointList[0];
-                int SelectedIndex = 0;
+              
                 for (int i = 0; i < teacherPointList.Count; i++)
                 {
                     if(max < teacherPointList[i])
@@ -1964,13 +1983,13 @@ namespace SHikkhanobishAPI.Controllers
                     }
                 }
 
-                Teacher SelectedTuitionTeacherToCall = SortedList[SelectedIndex];
+                //SelectedTuitionTeacherToCall = SortedList[0];
             }
             catch (Exception ex)
             {
-                
+                //SelectedTuitionTeacherToCall.Response = ex.Message + " " + SelectedIndex;
             }
-            return objR;
+            return SelectedTeacherList[SelectedIndex];
         }
         #endregion
     }

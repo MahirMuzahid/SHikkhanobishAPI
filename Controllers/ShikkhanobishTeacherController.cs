@@ -155,7 +155,8 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
                 cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
-                cmd.Parameters.AddWithValue("@activeTime", obj.activeTime);
+                string date = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                cmd.Parameters.AddWithValue("@activeTime", date);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
