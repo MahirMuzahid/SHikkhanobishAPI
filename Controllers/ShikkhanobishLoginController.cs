@@ -1982,8 +1982,6 @@ namespace SHikkhanobishAPI.Controllers
                         SelectedIndex = i;
                     }
                 }
-
-                //SelectedTuitionTeacherToCall = SortedList[0];
             }
             catch (Exception ex)
             {

@@ -540,7 +540,7 @@ namespace SHikkhanobishAPI.Controllers
                     objRList.Add(objR);
                 }
                 conn.Close();
-               
+                int filteredTeacherCount = 0;
                 for (int i = 0; i < objRList.Count; i++)
                 {
                     Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = objRList[i].teacherID })
@@ -589,16 +589,17 @@ namespace SHikkhanobishAPI.Controllers
                         if (found == true)
                         {
                             filteredTeacher.Add(objRList[i]);
-                            filteredTeacher[i].teacherName = thisTeacher.name;
-                            filteredTeacher[i].teacherTotalTuition = thisTeacher.totalTuition;
+                            filteredTeacher[filteredTeacherCount].teacherName = thisTeacher.name;
+                            filteredTeacher[filteredTeacherCount].teacherTotalTuition = thisTeacher.totalTuition;
                             if (thisTeacher.totalTuition == 0)
                             {
-                                filteredTeacher[i].teacherRatting = 0;
+                                filteredTeacher[filteredTeacherCount].teacherRatting = 0;
                             }
                             else
                             {
-                                filteredTeacher[i].teacherRatting = CalculateRatting(thisTeacher.fiveStar, thisTeacher.fourStar, thisTeacher.threeStar, thisTeacher.twoStar, thisTeacher.oneStar);
+                                filteredTeacher[filteredTeacherCount].teacherRatting = CalculateRatting(thisTeacher.fiveStar, thisTeacher.fourStar, thisTeacher.threeStar, thisTeacher.twoStar, thisTeacher.oneStar);
                             }
+                            filteredTeacherCount++;
                         }
                     }
                                      
