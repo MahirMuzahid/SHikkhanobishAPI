@@ -1990,5 +1990,25 @@ namespace SHikkhanobishAPI.Controllers
             return SelectedTeacherList[SelectedIndex];
         }
         #endregion
+
+        #region Video Call Api Creator
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public VideoApiInfo GetVideoCallInfo()
+        {
+            VideoApiInfo inf0 = new VideoApiInfo();
+            try
+            {
+                VideoCallAPiMaker maker = new VideoCallAPiMaker();
+                inf0.apiKey = VideoCallAPiMaker.Apikey;
+                inf0.SessionID = VideoCallAPiMaker.Session.Id;
+                inf0.token = VideoCallAPiMaker.Token;
+            }
+            catch (Exception ex)
+            {
+                inf0.Response = ex.Message;
+            }
+            return inf0;
+        }
+        #endregion
     }
 }
