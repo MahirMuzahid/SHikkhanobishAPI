@@ -16,6 +16,8 @@ namespace SHikkhanobishAPI.Controllers
     public class ShikkhanobishLoginController : ApiController
     {
         private SqlConnection conn;
+        public const int SchoolCost = 3;
+        public const int CollegeCost = 4;
         public void Connection()
         {
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
@@ -2038,7 +2040,7 @@ namespace SHikkhanobishAPI.Controllers
                 teacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = obj.teacherID })
       .ReceiveJson<Teacher>();
                 int cost = CalculateStudentCost(int.Parse(obj.firstChoiceID),student);
-                double teacherEarn = CalculateTeacherEarn(teacher);
+                double teacherEarn = CalculateTeacherEarn(teacher, int.Parse(obj.firstChoiceID));
                 bool firstTime;
                 if (obj.time == 1)
                 {
@@ -2171,11 +2173,11 @@ namespace SHikkhanobishAPI.Controllers
             {
                 if (insID == 101)
                 {
-                    cost = 3;
+                    cost = SchoolCost;
                 }
                 if (insID == 102)
                 {
-                    cost = 4;
+                    cost = CollegeCost;
                 }
             }
             else
@@ -2185,10 +2187,24 @@ namespace SHikkhanobishAPI.Controllers
             
             return cost;
         }
-        public double CalculateTeacherEarn(Teacher teacher)
+        public double CalculateTeacherEarn(Teacher teacher,  int insID)
         {
             double earn = 0;
-
+            if(teacher.monetizetionStatus == 0)
+            {
+                earn = 0;
+            }
+            else
+            {
+                if(insID == 101)
+                {
+                    earn = SchoolCost * 0.80;
+                }
+                if(insID == 102)
+                {
+                    earn = CollegeCost * 0.80;
+                }
+            }
             return earn;
         }
         #endregion
