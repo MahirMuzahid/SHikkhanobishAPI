@@ -258,6 +258,54 @@ namespace SHikkhanobishAPI.Controllers
             return response;
 
         }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response updateTeacherInfo(Teacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("updateTeacherInfo", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@name", obj.name);
+                cmd.Parameters.AddWithValue("@password", obj.password);
+                cmd.Parameters.AddWithValue("@phonenumber", obj.phonenumber);
+                cmd.Parameters.AddWithValue("@selectionStatus", obj.selectionStatus);
+                cmd.Parameters.AddWithValue("@monetizetionStatus", obj.monetizetionStatus);
+                cmd.Parameters.AddWithValue("@totalMinuite", obj.totalMinuite);
+                cmd.Parameters.AddWithValue("@favTeacherCount", obj.favTeacherCount);
+                cmd.Parameters.AddWithValue("@reportCount", obj.reportCount);
+                cmd.Parameters.AddWithValue("@totalTuition", obj.totalTuition);
+                cmd.Parameters.AddWithValue("@fiveStar", obj.fiveStar);
+                cmd.Parameters.AddWithValue("@fourStar", obj.fourStar);
+                cmd.Parameters.AddWithValue("@threeStar", obj.threeStar);
+                cmd.Parameters.AddWithValue("@twoStar", obj.twoStar);
+                cmd.Parameters.AddWithValue("@oneStar", obj.oneStar);
+                cmd.Parameters.AddWithValue("@amount", obj.amount);
+                cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+
+        }
         #endregion
 
         #region Tuitio History 

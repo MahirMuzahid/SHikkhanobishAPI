@@ -2039,17 +2039,19 @@ namespace SHikkhanobishAPI.Controllers
       .ReceiveJson<Teacher>();
                 int cost = CalculateStudentCost(int.Parse(obj.firstChoiceID),student);
                 double teacherEarn = CalculateTeacherEarn(teacher);
+                bool firstTime;
                 if (obj.time == 1)
                 {
                     await CreateNewTuitionHistory(student,teacher,obj, cost, teacherEarn);
-                   
+                    firstTime = true;
                 }
                 else
                 {
                    await UpdateTuitionHistory(obj,cost,teacherEarn);
+                    firstTime = false;
                 }
                 await UpdateStudent(student, cost);
-                await UpdateTeacher(teacher);
+                await UpdateTeacher(teacher, firstTime, teacherEarn);
 
             }
             catch (Exception ex)
@@ -2122,9 +2124,34 @@ namespace SHikkhanobishAPI.Controllers
                 })
                 .ReceiveJson<Response>();
         }
-        public async Task UpdateTeacher(Teacher teacher)
+        public async Task UpdateTeacher(Teacher teacher, bool firstTime, double earn)
         {
-
+            if(firstTime)
+            {
+                teacher.totalTuition += 1;
+            }
+            Response regRes = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/updateTeacherInfo"
+                .PostUrlEncodedAsync(new
+                {
+                    teacherID = teacher.teacherID,
+                    name = teacher.name,
+                    password = teacher.password,
+                    phonenumber = teacher.phonenumber,
+                    selectionStatus = teacher.selectionStatus,
+                    monetizetionStatus = teacher.monetizetionStatus,
+                    totalMinuite = teacher.totalMinuite+1,
+                    favTeacherCount = teacher.favTeacherCount,
+                    reportCount = teacher.reportCount,
+                    totalTuition = teacher.totalTuition,
+                    fiveStar = teacher.fiveStar,
+                    fourStar = teacher.fourStar,
+                    threeStar = teacher.threeStar,
+                    twoStar = teacher.twoStar,
+                    oneStar = teacher.oneStar,
+                    amount = teacher.amount+ earn,
+                    activeStatus = teacher.activeStatus
+                })
+                .ReceiveJson<Response>();
         }
         public int CalculateStudentCost(int insID, Student student)
         {
