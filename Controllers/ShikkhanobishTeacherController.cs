@@ -260,7 +260,7 @@ namespace SHikkhanobishAPI.Controllers
         }
         #endregion
 
-        #region Tuitio & Withdraw History 
+        #region Tuitio History 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public List<StudentTuitionHistory> getTeacherTuitionHistoryWithID(StudentTuitionHistory obj)
         {
@@ -293,6 +293,7 @@ namespace SHikkhanobishAPI.Controllers
                     objR.secondChoiceName = reader["secondChoiceName"].ToString();
                     objR.thirdChoiceName = reader["thirdChoiceName"].ToString();
                     objR.forthChoiceName = reader["forthChoiceName"].ToString();
+                    objR.teacherEarn = Convert.ToDouble(reader["teacherEarn"]);
                     objRList.Add(objR);
                 }
                 conn.Close();

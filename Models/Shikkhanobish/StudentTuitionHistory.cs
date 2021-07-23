@@ -25,6 +25,7 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
         public string secondChoiceName { get; set; }
         public string thirdChoiceName { get; set; }
         public string forthChoiceName { get; set; }
+        public double teacherEarn { get; set; }
 
     }
 }

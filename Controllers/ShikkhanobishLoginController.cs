@@ -1296,6 +1296,7 @@ namespace SHikkhanobishAPI.Controllers
                     objR.secondChoiceName = reader["secondChoiceName"].ToString();
                     objR.thirdChoiceName = reader["thirdChoiceName"].ToString();
                     objR.forthChoiceName = reader["forthChoiceName"].ToString();
+                    objR.teacherEarn = Convert.ToDouble(reader["teacherEarn"]);
                     objRList.Add(objR);
                 }
                 conn.Close();
@@ -1335,6 +1336,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@forthChoiceName", obj.forthChoiceName);
                 cmd.Parameters.AddWithValue("@teacherName", obj.teacherName);
                 cmd.Parameters.AddWithValue("@studentName", obj.studentName);
+                cmd.Parameters.AddWithValue("@teacherEarn", obj.teacherEarn);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -1364,7 +1366,11 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("updateStudentTuitionHistory", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                cmd.Parameters.AddWithValue("@tuitionID", obj.tuitionID);
+                cmd.Parameters.AddWithValue("@cost", obj.cost);
+                cmd.Parameters.AddWithValue("@ratting", obj.ratting);
+                cmd.Parameters.AddWithValue("@teacherEarn", obj.teacherEarn);
+                cmd.Parameters.AddWithValue("@time", obj.time);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -2031,12 +2037,18 @@ namespace SHikkhanobishAPI.Controllers
       .ReceiveJson<Student>();
                 teacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = obj.teacherID })
       .ReceiveJson<Teacher>();
+                int cost = CalculateStudentCost(int.Parse(obj.firstChoiceID),student);
+                double teacherEarn = CalculateTeacherEarn(teacher);
                 if (obj.time == 1)
                 {
-                    await CreateNewTuitionHistory(student,teacher,obj);
+                    await CreateNewTuitionHistory(student,teacher,obj, cost, teacherEarn);
                    
                 }
-                await UpdateStudent(student);
+                else
+                {
+                   await UpdateTuitionHistory(obj,cost,teacherEarn);
+                }
+                await UpdateStudent(student, cost);
                 await UpdateTeacher(teacher);
 
             }
@@ -2046,14 +2058,15 @@ namespace SHikkhanobishAPI.Controllers
             }
             return AddCostForStudent;
         }
-        public async Task CreateNewTuitionHistory(Student st, Teacher th, PerMinPassModel prmc)
+       
+        public async Task CreateNewTuitionHistory(Student st, Teacher th, PerMinPassModel prmc,int cost,double teacherearn)
         {
             var res = await "https://api.shikkhanobish.com/api/ShikkhanobishLogin/setStudentTuitionHistory".PostUrlEncodedAsync(new { 
                 studentID = st.studentID,
                 tuitionID = prmc.sessionID,
-                time = 1,
+                time = prmc.time,
                 teacherID = th.teacherID,
-                cost = CalculateCost(int.Parse(prmc.firstChoiceID)),
+                cost = cost,
                 ratting = 0,
                 firstChoiceID = prmc.firstChoiceID,
                 secondChoiceID = prmc.secondChoiceID,
@@ -2065,31 +2078,91 @@ namespace SHikkhanobishAPI.Controllers
                 firstChoiceName = prmc.firstChoiceName,
                 secondChoiceName = prmc.secondChoiceName,
                 thirdChoiceName = prmc.thirdChoiceName,
-                forthChoiceName = prmc.forthChoiceName
+                forthChoiceName = prmc.forthChoiceName,
+                teacherEarn = teacherearn
             })
       .ReceiveJson<Response>();
             
         }
-        public async Task UpdateStudent(Student student)
+        public async Task UpdateTuitionHistory(PerMinPassModel prmc, int cost, double earn)
         {
-
+            var res = await "https://api.shikkhanobish.com/api/ShikkhanobishLogin/updateStudentTuitionHistory".PostUrlEncodedAsync(new
+            {
+                tuitionID = prmc.sessionID,
+                time = prmc.time,
+                cost = cost,
+                ratting = 0,
+                teacherEarn = earn
+            });
+        }
+        public async Task UpdateStudent(Student student ,int cost)
+        {
+            if(cost == 0)
+            {
+                student.freemin -= 1;
+            }
+            else
+            {
+                student.totalSpent += cost;
+                student.coin -= cost;
+            }
+            Response regRes = await "https://api.shikkhanobish.com/api/ShikkhanobishLogin/updateStudent"
+                .PostUrlEncodedAsync(new
+                {
+                    studentID = student.studentID,
+                    phonenumber = student.phonenumber,
+                    password = student,
+                    totalSpent = student.totalSpent,
+                    totalTuitionTime = (student.totalTuitionTime+1),
+                    coin = student.coin,
+                    freemin = student.freemin,
+                    city = student.city,
+                    name = student.name,
+                    institutionName = "none"
+                })
+                .ReceiveJson<Response>();
         }
         public async Task UpdateTeacher(Teacher teacher)
         {
 
         }
-        public int CalculateCost(int insID)
+        public int CalculateStudentCost(int insID, Student student)
         {
             int cost = 0;
-            if(insID == 101)
+            bool isCostAvaiable;
+            if (student.freemin == 0)
             {
-                cost =  3;
+                isCostAvaiable = true;
+
             }
-            if(insID == 102)
+            else
             {
-                cost = 4;
+                isCostAvaiable = false;
             }
+            
+            if(isCostAvaiable)
+            {
+                if (insID == 101)
+                {
+                    cost = 3;
+                }
+                if (insID == 102)
+                {
+                    cost = 4;
+                }
+            }
+            else
+            {
+                cost = 0;
+            }
+            
             return cost;
+        }
+        public double CalculateTeacherEarn(Teacher teacher)
+        {
+            double earn = 0;
+
+            return earn;
         }
         #endregion
     }
