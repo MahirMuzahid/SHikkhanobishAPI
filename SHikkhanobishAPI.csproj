@@ -280,6 +280,7 @@
     <Compile Include="Models\Shikkhanobish\HireTeacher.cs" />
     <Compile Include="Models\Shikkhanobish\importantKeyAndnfoTable.cs" />
     <Compile Include="Models\Shikkhanobish\Institution.cs" />
+    <Compile Include="Models\Shikkhanobish\PerMinPassModel.cs" />
     <Compile Include="Models\Shikkhanobish\PremiumStudent.cs" />
     <Compile Include="Models\Shikkhanobish\SelectPattern.cs" />
     <Compile Include="Models\Shikkhanobish\SendSms.cs" />

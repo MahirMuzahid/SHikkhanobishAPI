@@ -1328,6 +1328,13 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@secondChoiceID", obj.secondChoiceID);
                 cmd.Parameters.AddWithValue("@thirdChoiceID", obj.thirdChoiceID);
                 cmd.Parameters.AddWithValue("@forthChoiceID", obj.forthChoiceID);
+                cmd.Parameters.AddWithValue("@date", obj.date);
+                cmd.Parameters.AddWithValue("@firstChoiceName", obj.firstChoiceName);
+                cmd.Parameters.AddWithValue("@secondChoiceName", obj.secondChoiceName);
+                cmd.Parameters.AddWithValue("@thirdChoiceName", obj.thirdChoiceName);
+                cmd.Parameters.AddWithValue("@forthChoiceName", obj.forthChoiceName);
+                cmd.Parameters.AddWithValue("@teacherName", obj.teacherName);
+                cmd.Parameters.AddWithValue("@studentName", obj.studentName);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -2008,6 +2015,81 @@ namespace SHikkhanobishAPI.Controllers
                 inf0.Response = ex.Message;
             }
             return inf0;
+        }
+        #endregion
+
+        #region Video CAll Per Min Api Call
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task<PerMinPassModel> PerMinPassCall(PerMinPassModel obj)
+        {
+            PerMinPassModel AddCostForStudent = new PerMinPassModel();
+            try
+            {
+                Student student = new Student();
+                Teacher teacher = new Teacher();
+                student = await "https://api.shikkhanobish.com/api/ShikkhanobishLogin/getStudentWithID".PostUrlEncodedAsync(new { studentID = obj.studentID })
+      .ReceiveJson<Student>();
+                teacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = obj.teacherID })
+      .ReceiveJson<Teacher>();
+                if (obj.time == 1)
+                {
+                    await CreateNewTuitionHistory(student,teacher,obj);
+                   
+                }
+                await UpdateStudent(student);
+                await UpdateTeacher(teacher);
+
+            }
+            catch (Exception ex)
+            {
+                AddCostForStudent.Response = ex.Message;
+            }
+            return AddCostForStudent;
+        }
+        public async Task CreateNewTuitionHistory(Student st, Teacher th, PerMinPassModel prmc)
+        {
+            var res = await "https://api.shikkhanobish.com/api/ShikkhanobishLogin/setStudentTuitionHistory".PostUrlEncodedAsync(new { 
+                studentID = st.studentID,
+                tuitionID = prmc.sessionID,
+                time = 1,
+                teacherID = th.teacherID,
+                cost = CalculateCost(int.Parse(prmc.firstChoiceID)),
+                ratting = 0,
+                firstChoiceID = prmc.firstChoiceID,
+                secondChoiceID = prmc.secondChoiceID,
+                thirdChoiceID = prmc.thirdChoiceID,
+                forthChoiceID = prmc.firstChoiceID,
+                date = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
+                studentName = st.studentID,
+                teacherName = th.teacherID,
+                firstChoiceName = prmc.firstChoiceName,
+                secondChoiceName = prmc.secondChoiceName,
+                thirdChoiceName = prmc.thirdChoiceName,
+                forthChoiceName = prmc.forthChoiceName
+            })
+      .ReceiveJson<Response>();
+            
+        }
+        public async Task UpdateStudent(Student student)
+        {
+
+        }
+        public async Task UpdateTeacher(Teacher teacher)
+        {
+
+        }
+        public int CalculateCost(int insID)
+        {
+            int cost = 0;
+            if(insID == 101)
+            {
+                cost =  3;
+            }
+            if(insID == 102)
+            {
+                cost = 4;
+            }
+            return cost;
         }
         #endregion
     }
