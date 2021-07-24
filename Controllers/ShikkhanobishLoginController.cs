@@ -1244,7 +1244,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     StudentTuitionHistory objAdd = new StudentTuitionHistory();
                     objAdd.studentID = Convert.ToInt32(reader["studentID"]);
-                    objAdd.tuitionID = Convert.ToInt32(reader["tuitionID"]);
+                    objAdd.tuitionID = reader["tuitionID"].ToString();
                     objAdd.time = reader["time"].ToString();
                     objAdd.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objAdd.cost = Convert.ToInt32(reader["cost"]);
@@ -1282,7 +1282,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     StudentTuitionHistory objR = new StudentTuitionHistory();
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
-                    objR.tuitionID = Convert.ToInt32(reader["tuitionID"]);
+                    objR.tuitionID = reader["tuitionID"].ToString();
                     objR.time = reader["time"].ToString();
                     objR.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objR.cost = Convert.ToInt32(reader["cost"]);
@@ -2025,12 +2025,11 @@ namespace SHikkhanobishAPI.Controllers
             return inf0;
         }
         #endregion
-
         #region Video CAll Per Min Api Call
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public async Task<PerMinPassModel> PerMinPassCall(PerMinPassModel obj)
+        public async Task<Response> PerMinPassCall(PerMinPassModel obj)
         {
-            PerMinPassModel AddCostForStudent = new PerMinPassModel();
+            Response res = new Response();
             try
             {
                 Student student = new Student();
@@ -2054,13 +2053,15 @@ namespace SHikkhanobishAPI.Controllers
                 }
                 await UpdateStudent(student, cost);
                 await UpdateTeacher(teacher, firstTime, teacherEarn);
-
+                res.Massage = "All Ok";
+                res.Status = 0;
             }
             catch (Exception ex)
             {
-                AddCostForStudent.Response = ex.Message;
+                res.Massage = ex.Message;
+                res.Status = 1;
             }
-            return AddCostForStudent;
+            return res;
         }
        
         public async Task CreateNewTuitionHistory(Student st, Teacher th, PerMinPassModel prmc,int cost,double teacherearn)
@@ -2077,8 +2078,8 @@ namespace SHikkhanobishAPI.Controllers
                 thirdChoiceID = prmc.thirdChoiceID,
                 forthChoiceID = prmc.firstChoiceID,
                 date = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
-                studentName = st.studentID,
-                teacherName = th.teacherID,
+                studentName = st.name,
+                teacherName = th.name,
                 firstChoiceName = prmc.firstChoiceName,
                 secondChoiceName = prmc.secondChoiceName,
                 thirdChoiceName = prmc.thirdChoiceName,
@@ -2115,7 +2116,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     studentID = student.studentID,
                     phonenumber = student.phonenumber,
-                    password = student,
+                    password = student.password,
                     totalSpent = student.totalSpent,
                     totalTuitionTime = (student.totalTuitionTime+1),
                     coin = student.coin,
@@ -2207,6 +2208,20 @@ namespace SHikkhanobishAPI.Controllers
             }
             return earn;
         }
+        /*
+         * studentID: 10000003, 
+teacherID:	23926316
+time:1
+sessionID:'fghfgh543dgffd45sf'
+firstChoiceID:101
+secondChoiceID:101
+thirdChoiceID:101
+forthChoiceID:101
+firstChoiceName:'School'
+secondChoiceName:'Class 6'
+thirdChoiceName:'Physics First Paper'
+forthChoiceName: 'Chapter 1'
+         */
         #endregion
     }
 }

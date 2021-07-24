@@ -9,7 +9,6 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
     {
         public int studentID { get; set; }
         public int teacherID { get; set; }
-        public bool addCostForStdent { get; set; }
         public int time { get; set; }
         public string sessionID { get; set; }
         public string firstChoiceID { get; set; }

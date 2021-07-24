@@ -325,7 +325,7 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     StudentTuitionHistory objR = new StudentTuitionHistory();
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
-                    objR.tuitionID = Convert.ToInt32(reader["tuitionID"]);
+                    objR.tuitionID = reader["tuitionID"].ToString();
                     objR.time = reader["time"].ToString();
                     objR.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objR.cost = Convert.ToInt32(reader["cost"]);
