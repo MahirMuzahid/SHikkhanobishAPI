@@ -1311,7 +1311,51 @@ namespace SHikkhanobishAPI.Controllers
             }
             return objRList;
         }
-
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<StudentTuitionHistory> getTuitionHistoryWithTuitionID(StudentTuitionHistory obj)
+        {
+            List<StudentTuitionHistory> objRList = new List<StudentTuitionHistory>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTuitionHistoryWithTuitionID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@tuitionID", obj.tuitionID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    StudentTuitionHistory objR = new StudentTuitionHistory();
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.tuitionID = reader["tuitionID"].ToString();
+                    objR.time = reader["time"].ToString();
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.cost = Convert.ToInt32(reader["cost"]);
+                    objR.ratting = Convert.ToDouble(reader["ratting"]);
+                    objR.firstChoiceID = reader["firstChoiceID"].ToString();
+                    objR.secondChoiceID = reader["secondChoiceID"].ToString();
+                    objR.thirdChoiceID = reader["thirdChoiceID"].ToString();
+                    objR.forthChoiceID = reader["forthChoiceID"].ToString();
+                    objR.studentName = reader["studentName"].ToString();
+                    objR.teacherName = reader["teacherName"].ToString();
+                    objR.date = reader["date"].ToString();
+                    objR.firstChoiceName = reader["firstChoiceName"].ToString();
+                    objR.secondChoiceName = reader["secondChoiceName"].ToString();
+                    objR.thirdChoiceName = reader["thirdChoiceName"].ToString();
+                    objR.forthChoiceName = reader["forthChoiceName"].ToString();
+                    objR.teacherEarn = Convert.ToDouble(reader["teacherEarn"]);
+                    objRList.Add(objR);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                StudentTuitionHistory objR = new StudentTuitionHistory();
+                objR.Response = ex.Message;
+                objRList.Add(objR);
+            }
+            return objRList;
+        }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Response setStudentTuitionHistory(StudentTuitionHistory obj)
         {
@@ -2027,9 +2071,9 @@ namespace SHikkhanobishAPI.Controllers
         #endregion
         #region Video CAll Per Min Api Call
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public async Task<Response> PerMinPassCall(PerMinPassModel obj)
+        public async Task<PerMinCallResponse> PerMinPassCall(PerMinPassModel obj)
         {
-            Response res = new Response();
+            PerMinCallResponse res = new PerMinCallResponse();
             try
             {
                 Student student = new Student();
@@ -2054,6 +2098,7 @@ namespace SHikkhanobishAPI.Controllers
                 await UpdateStudent(student, cost);
                 await UpdateTeacher(teacher, firstTime, teacherEarn);
                 res.Massage = "All Ok";
+                res.cost = cost;
                 res.Status = 0;
             }
             catch (Exception ex)
@@ -2132,6 +2177,10 @@ namespace SHikkhanobishAPI.Controllers
             if(firstTime)
             {
                 teacher.totalTuition += 1;
+            }
+            if(teacher.totalMinuite >= 20)
+            {
+                teacher.monetizetionStatus = 1;
             }
             Response regRes = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/updateTeacherInfo"
                 .PostUrlEncodedAsync(new
