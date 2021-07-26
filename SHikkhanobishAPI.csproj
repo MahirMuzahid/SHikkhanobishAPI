@@ -273,6 +273,7 @@
     <Compile Include="Models\Shikkhanobish\ChangeTeacherInfo.cs" />
     <Compile Include="Models\Shikkhanobish\Chapter.cs" />
     <Compile Include="Models\Shikkhanobish\ClassInfo.cs" />
+    <Compile Include="Models\Shikkhanobish\CostClass.cs" />
     <Compile Include="Models\Shikkhanobish\Course.cs" />
     <Compile Include="Models\Shikkhanobish\CousrList.cs" />
     <Compile Include="Models\Shikkhanobish\Degree.cs" />

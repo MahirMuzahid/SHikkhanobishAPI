@@ -18,6 +18,7 @@ namespace SHikkhanobishAPI.Controllers
         private SqlConnection conn;
         public const int SchoolCost = 3;
         public const int CollegeCost = 4;
+        public const double processignCostPercent = 0.2;
         public void Connection()
         {
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
@@ -1312,9 +1313,9 @@ namespace SHikkhanobishAPI.Controllers
             return objRList;
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public List<StudentTuitionHistory> getTuitionHistoryWithTuitionID(StudentTuitionHistory obj)
+        public StudentTuitionHistory getTuitionHistoryWithTuitionID(StudentTuitionHistory obj)
         {
-            List<StudentTuitionHistory> objRList = new List<StudentTuitionHistory>();
+            StudentTuitionHistory objR = new StudentTuitionHistory();
             try
             {
                 Connection();
@@ -1325,7 +1326,6 @@ namespace SHikkhanobishAPI.Controllers
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    StudentTuitionHistory objR = new StudentTuitionHistory();
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
                     objR.tuitionID = reader["tuitionID"].ToString();
                     objR.time = reader["time"].ToString();
@@ -1344,17 +1344,14 @@ namespace SHikkhanobishAPI.Controllers
                     objR.thirdChoiceName = reader["thirdChoiceName"].ToString();
                     objR.forthChoiceName = reader["forthChoiceName"].ToString();
                     objR.teacherEarn = Convert.ToDouble(reader["teacherEarn"]);
-                    objRList.Add(objR);
                 }
                 conn.Close();
             }
             catch (Exception ex)
             {
-                StudentTuitionHistory objR = new StudentTuitionHistory();
                 objR.Response = ex.Message;
-                objRList.Add(objR);
             }
-            return objRList;
+            return objR;
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Response setStudentTuitionHistory(StudentTuitionHistory obj)
@@ -2310,5 +2307,19 @@ thirdChoiceName:'Physics First Paper'
 forthChoiceName: 'Chapter 1'
          */
         #endregion
+
+        #region Get Cost
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public CostClass GetCost()
+        {
+            CostClass allCost = new CostClass();
+            allCost.SchoolCost = SchoolCost;
+            allCost.CollegeCost = CollegeCost;
+            allCost.ProcessignCostPercent = processignCostPercent;
+            return allCost;
+        }
+        #endregion
+
+
     }
 }

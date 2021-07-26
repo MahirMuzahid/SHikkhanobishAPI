@@ -8,6 +8,7 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
     public class PremiumStudent
     {
         public int studentID { get; set; }
+        public int buyingAmount { get; set; }
         public string Response { get; set; }
     }
 }

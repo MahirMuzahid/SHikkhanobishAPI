@@ -31,8 +31,8 @@ namespace SHikkhanobishAPI.Controllers
 
             return toalRating;
         }
-        
 
+        public const int PremiumStudentBuyingAmount = 100;
         
         #region Teacher
         [System.Web.Http.AcceptVerbs("GET", "POST")]
@@ -820,6 +820,7 @@ namespace SHikkhanobishAPI.Controllers
                 while (reader.Read())
                 {
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    obj.buyingAmount = PremiumStudentBuyingAmount;
                 }
                 conn.Close();
             }
@@ -869,9 +870,9 @@ namespace SHikkhanobishAPI.Controllers
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public ReportTeacherTable getReportWithTeacherID(ReportTeacherTable obj)
+        public List<ReportTeacherTable> getReportWithTeacherID(ReportTeacherTable obj)
         {
-            ReportTeacherTable objR = new ReportTeacherTable();
+            List<ReportTeacherTable> objRList = new List<ReportTeacherTable>();
             try
             {
                 Connection();
@@ -882,20 +883,24 @@ namespace SHikkhanobishAPI.Controllers
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    ReportTeacherTable objR = new ReportTeacherTable();
                     objR.reportID = Convert.ToInt32(reader["reportID"]);
                     objR.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
                     objR.reportIndex = Convert.ToInt32(reader["reportIndex"]);
                     objR.description = reader["description"].ToString();
                     obj.Response = "ok";
+                    objRList.Add(obj);
                 }
                 conn.Close();
             }
             catch (Exception ex)
             {
+                ReportTeacherTable objR = new ReportTeacherTable();
                 objR.Response = ex.Message;
+                objRList.Add(obj);
             }
-            return objR;
+            return objRList;
         }
         #endregion 
     }
