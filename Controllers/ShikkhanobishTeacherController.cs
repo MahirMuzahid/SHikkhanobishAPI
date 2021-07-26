@@ -771,6 +771,37 @@ namespace SHikkhanobishAPI.Controllers
             }
             return objRList;
         }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response addasFavouriteTeacher(favouriteTeacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("addasFavouriteTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
         #endregion
 
         #region Premium Teacher 
@@ -799,5 +830,73 @@ namespace SHikkhanobishAPI.Controllers
             return objR;
         }
         #endregion
+
+        #region Report Teacher 
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setReport(ReportTeacherTable obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setReport", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@reportID", obj.reportID);
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@reportIndex", obj.reportIndex);
+                cmd.Parameters.AddWithValue("@description", obj.description);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public ReportTeacherTable getReportWithTeacherID(ReportTeacherTable obj)
+        {
+            ReportTeacherTable objR = new ReportTeacherTable();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getReportWithTeacherID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.reportID = Convert.ToInt32(reader["reportID"]);
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.reportIndex = Convert.ToInt32(reader["reportIndex"]);
+                    objR.description = reader["description"].ToString();
+                    obj.Response = "ok";
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
+        #endregion 
     }
 }

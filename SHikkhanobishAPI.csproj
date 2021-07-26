@@ -283,6 +283,7 @@
     <Compile Include="Models\Shikkhanobish\PerMinCallResponse.cs" />
     <Compile Include="Models\Shikkhanobish\PerMinPassModel.cs" />
     <Compile Include="Models\Shikkhanobish\PremiumStudent.cs" />
+    <Compile Include="Models\Shikkhanobish\ReportTeacherTable.cs" />
     <Compile Include="Models\Shikkhanobish\SelectPattern.cs" />
     <Compile Include="Models\Shikkhanobish\SendSms.cs" />
     <Compile Include="Models\Shikkhanobish\setTeacher.cs" />
