@@ -1409,6 +1409,7 @@ namespace SHikkhanobishAPI.Controllers
             Response response = new Response();
             try
             {
+
                 Connection();
                 SqlCommand cmd = new SqlCommand("updateStudentTuitionHistory", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -1437,6 +1438,40 @@ namespace SHikkhanobishAPI.Controllers
             }
             return response;
         }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response FinalizeTuitionHistory(StudentTuitionHistory obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("FinalizeTuitionHistory", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ratting", obj.ratting);
+                cmd.Parameters.AddWithValue("@tuitionID", obj.tuitionID);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
         #endregion
 
 
@@ -2069,6 +2104,7 @@ namespace SHikkhanobishAPI.Controllers
             return inf0;
         }
         #endregion
+
         #region Video CAll Per Min Api Call
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public async Task<PerMinCallResponse> PerMinPassCall(PerMinPassModel obj)
@@ -2136,14 +2172,16 @@ namespace SHikkhanobishAPI.Controllers
         }
         public async Task UpdateTuitionHistory(PerMinPassModel prmc, int cost, double earn)
         {
+            int totalCost = cost * prmc.time;
+            double totalEarn = earn * prmc.time;
             var res = await "https://api.shikkhanobish.com/api/ShikkhanobishLogin/updateStudentTuitionHistory".PostUrlEncodedAsync(new
             {
                 tuitionID = prmc.sessionID,
                 time = prmc.time,
-                cost = cost,
+                cost = totalCost,
                 ratting = 0,
-                teacherEarn = earn
-            });
+                teacherEarn = totalEarn
+            }).ReceiveJson<Response>();
         }
         public async Task UpdateStudent(Student student ,int cost)
         {
