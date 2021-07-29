@@ -19,6 +19,7 @@ namespace SHikkhanobishAPI.Controllers
         public const int SchoolCost = 3;
         public const int CollegeCost = 4;
         public const double processignCostPercent = 0.2;
+
         public void Connection()
         {
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
