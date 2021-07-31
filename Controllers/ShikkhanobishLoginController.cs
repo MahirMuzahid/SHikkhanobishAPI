@@ -2321,6 +2321,39 @@ forthChoiceName: 'Chapter 1'
         }
         #endregion
 
+        #region Dashboard
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<DashBoardUser> GetDashBoardUser()
+        {
+            List<DashBoardUser> objRList = new List<DashBoardUser>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("GetDashBoardUser", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    DashBoardUser objAdd = new DashBoardUser();
+                    objAdd.userID = Convert.ToInt32(reader["userID"]);
+                    objAdd.name = reader["name"].ToString();
+                    objAdd.password = reader["password"].ToString();
+                    objAdd.type = reader["type"].ToString();
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                DashBoardUser objAdd = new DashBoardUser();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+        #endregion
+
 
     }
 }

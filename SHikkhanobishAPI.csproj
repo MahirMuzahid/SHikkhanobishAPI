@@ -276,6 +276,7 @@
     <Compile Include="Models\Shikkhanobish\CostClass.cs" />
     <Compile Include="Models\Shikkhanobish\Course.cs" />
     <Compile Include="Models\Shikkhanobish\CousrList.cs" />
+    <Compile Include="Models\Shikkhanobish\DashBoardUser.cs" />
     <Compile Include="Models\Shikkhanobish\Degree.cs" />
     <Compile Include="Models\Shikkhanobish\favouriteTeacher.cs" />
     <Compile Include="Models\Shikkhanobish\HireTeacher.cs" />
