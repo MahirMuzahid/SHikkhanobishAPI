@@ -15,7 +15,7 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
         public int coin { get; set; }
         public int freemin { get; set; }
         public string city { get; set; }
-public string name { get; set; }
+        public string name { get; set; }
         public string institutionName { get; set; }
         public string Response { get; set; }
     }

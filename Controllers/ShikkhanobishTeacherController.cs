@@ -982,10 +982,6 @@ namespace SHikkhanobishAPI.Controllers
                     favouriteTeacher objR = new favouriteTeacher();
                     objR.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
-                    objR.studentName = reader["studentName"].ToString();
-                    objR.teacherName = reader["teacherName"].ToString();
-                    objR.teacherTotalTuition = Convert.ToInt32(reader["teacherTotalTuition"]);
-                    objR.teacherRatting = Convert.ToDouble(reader["teacherRatting"]);
                     objRList.Add(objR);
                 }
                 conn.Close();
@@ -1028,6 +1024,35 @@ namespace SHikkhanobishAPI.Controllers
                 response.Status = 0;
             }
             return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<favouriteTeacher> getFavTeacherByTeacherID(favouriteTeacher obj)
+        {
+            List<favouriteTeacher> objRList = new List<favouriteTeacher>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getFavTeacherByTeacherID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    favouriteTeacher objR = new favouriteTeacher();
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objRList.Add(objR);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                favouriteTeacher objR = new favouriteTeacher();
+                objR.Response = ex.Message;
+                objRList.Add(objR);
+            }
+            return objRList;
         }
         #endregion
 
@@ -1204,6 +1229,8 @@ namespace SHikkhanobishAPI.Controllers
             }
             return objRList;
         }
-        #endregion 
+        #endregion
+
+
     }
 }

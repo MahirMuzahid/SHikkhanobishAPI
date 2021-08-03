@@ -6,8 +6,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Mvc;
 
@@ -1741,7 +1744,7 @@ namespace SHikkhanobishAPI.Controllers
         }
         #endregion
 
-
+      
         #region Voucher
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public List<Voucher> getVoucher()
@@ -2354,6 +2357,73 @@ forthChoiceName: 'Chapter 1'
         }
         #endregion
 
+        #region RequestPayemnt
+        private string paymentGatewayBase = WebConfigurationManager.AppSettings["baseUrl"];
+        string Baseurl = WebConfigurationManager.AppSettings["baseUrl"] + "/request.php";
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task RequestPayment(requestPayment obj)
+        {
+            string messgae = "";
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            TransactionModel rq = new TransactionModel();
+
+            rq.tran_id = RandomString(10);
+            rq.cus_name = obj.name;
+            rq.amount = obj.amount +"" ;
+            rq.cus_phone = obj.phonenumber;
+            rq.cus_email = "mahirmuzahid@gmail.com";
+
+            rq.success_url = "https://localhost:44374/api/ShikkhanobishLogin/CallBackPaymentSuccessFull";
+            rq.fail_url = "https://localhost:44374/api/ShikkhanobishLogin/CallBackPaymentFailed";
+            rq.cancel_url = "https://localhost:44374/api/ShikkhanobishLogin/CallBackPaymentCancle";
+
+            PropertyInfo[] infos = rq.GetType().GetProperties();
+
+            foreach (PropertyInfo pair in infos)
+            {
+                string name = pair.Name;
+                var value = pair.GetValue(rq, null);
+
+                parameters.Add(pair.Name, value.ToString());
+            }
+            using (var client = new HttpClient())
+            {
+                HttpContent DictionaryItems = new FormUrlEncodedContent(parameters);
+
+                using (
+                    var result =
+                        await client.PostAsync(Baseurl, DictionaryItems))
+                {
+                    var input = await result.Content.ReadAsStringAsync();
+                    var trans = input.Remove(0, 2).Split('"')[0];                   
+                    string url = paymentGatewayBase + trans;
+                }
+            }
+
+        }
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public void CallBackPaymentSuccessFull(CallBackPayment obj)
+        {
+
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public void CallBackPaymentFailed(CallBackPayment obj)
+        {
+
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public void CallBackPaymentCancle(CallBackPayment obj)
+        {
+
+        }
+        #endregion
 
     }
 }
