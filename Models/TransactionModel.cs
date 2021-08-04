@@ -7,8 +7,8 @@ namespace SHikkhanobishAPI.Models
 {
     public class TransactionModel
     {
-        public string store_id { get; set; } = "shikkhanobish";
-        public string signature_key { get; set; } = "0cbb2e487f5c556097cc302139ce5500";
+        public string store_id { get; set; } = "aamarpay";
+        public string signature_key { get; set; } = "28c78bb1f45112f5d40b956fe104645a";
         public string amount { get; set; }
         public string currency { get; set; } = "BDT";
         public string tran_id { get; set; }
@@ -39,7 +39,7 @@ namespace SHikkhanobishAPI.Models
         public string success_url { get; set; }
         public string fail_url { get; set; }
         public string cancel_url { get; set; }
-        public string opt_a { get; set; } = "";
+        public string opt_a { get; set; }
         public string opt_b { get; set; } = "";
         public string opt_c { get; set; } = "";
         public string opt_d { get; set; } = "";

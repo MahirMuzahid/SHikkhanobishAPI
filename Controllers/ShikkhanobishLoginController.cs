@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
@@ -2361,9 +2362,10 @@ forthChoiceName: 'Chapter 1'
         private string paymentGatewayBase = WebConfigurationManager.AppSettings["baseUrl"];
         string Baseurl = WebConfigurationManager.AppSettings["baseUrl"] + "/request.php";
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public async Task RequestPayment(requestPayment obj)
+        public async Task<String> RequestPayment(requestPayment obj)
         {
             string messgae = "";
+            string url;
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             TransactionModel rq = new TransactionModel();
 
@@ -2371,11 +2373,12 @@ forthChoiceName: 'Chapter 1'
             rq.cus_name = obj.name;
             rq.amount = obj.amount +"" ;
             rq.cus_phone = obj.phonenumber;
+            rq.opt_a = obj.studentID.ToString();
             rq.cus_email = "mahirmuzahid@gmail.com";
 
-            rq.success_url = "https://localhost:44374/api/ShikkhanobishLogin/CallBackPaymentSuccessFull";
-            rq.fail_url = "https://localhost:44374/api/ShikkhanobishLogin/CallBackPaymentFailed";
-            rq.cancel_url = "https://localhost:44374/api/ShikkhanobishLogin/CallBackPaymentCancle";
+            rq.success_url = "https://api.shikkhanobish.com/api/ShikkhanobishLogin/CallBackPaymentSuccessFull";
+            rq.fail_url = "https://api.shikkhanobish.com/api/ShikkhanobishLogin/CallBackPaymentFailed";
+            rq.cancel_url = "https://api.shikkhanobish.com/api/ShikkhanobishLogin/CallBackPaymentCancle";
 
             PropertyInfo[] infos = rq.GetType().GetProperties();
 
@@ -2396,10 +2399,10 @@ forthChoiceName: 'Chapter 1'
                 {
                     var input = await result.Content.ReadAsStringAsync();
                     var trans = input.Remove(0, 2).Split('"')[0];                   
-                    string url = paymentGatewayBase + trans;
+                    url = paymentGatewayBase + trans;
                 }
             }
-
+            return url;
         }
         private static Random random = new Random();
         public static string RandomString(int length)
@@ -2409,19 +2412,28 @@ forthChoiceName: 'Chapter 1'
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public void CallBackPaymentSuccessFull(CallBackPayment obj)
+        public async Task CallBackPaymentSuccessFull(CallBackPayment obj)
         {
-
+            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + true + "&amount=" + obj.amount + "&response=ok";
+            HttpClient client = new HttpClient();
+            StringContent content = new StringContent("", Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync(url, content).ConfigureAwait(true);
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public void CallBackPaymentFailed(CallBackPayment obj)
+        public async Task CallBackPaymentFailed(CallBackPayment obj)
         {
-
+            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + false + "&amount=" + obj.amount + "&response=" + obj.pg_error_code_details;
+            HttpClient client = new HttpClient();
+            StringContent content = new StringContent("", Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync(url, content).ConfigureAwait(true);
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public void CallBackPaymentCancle(CallBackPayment obj)
+        public async Task CallBackPaymentCancle(CallBackPayment obj)
         {
-
+            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + false + "&amount=" + obj.amount + "&response=" + obj.pg_error_code_details;
+            HttpClient client = new HttpClient();
+            StringContent content = new StringContent("", Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync(url, content).ConfigureAwait(true);
         }
         #endregion
 
