@@ -1103,12 +1103,13 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     StudentPaymentHistory objAdd = new StudentPaymentHistory();
                     objAdd.studentID = Convert.ToInt32(reader["studentID"]);
-                    objAdd.paymentID = Convert.ToInt32(reader["paymentID"]);
+                    objAdd.paymentID = reader["paymentID"].ToString();
                     objAdd.date = reader["date"].ToString();
                     objAdd.trxID = reader["trxID"].ToString();
                     objAdd.amountTaka = Convert.ToInt32(reader["amountTaka"]);
                     objAdd.amountCoin = Convert.ToInt32(reader["amountCoin"]);
-                    objAdd.medium = Convert.ToInt32(reader["medium"]);
+                    objAdd.medium = reader["medium"].ToString();
+                    objAdd.cardID = reader["cardID"].ToString();
                     objAdd.isVoucherUsed = Convert.ToInt32(reader["isVoucherUsed"]);
                     objAdd.voucherID = Convert.ToInt32(reader["voucherID"]);
                     objRList.Add(objAdd);
@@ -1140,12 +1141,13 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     StudentPaymentHistory objR = new StudentPaymentHistory();
                     objR.studentID = Convert.ToInt32(reader["studentID"]);
-                    objR.paymentID = Convert.ToInt32(reader["paymentID"]);
+                    objR.paymentID = reader["paymentID"].ToString();
                     objR.date = reader["date"].ToString();
                     objR.trxID = reader["trxID"].ToString();
                     objR.amountTaka = Convert.ToInt32(reader["amountTaka"]);
                     objR.amountCoin = Convert.ToInt32(reader["amountCoin"]);
-                    objR.medium = Convert.ToInt32(reader["medium"]);
+                    objR.medium = reader["medium"].ToString();
+                    objR.cardID = reader["cardID"].ToString();
                     objR.isVoucherUsed = Convert.ToInt32(reader["isVoucherUsed"]);
                     objR.name = reader["name"].ToString();
                     objR.voucherID = Convert.ToInt32(reader["voucherID"]);
@@ -1181,6 +1183,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@medium", obj.medium);
                 cmd.Parameters.AddWithValue("@isVoucherUsed", obj.isVoucherUsed);
                 cmd.Parameters.AddWithValue("@voucherID", obj.voucherID);
+                cmd.Parameters.AddWithValue("@cardID", obj.cardID);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -2414,7 +2417,7 @@ forthChoiceName: 'Chapter 1'
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public async Task CallBackPaymentSuccessFull(CallBackPayment obj)
         {
-            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + true + "&amount=" + obj.amount + "&response=ok";
+            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + true + "&amount=" + obj.amount + "&response=ok" + "&paymentID=" + obj.mer_txnid + "&trxID=" + obj.bank_txn + "&cardID="+obj.card_number+ "&cardType="+obj.card_type;
             HttpClient client = new HttpClient();
             StringContent content = new StringContent("", Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync(url, content).ConfigureAwait(true);
@@ -2422,7 +2425,7 @@ forthChoiceName: 'Chapter 1'
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public async Task CallBackPaymentFailed(CallBackPayment obj)
         {
-            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + false + "&amount=" + obj.amount + "&response=" + obj.pg_error_code_details;
+            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + false + "&amount=" + obj.amount + "&response=" + obj.pg_error_code_details + "&paymentID=" + obj.mer_txnid + "&trxID=" + obj.bank_txn + "&cardID=" + obj.card_number + "&cardType=" + obj.card_type;
             HttpClient client = new HttpClient();
             StringContent content = new StringContent("", Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync(url, content).ConfigureAwait(true);
@@ -2430,7 +2433,7 @@ forthChoiceName: 'Chapter 1'
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public async Task CallBackPaymentCancle(CallBackPayment obj)
         {
-            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + false + "&amount=" + obj.amount + "&response=" + obj.pg_error_code_details;
+            string url = "https://shikkhanobishrealtimeapi.shikkhanobish.com/api/ShikkhanobishSignalR/StudentPaymentStatus?&studentID=" + obj.opt_a + "&successFullPayment=" + false + "&amount=" + obj.amount + "&response=" + obj.pg_error_code_details + "&paymentID=" + obj.mer_txnid + "&trxID=" + obj.bank_txn + "&cardID=" + obj.card_number + "&cardType=" + obj.card_type;
             HttpClient client = new HttpClient();
             StringContent content = new StringContent("", Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync(url, content).ConfigureAwait(true);
