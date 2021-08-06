@@ -2440,5 +2440,35 @@ forthChoiceName: 'Chapter 1'
         }
         #endregion
 
+        #region GetImageSource
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<PromotionalImage> GetPromotionalImage()
+        {
+            List<PromotionalImage> objRList = new List<PromotionalImage>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("GetPromotionalImage", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    PromotionalImage objAdd = new PromotionalImage();
+                    objAdd.imgSource = reader["imgSource"].ToString();
+                    objRList.Add(objAdd); 
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                PromotionalImage objAdd = new PromotionalImage();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+        #endregion
+
     }
 }
