@@ -2440,7 +2440,7 @@ forthChoiceName: 'Chapter 1'
         }
         #endregion
 
-        #region GetImageSource
+        #region ImageSource
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public List<PromotionalImage> GetPromotionalImage()
         {
@@ -2463,6 +2463,38 @@ forthChoiceName: 'Chapter 1'
             catch (Exception ex)
             {
                 PromotionalImage objAdd = new PromotionalImage();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+        #endregion
+
+        #region GetImageSource
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<PromotionalMassage> GetPromotionalMassage()
+        {
+            List<PromotionalMassage> objRList = new List<PromotionalMassage>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("GetPromotionalMassage", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    PromotionalMassage objAdd = new PromotionalMassage();
+                    objAdd.imageSrc = reader["imageSrc"].ToString();
+                    objAdd.userType = reader["userType"].ToString();
+                    objAdd.text = reader["text"].ToString();
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                PromotionalMassage objAdd = new PromotionalMassage();
                 objAdd.Response = ex.Message;
                 objRList.Add(objAdd);
             }

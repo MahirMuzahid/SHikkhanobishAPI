@@ -271,6 +271,7 @@
     <Compile Include="Models\Medhabi\Questions.cs" />
     <Compile Include="Models\Shikkhanobish\CallBackPayment.cs" />
     <Compile Include="Models\Shikkhanobish\PromotionalImage.cs" />
+    <Compile Include="Models\Shikkhanobish\PromotionalMassage.cs" />
     <Compile Include="Models\Shikkhanobish\requestPayment.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\Response.cs" />
