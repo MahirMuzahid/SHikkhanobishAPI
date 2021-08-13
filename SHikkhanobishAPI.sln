@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHikkhanobishAPI", "SHikkhanobishAPI.csproj", "{662646FF-1D37-4EF1-8B78-E043BC90273F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRServiceShikkhanobish", "..\SignalRServiceShikkhanobish\SignalRServiceShikkhanobish.csproj", "{C71BD990-A7B0-4E90-94B9-6FB0CF47C9A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRServiceShikkhanobish", "D:\Business\SignalRServiceShikkhanobish\SignalRServiceShikkhanobish.csproj", "{8C42C977-9C83-4E9E-8C97-6964A90ECF7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{662646FF-1D37-4EF1-8B78-E043BC90273F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{662646FF-1D37-4EF1-8B78-E043BC90273F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{662646FF-1D37-4EF1-8B78-E043BC90273F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C71BD990-A7B0-4E90-94B9-6FB0CF47C9A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C71BD990-A7B0-4E90-94B9-6FB0CF47C9A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C71BD990-A7B0-4E90-94B9-6FB0CF47C9A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C71BD990-A7B0-4E90-94B9-6FB0CF47C9A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C42C977-9C83-4E9E-8C97-6964A90ECF7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C42C977-9C83-4E9E-8C97-6964A90ECF7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C42C977-9C83-4E9E-8C97-6964A90ECF7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C42C977-9C83-4E9E-8C97-6964A90ECF7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
