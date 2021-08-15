@@ -1180,6 +1180,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@trxID", obj.trxID);
                 cmd.Parameters.AddWithValue("@amountTaka", obj.amountTaka);
                 cmd.Parameters.AddWithValue("@amountCoin", obj.amountCoin);
+                cmd.Parameters.AddWithValue("@name", obj.name);
                 cmd.Parameters.AddWithValue("@medium", obj.medium);
                 cmd.Parameters.AddWithValue("@isVoucherUsed", obj.isVoucherUsed);
                 cmd.Parameters.AddWithValue("@voucherID", obj.voucherID);
