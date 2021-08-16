@@ -9,10 +9,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Mvc;
 
 namespace SHikkhanobishAPI.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ShikkhanobishTeacherController : ApiController
     {
         private SqlConnection conn;

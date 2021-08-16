@@ -13,10 +13,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Mvc;
 
 namespace SHikkhanobishAPI.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ShikkhanobishLoginController : ApiController
     {
         private SqlConnection conn;
