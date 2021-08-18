@@ -9,7 +9,9 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
     {
         public string imageSrc { get; set; }
         public string text { get; set; }
+        public int msgType { get; set; }
         public string userType { get; set; }
+        public string playstoreAppLink { get; set; } = "https://play.google.com/store/apps/details?id=com.pathao.user&hl=en";
         public string Response { get; set; }
     }
 }

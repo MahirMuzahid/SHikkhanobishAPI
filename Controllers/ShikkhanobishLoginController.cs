@@ -2489,6 +2489,7 @@ forthChoiceName: 'Chapter 1'
                 {
                     PromotionalMassage objAdd = new PromotionalMassage();
                     objAdd.imageSrc = reader["imageSrc"].ToString();
+                    objAdd.msgType = Convert.ToInt32(reader["msgType"]);
                     objAdd.userType = reader["userType"].ToString();
                     objAdd.text = reader["text"].ToString();
                     objRList.Add(objAdd);
