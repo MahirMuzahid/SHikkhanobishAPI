@@ -34,7 +34,7 @@ namespace SHikkhanobishAPI.Controllers
             return toalRating;
         }
 
-        public const int PremiumStudentBuyingAmount = 100;
+        public const int PremiumStudentBuyingAmount = 200;
         public const int maxNumberOfFavouriteTeacherForNonPremimumStudent = 1;
 
         #region Teacher
@@ -1127,6 +1127,36 @@ namespace SHikkhanobishAPI.Controllers
                 objR.Response = ex.Message;
             }
             return objR;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response makePremiumStudent(PremiumStudent obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("makePremiumStudent", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
         }
         #endregion
 
