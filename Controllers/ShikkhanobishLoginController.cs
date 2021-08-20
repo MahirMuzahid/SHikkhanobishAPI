@@ -70,7 +70,7 @@ namespace SHikkhanobishAPI.Controllers
                 conn.Close();
 
 
-                string apiKey = allKey.smsApiKey;
+                string apiKey = "RmlPb3ZDdk9iR2xGeXZuY0Rraz0=";
                 string uri = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey+"&to=" + obj.number+ "&from=8804445620753&sms=" + obj.msg;
                 res = await uri.GetJsonAsync<SendSms>();
                 if(res.code == "ok")
