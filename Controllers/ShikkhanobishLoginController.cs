@@ -57,21 +57,10 @@ namespace SHikkhanobishAPI.Controllers
             SendSms res = new SendSms();
             try
             {
-                Connection();
-                SqlCommand cmd = new SqlCommand("getllimpKey", conn);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    allKey.smsApiKey = reader["smsApiKey"].ToString();
 
-                }
-                conn.Close();
-
-
-                string apiKey = "RmlPb3ZDdk9iR2xGeXZuY0Rraz0=";
+                string apiKey = "b0dOQWlNd0xrTnpIanlNSE9kRnM=";
                 string uri = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey+"&to=" + obj.number+ "&from=8804445620753&sms=" + obj.msg;
+                string ull = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey +"&to= " + obj.number + "&from=8804445620753&sms=" + obj.msg;
                 res = await uri.GetJsonAsync<SendSms>();
                 if(res.code == "ok")
                 {

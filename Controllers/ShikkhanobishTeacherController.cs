@@ -230,6 +230,7 @@ namespace SHikkhanobishAPI.Controllers
             {
                 Connection();
                 SqlCommand cmd = new SqlCommand("setTeacher", conn);
+                string date = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
                 cmd.Parameters.AddWithValue("@name", obj.name);
@@ -244,6 +245,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@sub7", obj.sub7);
                 cmd.Parameters.AddWithValue("@sub8", obj.sub8);
                 cmd.Parameters.AddWithValue("@sub9", obj.sub9);
+                cmd.Parameters.AddWithValue("@activeTime", date);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
