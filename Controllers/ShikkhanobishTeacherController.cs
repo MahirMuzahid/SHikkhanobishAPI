@@ -39,9 +39,9 @@ namespace SHikkhanobishAPI.Controllers
 
         #region Teacher
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public Teacher getAllTeacher(Teacher obj)
+        public List<Teacher> getAllTeacher(Teacher obj)
         {
-            Teacher objR = new Teacher();
+            List<Teacher> objRList = new List<Teacher>();
             try
             {
                 Connection();
@@ -51,6 +51,7 @@ namespace SHikkhanobishAPI.Controllers
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    Teacher objR = new Teacher();
                     objR.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objR.name = reader["name"].ToString();
                     objR.password = reader["password"].ToString();
@@ -69,14 +70,19 @@ namespace SHikkhanobishAPI.Controllers
                     objR.oneStar = Convert.ToInt32(reader["oneStar"]);
                     objR.amount = Convert.ToDouble(reader["amount"]);
 
+                    objRList.Add(objR);
+
                 }
                 conn.Close();
             }
             catch (Exception ex)
             {
+                Teacher objR = new Teacher();
                 objR.Response = ex.Message;
+
+                objRList.Add(objR);
             }
-            return objR;
+            return objRList;
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Teacher getTeacherWithID(Teacher obj)
@@ -329,6 +335,37 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@oneStar", obj.oneStar);
                 cmd.Parameters.AddWithValue("@amount", obj.amount);
                 cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+
+        }
+        public Response selectTeacher(Teacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("selectTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -1260,6 +1297,43 @@ namespace SHikkhanobishAPI.Controllers
                 ReportTeacherTable objR = new ReportTeacherTable();
                 objR.Response = ex.Message;
                 objRList.Add(obj);
+            }
+            return objRList;
+        }
+        #endregion
+
+        #region Take Test 
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<TeacherTest> GetTeacherTest()
+        {
+            List<TeacherTest> objRList = new List<TeacherTest>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("GetTeacherTest", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TeacherTest objR = new TeacherTest();
+                    objR.questionID = Convert.ToInt32(reader["questionID"]);
+                    objR.question = reader["question"].ToString();
+                    objR.opOne = reader["opOne"].ToString();
+                    objR.opTwo = reader["opTwo"].ToString();
+                    objR.opThree = reader["opThree"].ToString();
+                    objR.opFour = reader["opFour"].ToString();
+                    objR.rightAns = Convert.ToInt32(reader["rightAns"]);
+                    objR.Response = "ok";
+                    objRList.Add(objR);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TeacherTest objR = new TeacherTest();
+                objR.Response = ex.Message;
+                objRList.Add(objR);
             }
             return objRList;
         }

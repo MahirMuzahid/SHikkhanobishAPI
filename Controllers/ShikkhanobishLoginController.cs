@@ -351,9 +351,9 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@classID", obj.classID);
                 cmd.Parameters.AddWithValue("@title", obj.title);
                 cmd.Parameters.AddWithValue("@name", obj.name);
-                cmd.Parameters.AddWithValue("@tuitionRequest", obj.tuitionRequest);
-                cmd.Parameters.AddWithValue("@avgRatting", obj.avgRatting);
-                cmd.Parameters.AddWithValue("@indexNo", obj.indexNo);
+                cmd.Parameters.AddWithValue("@tuitionRequest", 0);
+                cmd.Parameters.AddWithValue("@avgRatting", 0);
+                cmd.Parameters.AddWithValue("@indexNo", 0);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -486,9 +486,9 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@classID", obj.classID);
                 cmd.Parameters.AddWithValue("@title", obj.title);
                 cmd.Parameters.AddWithValue("@name", obj.name);
-                cmd.Parameters.AddWithValue("@tuitionRequest", obj.tuitionRequest);
-                cmd.Parameters.AddWithValue("@avgRatting", obj.avgRatting);
-                cmd.Parameters.AddWithValue("@indexNo ", obj.indexNo);
+                cmd.Parameters.AddWithValue("@tuitionRequest", 0);
+                cmd.Parameters.AddWithValue("@avgRatting", 0);
+                cmd.Parameters.AddWithValue("@indexNo ", 0);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -892,9 +892,9 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@institutionID", obj.institutionID);
                 cmd.Parameters.AddWithValue("@title", obj.title);
                 cmd.Parameters.AddWithValue("@name", obj.name);
-                cmd.Parameters.AddWithValue("@tuitionRequest", obj.tuitionRequest);
-                cmd.Parameters.AddWithValue("@avgRatting", obj.avgRatting);
-                cmd.Parameters.AddWithValue("@indexNo ", obj.indexNo);
+                cmd.Parameters.AddWithValue("@tuitionRequest", 0);
+                cmd.Parameters.AddWithValue("@avgRatting", 0);
+                cmd.Parameters.AddWithValue("@indexNo ", 0);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -1250,6 +1250,7 @@ namespace SHikkhanobishAPI.Controllers
                     objAdd.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objAdd.cost = Convert.ToInt32(reader["cost"]);
                     objAdd.ratting = Convert.ToInt32(reader["ratting"]);
+                    objAdd.date = reader["date"].ToString();
                     objAdd.firstChoiceID = reader["firstChoiceID"].ToString();
                     objAdd.secondChoiceID = reader["secondChoiceID"].ToString();
                     objAdd.thirdChoiceID = reader["thirdChoiceID"].ToString();
@@ -1553,9 +1554,9 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@subjectID", obj.subjectID);
                 cmd.Parameters.AddWithValue("@title", obj.title);
                 cmd.Parameters.AddWithValue("@name", obj.name);
-                cmd.Parameters.AddWithValue("@tuitionRequest", obj.tuitionRequest);
-                cmd.Parameters.AddWithValue("@avgRatting", obj.avgRatting);
-                cmd.Parameters.AddWithValue("@indexNo ", obj.indexNo);
+                cmd.Parameters.AddWithValue("@tuitionRequest", 0);
+                cmd.Parameters.AddWithValue("@avgRatting", 0);
+                cmd.Parameters.AddWithValue("@indexNo ", 0);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)

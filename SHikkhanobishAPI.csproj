@@ -279,6 +279,7 @@
     <Compile Include="Models\Shikkhanobish\PromotionalImage.cs" />
     <Compile Include="Models\Shikkhanobish\PromotionalMassage.cs" />
     <Compile Include="Models\Shikkhanobish\requestPayment.cs" />
+    <Compile Include="Models\Shikkhanobish\TeacherTest.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Shikkhanobish\ChangeTeacherInfo.cs" />
