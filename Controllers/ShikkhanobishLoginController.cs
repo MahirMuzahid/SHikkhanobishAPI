@@ -1554,6 +1554,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@subjectID", obj.subjectID);
                 cmd.Parameters.AddWithValue("@title", obj.title);
                 cmd.Parameters.AddWithValue("@name", obj.name);
+                cmd.Parameters.AddWithValue("@groupName", obj.groupName);
                 cmd.Parameters.AddWithValue("@tuitionRequest", 0);
                 cmd.Parameters.AddWithValue("@avgRatting", 0);
                 cmd.Parameters.AddWithValue("@indexNo ", 0);
