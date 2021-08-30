@@ -60,7 +60,7 @@ namespace SHikkhanobishAPI.Controllers
 
                 string apiKey = "b0dOQWlNd0xrTnpIanlNSE9kRnM=";
                 string uri = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey+"&to=" + obj.number+ "&from=8804445620753&sms=" + obj.msg;
-                string ull = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey +"&to= " + obj.number + "&from=8804445620753&sms=" + obj.msg;
+                //string ull = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey +"&to= " + obj.number + "&from=8804445620753&sms=" + obj.msg;
                 res = await uri.GetJsonAsync<SendSms>();
                 if(res.code == "ok")
                 {
@@ -2134,6 +2134,7 @@ namespace SHikkhanobishAPI.Controllers
                 await UpdateTeacher(teacher, firstTime, teacherEarn);
                 res.Massage = "All Ok";
                 res.cost = cost;
+                res.earned = teacherEarn;
                 res.Status = 0;
             }
             catch (Exception ex)
