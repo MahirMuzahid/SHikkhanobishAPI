@@ -2019,6 +2019,8 @@ namespace SHikkhanobishAPI.Controllers
             List<Teacher> SortedList = new List<Teacher>();
             List<Teacher> SelectedTeacherList = new List<Teacher>();
             List<float> teacherPointList = new List<float>();
+            Teacher t = new Teacher();
+            int track = 0;
             try
             {
                 Connection();
@@ -2037,50 +2039,87 @@ namespace SHikkhanobishAPI.Controllers
                 }
                 conn.Close();
 
-                
-              
+
+                track++;
                 int pointListCount = 0;
                 SortedList = matchedTeacherList.OrderBy(x => x.activeTime).ToList();
-                for (int i = 0; i < 5; i++)
+                int listCount = 0;
+                if(SortedList.Count != 0)
                 {
-                    Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = SortedList[i].teacherID })
-          .ReceiveJson<Teacher>();
-                    if(thisTeacher.activeStatus == 1)
+                    if (SortedList.Count < 5)
                     {
-                        SelectedTeacherList.Add(thisTeacher);
-                        SelectedTeacherList[i].activeTime = matchedTeacherList[i].activeTime;
+                        listCount = SortedList.Count;
                     }
-                    if (i == SortedList.Count - 1)
+                    else
                     {
-                        break;
+                        listCount = 5;
                     }
-                }              
+                    for (int i = 0; i < listCount; i++)
+                    {
+                        Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = SortedList[i].teacherID })
+              .ReceiveJson<Teacher>();
+                        if (thisTeacher.activeStatus == 1)
+                        {
+                            SelectedTeacherList.Add(thisTeacher);
+                            SelectedTeacherList[i].activeTime = matchedTeacherList[i].activeTime;
+                        }
+                        if (i == SortedList.Count - 1)
+                        {
+                            break;
+                        }
+                    }
+                    if (SelectedTeacherList.Count < 5)
+                    {
+                        listCount = SelectedTeacherList.Count;
+                    }
+                    else
+                    {
+                        listCount = 5;
+                    }
+                    track++;
+                    for (int i = 0; i < listCount; i++)
+                    {
+                        float thispoint = (5 - i) * 2f + CalculateRatting(SelectedTeacherList[i].fiveStar, SelectedTeacherList[i].fourStar, SelectedTeacherList[i].threeStar, SelectedTeacherList[i].twoStar, SelectedTeacherList[i].oneStar) * 4.1f;
+                        teacherPointList.Add(thispoint);
+                        if (i == SortedList.Count - 1)
+                        {
+                            break;
+                        }
+                    }
+                    track++;
+                    if (teacherPointList.Count > 0)
+                    {
+                        float max = teacherPointList[0];
 
-                for(int i = 0; i < 5; i++)
-                {
-                    float thispoint = (5 - i) * 2f + CalculateRatting(SelectedTeacherList[i].fiveStar, SelectedTeacherList[i].fourStar, SelectedTeacherList[i].threeStar, SelectedTeacherList[i].twoStar, SelectedTeacherList[i].oneStar) * 4.1f;
-                    teacherPointList.Add (thispoint) ;
-                    if (i == SortedList.Count-1)
-                    {
-                        break;
+                        for (int i = 0; i < teacherPointList.Count; i++)
+                        {
+                            if (max < teacherPointList[i])
+                            {
+                                max = teacherPointList[i];
+                                SelectedIndex = i;
+                            }
+                        }
+
+                        t = SelectedTeacherList[SelectedIndex];
                     }
-                }
-                float max = teacherPointList[0];
-              
-                for (int i = 0; i < teacherPointList.Count; i++)
-                {
-                    if(max < teacherPointList[i])
+
+                    else
                     {
-                        max = teacherPointList[i];
-                        SelectedIndex = i;
+                        t.teacherID = 0;
                     }
+                    
                 }
+                else
+                {
+                    t.teacherID = 0;
+                }
+                
             }
             catch (Exception ex)
             {
-                //SelectedTuitionTeacherToCall.Response = ex.Message + " " + SelectedIndex;
+                t.Response = ex.Message;
             }
-            return SelectedTeacherList[SelectedIndex];
+            return t;
         }
         #endregion
 
