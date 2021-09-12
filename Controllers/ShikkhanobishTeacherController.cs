@@ -252,6 +252,7 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@sub8", obj.sub8);
                 cmd.Parameters.AddWithValue("@sub9", obj.sub9);
                 cmd.Parameters.AddWithValue("@activeTime", date);
+                cmd.Parameters.AddWithValue("@sub10", obj.sub10);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)

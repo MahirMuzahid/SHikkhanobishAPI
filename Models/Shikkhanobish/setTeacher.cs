@@ -20,6 +20,7 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
 		public int sub7 { get; set; }
 		public int sub8 { get; set; }
 		public int sub9 { get; set; }
+		public int sub10 { get; set; }
 		public string Response { get; set; }
 
 	}
