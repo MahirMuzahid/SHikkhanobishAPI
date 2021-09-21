@@ -34,7 +34,7 @@ namespace SHikkhanobishAPI.Controllers
             return toalRating;
         }
 
-        public const int PremiumStudentBuyingAmount = 200;
+        public const int PremiumStudentBuyingAmount = 99;
         public const int maxNumberOfFavouriteTeacherForNonPremimumStudent = 1;
 
         #region Teacher
@@ -1337,6 +1337,84 @@ namespace SHikkhanobishAPI.Controllers
                 objRList.Add(objR);
             }
             return objRList;
+        }
+        #endregion
+
+        #region AppVersion
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public AppVersion getAppVersion()
+        {
+            AppVersion objAdd = new AppVersion();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getAppVersion", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objAdd.studentAtVersion = Convert.ToInt32(reader["studentAtVersion"]);
+                    objAdd.teacherAtVersion = Convert.ToInt32(reader["teacherAtVersion"]);
+
+                    objAdd.Response = "Ok";
+
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objAdd.Response = ex.Message;
+            }
+            return objAdd;
+        }
+        //......................................//
+
+        // Test: 
+        // URL:https:
+        /* Parameter
+        {
+            
+        }
+
+        */
+
+        //......................................//
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setAppVesrion(AppVersion obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setAppVesrion", conn);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentAtVersion", obj.studentAtVersion);
+                cmd.Parameters.AddWithValue("@teacherAtVersion", obj.teacherAtVersion);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
         }
         #endregion
 
