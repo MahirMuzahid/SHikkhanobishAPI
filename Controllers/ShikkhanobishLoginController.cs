@@ -2020,6 +2020,7 @@ namespace SHikkhanobishAPI.Controllers
             List<Teacher> SelectedTeacherList = new List<Teacher>();
             List<float> teacherPointList = new List<float>();
             Teacher t = new Teacher();
+            int listCount = 0;
             int track = 0;
             try
             {
@@ -2039,11 +2040,11 @@ namespace SHikkhanobishAPI.Controllers
                 }
                 conn.Close();
 
-
-                track++;
+                //track++;
                 int pointListCount = 0;
                 SortedList = matchedTeacherList.OrderBy(x => x.activeTime).ToList();
-                int listCount = 0;
+                SortedList.Reverse();
+               
                 if(SortedList.Count != 0)
                 {
                     if (SortedList.Count < 5)
@@ -2060,33 +2061,17 @@ namespace SHikkhanobishAPI.Controllers
               .ReceiveJson<Teacher>();
                         if (thisTeacher.activeStatus == 1)
                         {
-                            SelectedTeacherList.Add(thisTeacher);
-                            SelectedTeacherList[i].activeTime = matchedTeacherList[i].activeTime;
-                        }
-                        if (i == SortedList.Count - 1)
-                        {
-                            break;
+                            thisTeacher.activeTime = SortedList[i].activeTime;
+                            SelectedTeacherList.Add(thisTeacher); 
                         }
                     }
-                    if (SelectedTeacherList.Count < 5)
-                    {
-                        listCount = SelectedTeacherList.Count;
-                    }
-                    else
-                    {
-                        listCount = 5;
-                    }
-                    track++;
-                    for (int i = 0; i < listCount; i++)
+                    track = SelectedTeacherList.Count;
+                    for (int i = 0; i < SelectedTeacherList.Count; i++)
                     {
                         float thispoint = (5 - i) * 2f + CalculateRatting(SelectedTeacherList[i].fiveStar, SelectedTeacherList[i].fourStar, SelectedTeacherList[i].threeStar, SelectedTeacherList[i].twoStar, SelectedTeacherList[i].oneStar) * 4.1f;
                         teacherPointList.Add(thispoint);
-                        if (i == SortedList.Count - 1)
-                        {
-                            break;
-                        }
                     }
-                    track++;
+         
                     if (teacherPointList.Count > 0)
                     {
                         float max = teacherPointList[0];
@@ -2102,7 +2087,6 @@ namespace SHikkhanobishAPI.Controllers
 
                         t = SelectedTeacherList[SelectedIndex];
                     }
-
                     else
                     {
                         t.teacherID = 0;
@@ -2119,6 +2103,7 @@ namespace SHikkhanobishAPI.Controllers
             {
                 t.Response = ex.Message;
             }
+            t.amount = track;
             return t;
         }
         #endregion
