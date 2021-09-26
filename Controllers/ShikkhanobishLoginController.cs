@@ -25,6 +25,7 @@ namespace SHikkhanobishAPI.Controllers
         public const int SchoolCost = 3;
         public const int CollegeCost = 4;
         public const double processignCostPercent = 0.2;
+        public const int TeacherMonetizationTime = 15;
 
         public void Connection()
         {
@@ -2240,7 +2241,7 @@ namespace SHikkhanobishAPI.Controllers
             {
                 teacher.totalTuition += 1;
             }
-            if(teacher.totalMinuite >= 20)
+            if(teacher.totalMinuite+1 >= TeacherMonetizationTime)
             {
                 teacher.monetizetionStatus = 1;
             }
