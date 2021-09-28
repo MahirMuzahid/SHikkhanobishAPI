@@ -2397,6 +2397,7 @@ forthChoiceName: 'Chapter 1'
             rq.amount = obj.amount +"" ;
             rq.cus_phone = obj.phonenumber;
             rq.opt_a = obj.studentID.ToString();
+            rq.opt_b = obj.type.ToString();
             rq.cus_email = "mahirmuzahid@gmail.com";
 
             rq.success_url = "https://api.shikkhanobish.com/api/ShikkhanobishLogin/CallBackPaymentSuccessFull";
@@ -2523,5 +2524,97 @@ forthChoiceName: 'Chapter 1'
         }
         #endregion
 
+        #region Pending Ratting
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<pendingRatting> getPendingRatting()
+        {
+            List<pendingRatting> objRList = new List<pendingRatting>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getPendingRatting", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    pendingRatting objAdd = new pendingRatting();
+                    objAdd.studentID = Convert.ToInt32(reader["studentID"]);
+                    objAdd.tuitionID = reader["tuitionID"].ToString();
+                    objAdd.Response = "Ok";
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                pendingRatting objAdd = new pendingRatting();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setPendingRatting(pendingRatting obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setPendingRatting", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                cmd.Parameters.AddWithValue("@tuitionID", obj.tuitionID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response deletePendingTuition(pendingRatting obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("deletePendingTuition", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        #endregion
     }
 }

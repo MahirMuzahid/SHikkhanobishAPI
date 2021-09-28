@@ -289,6 +289,7 @@
     <Compile Include="Models\Medhabi\Questions.cs" />
     <Compile Include="Models\Shikkhanobish\AppVersion.cs" />
     <Compile Include="Models\Shikkhanobish\CallBackPayment.cs" />
+    <Compile Include="Models\Shikkhanobish\pendingRatting.cs" />
     <Compile Include="Models\Shikkhanobish\PromotionalImage.cs" />
     <Compile Include="Models\Shikkhanobish\PromotionalMassage.cs" />
     <Compile Include="Models\Shikkhanobish\requestPayment.cs" />
