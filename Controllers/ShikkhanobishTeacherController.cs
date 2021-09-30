@@ -631,9 +631,9 @@ namespace SHikkhanobishAPI.Controllers
 
         #region CourseList
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public CousrList getAllCousrList(CousrList obj)
+        public List<CousrList> getAllCousrList(CousrList obj)
         {
-            CousrList objR = new CousrList();
+            List<CousrList> objRList = new List<CousrList>();
             try
             {
                 Connection();
@@ -643,6 +643,7 @@ namespace SHikkhanobishAPI.Controllers
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    CousrList objR = new CousrList();
                     objR.teacherID = Convert.ToInt32(reader["teacherID"]);
                     objR.sub1 = Convert.ToInt32(reader["sub1"]);
                     objR.sub2 = Convert.ToInt32(reader["sub2"]);
@@ -663,15 +664,17 @@ namespace SHikkhanobishAPI.Controllers
                     objR.crs8 = Convert.ToInt32(reader["crs8"]);
                     objR.crs9 = Convert.ToInt32(reader["crs9"]);
                     objR.crs10 = Convert.ToInt32(reader["crs10"]);
-
+                    objRList.Add(objR);
                 }
                 conn.Close();
             }
             catch (Exception ex)
             {
+                CousrList objR = new CousrList();
                 objR.Response = ex.Message;
+                 objRList.Add(objR);
             }
-            return objR;
+            return objRList;
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public CousrList getCousrListWithID(CousrList obj)

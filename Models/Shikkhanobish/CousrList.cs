@@ -29,5 +29,6 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
         public int crs10 { get; set; }
         public string activeTime { get; set; }
         public string Response { get; set; }
+        public int sub10 { get; set; }
     }
 }

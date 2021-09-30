@@ -2616,5 +2616,103 @@ forthChoiceName: 'Chapter 1'
             return response;
         }
         #endregion
+
+        #region Active Status
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<activeStatusTable> getActiveStatus()
+        {
+            List<activeStatusTable> objRList = new List<activeStatusTable>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getActiveStatus", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    activeStatusTable objAdd = new activeStatusTable();
+                    objAdd.userID = Convert.ToInt32(reader["userID"]);
+                    objAdd.activeStatus = Convert.ToInt32(reader["activeStatus"]);
+                    objAdd.Response = "ok";
+                    
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                activeStatusTable objAdd = new activeStatusTable();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setActiveStatus(activeStatusTable obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setActiveStatus", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@userID", obj.userID);
+                cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
+                cmd.Parameters.AddWithValue("@type", obj.type);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response updateActiveStatus(activeStatusTable obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("updateActiveStatus", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@userID", obj.userID);
+                cmd.Parameters.AddWithValue("@activeStatus", obj.activeStatus);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        #endregion
     }
 }
