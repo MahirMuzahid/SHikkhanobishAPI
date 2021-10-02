@@ -2714,5 +2714,112 @@ forthChoiceName: 'Chapter 1'
             return response;
         }
         #endregion
+        #region Referral
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<ReferralTable> getRefferalTable()
+        {
+            List<ReferralTable> objRList = new List<ReferralTable>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getRefferalTable", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ReferralTable objAdd = new ReferralTable();
+                    objAdd.referralID = reader["referralID"].ToString();
+                    objAdd.studentID = Convert.ToInt32(reader["studentID"]);
+                    objAdd.referredStudentID = Convert.ToInt32(reader["referredStudentID"]);
+
+                    objAdd.referralDate = Convert.ToDateTime(reader["referralDate"]);
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                ReferralTable objAdd = new ReferralTable();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setReferralTable(ReferralTable obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setReferralTable", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@referralID", obj.referralID);
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response registerReferral(ReferralTable obj)
+        {
+            Response response = new Response();
+
+            List<ReferralTable> list = new List<ReferralTable>();
+            bool alreadyExist = list.Any(x => x.studentID == obj.studentID);
+            if (!alreadyExist)
+            {
+                try
+                {
+                    Connection();
+                    SqlCommand cmd = new SqlCommand("registerReferral", conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@referredStudentID", obj.referredStudentID);
+                    cmd.Parameters.AddWithValue("@referralDate", obj.referralDate.ToString("dd/mm/yyyy"));
+
+                    conn.Open();
+                    int i = cmd.ExecuteNonQuery();
+                    if (i != 0)
+                    {
+                        response.Massage = "Succesfull!";
+                        response.Status = 0;
+                    }
+                    else
+                    {
+                        response.Massage = "Unsuccesfull!";
+                        response.Status = 1;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    response.Massage = ex.Message;
+                    response.Status = 0;
+                }
+
+            }
+            return response;
+
+
+        }
+        #endregion 
     }
 }
