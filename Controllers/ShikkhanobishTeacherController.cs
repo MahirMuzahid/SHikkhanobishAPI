@@ -802,6 +802,50 @@ namespace SHikkhanobishAPI.Controllers
             return objRList;
         }
 
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response updateCourseList(CousrList obj)
+        {
+            Response response = new Response();
+            try
+            {
+                string date = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                Connection();
+                SqlCommand cmd = new SqlCommand("updateCourseList", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@sub1", obj.sub1);
+                cmd.Parameters.AddWithValue("@sub2", obj.sub2);
+                cmd.Parameters.AddWithValue("@sub3", obj.sub3);
+                cmd.Parameters.AddWithValue("@sub4", obj.sub4);
+                cmd.Parameters.AddWithValue("@sub5", obj.sub5);
+                cmd.Parameters.AddWithValue("@sub6", obj.sub6);
+                cmd.Parameters.AddWithValue("@sub7", obj.sub7);
+                cmd.Parameters.AddWithValue("@sub8", obj.sub8);
+                cmd.Parameters.AddWithValue("@sub9", obj.sub9);
+                cmd.Parameters.AddWithValue("@sub10", obj.sub10);
+                cmd.Parameters.AddWithValue("@activeTime", date);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
 
 
 
