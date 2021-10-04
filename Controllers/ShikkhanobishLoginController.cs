@@ -2041,32 +2041,56 @@ namespace SHikkhanobishAPI.Controllers
                 }
                 conn.Close();
 
-                //track++;
                 int pointListCount = 0;
                 SortedList = matchedTeacherList.OrderBy(x => x.activeTime).ToList();
                 SortedList.Reverse();
-               
-                if(SortedList.Count != 0)
+
+
+              
+
+
+
+                if (SortedList.Count != 0)
                 {
-                    if (SortedList.Count < 5)
+                    #region checking pure activity
+                    var rightNowActiveTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherActivityStatus".GetJsonAsync<List<TeacherActivityStatus>>();
+                    await Task.Delay(1500);
+                    var AfterOneSecActiveTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherActivityStatus".GetJsonAsync<List<TeacherActivityStatus>>();
+                    List<TeacherActivityStatus> Highlimit = new List<TeacherActivityStatus>();
+                    List<TeacherActivityStatus> LowLimit = new List<TeacherActivityStatus>();
+
+                    List<TeacherActivityStatus> pureActive = new List<TeacherActivityStatus>();
+
+
+                    for (int i = 0; i < AfterOneSecActiveTeacher.Count; i++)
                     {
-                        listCount = SortedList.Count;
-                    }
-                    else
-                    {
-                        listCount = 5;
-                    }
-                    for (int i = 0; i < listCount; i++)
-                    {
-                        Teacher thisTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = SortedList[i].teacherID })
-              .ReceiveJson<Teacher>();
-                        if (thisTeacher.activeStatus == 1)
+                        for (int j = 0; j < rightNowActiveTeacher.Count; j++)
                         {
-                            thisTeacher.activeTime = SortedList[i].activeTime;
-                            SelectedTeacherList.Add(thisTeacher); 
+                            if (AfterOneSecActiveTeacher[i].teacherID == rightNowActiveTeacher[j].teacherID)
+                            {
+                                pureActive.Add(LowLimit[i]);
+                                break;
+                            }
                         }
                     }
-                    track = SelectedTeacherList.Count;
+                    for (int i = 0; i < SortedList.Count; i++)
+                    {
+                        for (int j = 0; j < pureActive.Count; j++)
+                        {
+                            if (SortedList[i].teacherID == pureActive[j].teacherID)
+                            {
+                                SelectedTeacherList.Add(SortedList[i]);
+                                break;
+                            }
+                        }
+                        if (SelectedTeacherList.Count == 5)
+                            break;
+                    }
+                    #endregion
+
+
+
+
                     for (int i = 0; i < SelectedTeacherList.Count; i++)
                     {
                         float thispoint = (5 - i) * 2f + CalculateRatting(SelectedTeacherList[i].fiveStar, SelectedTeacherList[i].fourStar, SelectedTeacherList[i].threeStar, SelectedTeacherList[i].twoStar, SelectedTeacherList[i].oneStar) * 4.1f;

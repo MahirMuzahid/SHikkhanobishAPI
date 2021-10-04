@@ -23,6 +23,10 @@ namespace SHikkhanobishAPI.Controllers
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
             conn = new SqlConnection(conString);
         }
+        public ShikkhanobishTeacherController()
+        {
+
+        }
         public float CalculateRatting(float fs, float fos, float th, float to, float on)
         {
             float toalRating = 0 ;
@@ -1465,6 +1469,105 @@ namespace SHikkhanobishAPI.Controllers
         }
         #endregion
 
+        #region TeacherActivityStatus
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task<Response> setTeacherActivityStatus(TeacherActivityStatus obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTeacherActivityStatus", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@activityStatus", obj.activityStatus);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            await Task.Delay(1000);
+            var res = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/DeleteActivityStatus".PostUrlEncodedAsync(new { teacherID = obj.teacherID }).ReceiveJson<Response>();
+            return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<TeacherActivityStatus> getTeacherActivityStatus()
+        {
+            List<TeacherActivityStatus> objRList = new List<TeacherActivityStatus>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTeacherActivityStatus", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TeacherActivityStatus objAdd = new TeacherActivityStatus();
+                    objAdd.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objAdd.activityStatus = Convert.ToInt32(reader["activityStatus"]);
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TeacherActivityStatus objAdd = new TeacherActivityStatus();
+                var Response = ex.InnerException;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response DeleteActivityStatus(TeacherActivityStatus obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("DeleteActivityStatus", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+
+        }
+        #endregion
 
     }
 }
