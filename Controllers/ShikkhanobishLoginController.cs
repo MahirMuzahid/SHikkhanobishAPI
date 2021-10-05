@@ -2054,10 +2054,8 @@ namespace SHikkhanobishAPI.Controllers
                 {
                     #region checking pure activity
                     var rightNowActiveTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherActivityStatus".GetJsonAsync<List<TeacherActivityStatus>>();
-                    await Task.Delay(1500);
+                    await Task.Delay(1000);
                     var AfterOneSecActiveTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherActivityStatus".GetJsonAsync<List<TeacherActivityStatus>>();
-                    List<TeacherActivityStatus> Highlimit = new List<TeacherActivityStatus>();
-                    List<TeacherActivityStatus> LowLimit = new List<TeacherActivityStatus>();
 
                     List<TeacherActivityStatus> pureActive = new List<TeacherActivityStatus>();
 
@@ -2068,7 +2066,7 @@ namespace SHikkhanobishAPI.Controllers
                         {
                             if (AfterOneSecActiveTeacher[i].teacherID == rightNowActiveTeacher[j].teacherID)
                             {
-                                pureActive.Add(LowLimit[i]);
+                                pureActive.Add(AfterOneSecActiveTeacher[i]);
                                 break;
                             }
                         }
@@ -2079,8 +2077,16 @@ namespace SHikkhanobishAPI.Controllers
                         {
                             if (SortedList[i].teacherID == pureActive[j].teacherID)
                             {
-                                SelectedTeacherList.Add(SortedList[i]);
-                                break;
+                                Teacher teacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherWithID".PostUrlEncodedAsync(new { teacherID = SortedList[i].teacherID }).ReceiveJson<Teacher>();
+                                if(teacher.activeStatus == 1)
+                                {
+                                    SelectedTeacherList.Add(SortedList[i]);
+                                    break;
+                                }
+                               
+                               
+                                
+                                
                             }
                         }
                         if (SelectedTeacherList.Count == 5)

@@ -1501,7 +1501,7 @@ namespace SHikkhanobishAPI.Controllers
                 response.Massage = ex.Message;
                 response.Status = 0;
             }
-            await Task.Delay(1000);
+            await Task.Delay(2000);
             var res = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/DeleteActivityStatus".PostUrlEncodedAsync(new { teacherID = obj.teacherID }).ReceiveJson<Response>();
             return response;
         }
