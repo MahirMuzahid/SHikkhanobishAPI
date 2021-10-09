@@ -7,8 +7,8 @@ namespace SHikkhanobishAPI.Models
 {
     public class TransactionModel
     {
-        public string store_id { get; set; } = "aamarpay";//"shikkhanobish";
-        public string signature_key { get; set; } = "28c78bb1f45112f5d40b956fe104645a"; //"0cbb2e487f5c556097cc302139ce5500";
+        public string store_id { get; set; } = "shikkhanobish";
+        public string signature_key { get; set; } = "0cbb2e487f5c556097cc302139ce5500";
         public string amount { get; set; }
         public string currency { get; set; } = "BDT";
         public string tran_id { get; set; }

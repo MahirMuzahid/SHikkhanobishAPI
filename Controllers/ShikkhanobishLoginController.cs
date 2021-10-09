@@ -2744,6 +2744,7 @@ forthChoiceName: 'Chapter 1'
             return response;
         }
         #endregion
+
         #region Referral
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public List<ReferralTable> getRefferalTable()
@@ -2850,6 +2851,379 @@ forthChoiceName: 'Chapter 1'
 
 
         }
-        #endregion 
+        #endregion
+
+        #region Question
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<Question> getQuestion()
+        {
+            List<Question> objRList = new List<Question>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getQuestion", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Question objAdd = new Question();
+                    objAdd.questionID = Convert.ToInt32(reader["questionID"]);
+                    objAdd.classID = Convert.ToInt32(reader["classID"]);
+                    objAdd.subjectID = Convert.ToInt32(reader["subjectID"]);
+                    objAdd.chapterID = Convert.ToInt32(reader["chapterID"]);
+                    objAdd.topicID = Convert.ToInt32(reader["topicID"]);
+                    objAdd.mainQuestion = reader["mainQuestion"].ToString();
+                    objAdd.option1 = reader["option1"].ToString();
+                    objAdd.option2 = reader["option2"].ToString();
+                    objAdd.option3 = reader["option3"].ToString();
+                    objAdd.option4 = reader["option4"].ToString();
+                    objAdd.rightAnswer = Convert.ToInt32(reader["rightAnswer"]);
+                    objAdd.quesImages = reader["quesImages"].ToString();
+                    objAdd.review = Convert.ToInt32(reader["review"]);
+                    objAdd.Response = "ok";
+
+
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Question objAdd = new Question();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+
+        //......................................//
+
+        // Test: 
+        // URL:https:
+        /* Parameter
+        {
+            
+        }
+
+        */
+
+        //......................................//
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Question getQuestionWithID(Question obj)
+        {
+            Question objR = new Question();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getQuestionWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@questionID", obj.questionID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.questionID = Convert.ToInt32(reader["questionID"]);
+                    objR.classID = Convert.ToInt32(reader["classID"]);
+                    objR.subjectID = Convert.ToInt32(reader["subjectID"]);
+                    objR.chapterID = Convert.ToInt32(reader["chapterID"]);
+                    objR.topicID = Convert.ToInt32(reader["topicID"]);
+                    objR.mainQuestion = reader["mainQuestion"].ToString();
+                    objR.option1 = reader["option1"].ToString();
+                    objR.option2 = reader["option2"].ToString();
+                    objR.option3 = reader["option3"].ToString();
+                    objR.option4 = reader["option4"].ToString();
+                    objR.rightAnswer = Convert.ToInt32(reader["rightAnswer"]);
+                    objR.quesImages = reader["quesImages"].ToString();
+                    objR.review = Convert.ToInt32(reader["review"]);
+                    objR.Response = "ok";
+
+                }
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
+
+        //......................................//
+
+        // Test: 
+        // URL:https:
+        /* Parameter
+        {
+            
+        }
+
+        */
+
+        //......................................//
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setQuestion(Question obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setQuestion", conn);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@questionID", obj.questionID);
+                cmd.Parameters.AddWithValue("@classID", obj.classID);
+                cmd.Parameters.AddWithValue("@subjectID", obj.subjectID);
+                cmd.Parameters.AddWithValue("@chapterID", obj.chapterID);
+                cmd.Parameters.AddWithValue("@topicID", obj.topicID);
+                cmd.Parameters.AddWithValue("@mainQuestion", obj.mainQuestion);
+                cmd.Parameters.AddWithValue("@option1", obj.option1);
+                cmd.Parameters.AddWithValue("@option2", obj.option2);
+                cmd.Parameters.AddWithValue("@option3", obj.option3);
+                cmd.Parameters.AddWithValue("@option4", obj.option4);
+                cmd.Parameters.AddWithValue("@rightAnswer", obj.rightAnswer);
+                cmd.Parameters.AddWithValue("@quesImages", "n/a");
+                cmd.Parameters.AddWithValue("@review", obj.review);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        //......................................//
+
+        // Test: 
+        // URL:https:
+        /* Parameter
+        {
+            
+        }
+
+        */
+
+        //......................................//
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setQuestionWithID(Question obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setQuestionWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@questionID", obj.questionID);
+                cmd.Parameters.AddWithValue("@classID", obj.classID);
+                cmd.Parameters.AddWithValue("@subjectID", obj.subjectID);
+                cmd.Parameters.AddWithValue("@chapterID", obj.chapterID);
+                cmd.Parameters.AddWithValue("@topicID", obj.topicID);
+                cmd.Parameters.AddWithValue("@mainQuestion", obj.mainQuestion);
+                cmd.Parameters.AddWithValue("@option1", obj.option1);
+                cmd.Parameters.AddWithValue("@option2", obj.option2);
+                cmd.Parameters.AddWithValue("@option3", obj.option3);
+                cmd.Parameters.AddWithValue("@option4", obj.option4);
+                cmd.Parameters.AddWithValue("@rightAnswer", obj.rightAnswer);
+                cmd.Parameters.AddWithValue("@quesImages", obj.quesImages);
+                cmd.Parameters.AddWithValue("@review", obj.review);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        //......................................//
+
+        // Test: 
+        // URL:https:
+        /* Parameter
+        {
+            
+        }
+
+        */
+
+        //......................................//
+
+        #endregion
+
+        #region TeacherQuestionHistory
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setTeacherQuestionHistory(TeacherQuestionHistory obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTeacherQuestionHistory", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@tqID", obj.tqID);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@questionID", obj.questionID);
+                cmd.Parameters.AddWithValue("@review", "n/a");
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setTeacherQuestionHistoryWithID(TeacherQuestionHistory obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTeacherQuestionHistoryWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@tqID", obj.tqID);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@questionID", obj.questionID);
+                cmd.Parameters.AddWithValue("@review", obj.review);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<TeacherQuestionHistory> getTeacherQuestionHistory()
+        {
+            List<TeacherQuestionHistory> objRList = new List<TeacherQuestionHistory>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTeacherQuestionHistory", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TeacherQuestionHistory objAdd = new TeacherQuestionHistory();
+
+                    objAdd.tqID = Convert.ToInt32(reader["tqID"]);
+                    objAdd.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objAdd.questionID = Convert.ToInt32(reader["questionID"]);
+                    objAdd.review = reader["review"].ToString();
+
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TeacherQuestionHistory objAdd = new TeacherQuestionHistory();
+                var Response = ex.InnerException;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public TeacherQuestionHistory getTeacherQuestionHistoryWithID(TeacherQuestionHistory obj)
+        {
+            TeacherQuestionHistory objR = new TeacherQuestionHistory();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTeacherQuestionHistoryWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@tqID", obj.tqID);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.tqID = Convert.ToInt32(reader["tqID"]);
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objR.questionID = Convert.ToInt32(reader["questionID"]);
+                    objR.review = reader["review"].ToString();
+
+                }
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
+
+        #endregion
     }
 }

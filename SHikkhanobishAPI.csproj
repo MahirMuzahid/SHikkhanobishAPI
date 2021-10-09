@@ -293,9 +293,11 @@
     <Compile Include="Models\Shikkhanobish\pendingRatting.cs" />
     <Compile Include="Models\Shikkhanobish\PromotionalImage.cs" />
     <Compile Include="Models\Shikkhanobish\PromotionalMassage.cs" />
+    <Compile Include="Models\Shikkhanobish\Question.cs" />
     <Compile Include="Models\Shikkhanobish\ReferralTable.cs" />
     <Compile Include="Models\Shikkhanobish\requestPayment.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherActivityStatus.cs" />
+    <Compile Include="Models\Shikkhanobish\TeacherQuestionHistory.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherTest.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\Response.cs" />

@@ -18,6 +18,8 @@ namespace SHikkhanobishAPI.Controllers
     public class ShikkhanobishTeacherController : ApiController
     {
         private SqlConnection conn;
+        public int globalTeacherAppVersion = 19;
+        public int globalStudentAppVersion = 5;
         public void Connection()
         {
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
@@ -1398,27 +1400,8 @@ namespace SHikkhanobishAPI.Controllers
         public AppVersion getAppVersion()
         {
             AppVersion objAdd = new AppVersion();
-            try
-            {
-                Connection();
-                SqlCommand cmd = new SqlCommand("getAppVersion", conn);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    objAdd.studentAtVersion = Convert.ToInt32(reader["studentAtVersion"]);
-                    objAdd.teacherAtVersion = Convert.ToInt32(reader["teacherAtVersion"]);
-
-                    objAdd.Response = "Ok";
-
-                }
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                objAdd.Response = ex.Message;
-            }
+            objAdd.studentAtVersion = globalStudentAppVersion;
+            objAdd.teacherAtVersion = globalTeacherAppVersion;
             return objAdd;
         }
         //......................................//
