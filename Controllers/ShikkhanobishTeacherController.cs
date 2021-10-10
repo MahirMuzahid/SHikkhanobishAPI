@@ -20,6 +20,7 @@ namespace SHikkhanobishAPI.Controllers
         private SqlConnection conn;
         public int globalTeacherAppVersion = 19;
         public int globalStudentAppVersion = 5;
+        public const bool isSearchForActiveTeacher = true;
         public void Connection()
         {
             string conString = ConfigurationManager.ConnectionStrings["getConnection"].ToString();
@@ -38,6 +39,133 @@ namespace SHikkhanobishAPI.Controllers
             toalRating = totalSum / (fs + fos + th + to + on);
 
             return toalRating;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public string SearchActiveTeacher()
+        {
+            SeacherTeacher();
+
+            return "started";
+        }
+        public async Task SeacherTeacher()
+        {
+            if (isSearchForActiveTeacher)
+            {
+                List<TeacherActivityStatus> pureActive = new List<TeacherActivityStatus>();
+                List<int> inactiveID = new List<int>();
+                int start = 0;
+                while (start < 11)
+                {
+
+                    #region checking pure activity
+
+
+
+                    var rightNowActiveTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherActivityStatus".GetJsonAsync<List<TeacherActivityStatus>>();
+                    await Task.Delay(1000);
+                    var AfterOneSecActiveTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getTeacherActivityStatus".GetJsonAsync<List<TeacherActivityStatus>>();
+                    for (int i = 0; i < AfterOneSecActiveTeacher.Count; i++)
+                    {
+                        for (int j = 0; j < rightNowActiveTeacher.Count; j++)
+                        {
+                            if (AfterOneSecActiveTeacher[i].teacherID == rightNowActiveTeacher[j].teacherID)
+                            {
+                                pureActive.Add(AfterOneSecActiveTeacher[i]);
+                                break;
+                            }
+                        }
+                    }
+                    #endregion
+                    var AllTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getAllTeacher".PostUrlEncodedAsync(new { })
+                 .ReceiveJson<List<Teacher>>();
+
+                    if (pureActive.Count == 0)
+                    {
+                        for (int i = 0; i < AllTeacher.Count; i++)
+                        {
+                            if (AllTeacher[i].activeStatus == 1)
+                            {
+                                inactiveID.Add(AllTeacher[i].teacherID);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < AllTeacher.Count; i++)
+                        {
+                            if (AllTeacher[i].activeStatus == 1)
+                            {
+                                for (int j = 0; j < pureActive.Count; j++)
+                                {
+                                    if (pureActive[j].teacherID != AllTeacher[i].teacherID)
+                                    {
+                                        inactiveID.Add(AllTeacher[i].teacherID);
+                                    }
+                                }
+
+                            }
+
+                        }
+                    }
+
+
+
+                    start++;
+
+                    List<int> countDone = new List<int>();
+                    List<int> NumberOfTeacherIDAppear = new List<int>();
+
+
+                    if (start == 11)
+                    {
+                        start = 0;
+                        for (int i = 0; i < inactiveID.Count; i++)
+                        {
+                            bool isDone = false;
+
+                            //check already counted
+                            if (countDone.Count != 0)
+                            {
+                                for (int k = 0; k < countDone.Count; k++)
+                                {
+                                    if (countDone[k] == inactiveID[i])
+                                    {
+                                        isDone = true;
+                                    }
+                                }
+                            }
+
+                            ////////////////////////////////////
+
+
+                            if (!isDone)
+                            {
+                                countDone.Add(inactiveID[i]);
+                                int num = 0;
+                                for (int j = 0; j < inactiveID.Count; j++)
+                                {
+                                    if (inactiveID[i] == inactiveID[j])
+                                    {
+                                        num++;
+                                    }
+                                }
+                                NumberOfTeacherIDAppear.Add(num);
+                            }
+                        }
+                        for (int i = 0; i < NumberOfTeacherIDAppear.Count; i++)
+                        {
+                            if (NumberOfTeacherIDAppear[i] > 10)
+                            {
+                                var res = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/activeTeacher".PostUrlEncodedAsync(new { activeStatus = 0, teacherID = countDone[i] })
+                                .ReceiveJson<Response>();
+                            }
+                        }
+                        pureActive.Clear();
+                        inactiveID.Clear();
+                    }
+                }
+            }
         }
 
         public const int PremiumStudentBuyingAmount = 99;
@@ -212,6 +340,38 @@ namespace SHikkhanobishAPI.Controllers
                 cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
                 string date = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                 cmd.Parameters.AddWithValue("@activeTime", date);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response addTeacherAmountPerqs(Teacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("addTeacherAmountPerqs", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)

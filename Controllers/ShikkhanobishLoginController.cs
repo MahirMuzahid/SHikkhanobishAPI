@@ -26,6 +26,7 @@ namespace SHikkhanobishAPI.Controllers
         public const int CollegeCost = 4;
         public const double processignCostPercent = 0.2;
         public const int TeacherMonetizationTime = 15;
+   
 
         public void Connection()
         {
@@ -59,8 +60,12 @@ namespace SHikkhanobishAPI.Controllers
             try
             {
 
-                string apiKey = "b0dOQWlNd0xrTnpIanlNSE9kRnM=";
-                string uri = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey+"&to=" + obj.number+ "&from=8804445620753&sms=" + obj.msg;
+                string apiKey = "R3r40YEsmn1rfuHt49kQsvVuShUT8K/pNCWlYfOa+qI=";
+                string clientID = "dc0b42d1-e973-463c-baa1-088ee1934fb5";
+                string senderID = "8804445620740";
+
+
+                string uri = "https://api.smsq.global/api/v2/SendSMS?ApiKey="+ apiKey + "&ClientId="+ clientID + "&SenderId="+ senderID + "&Message="+ obj.msg+ "&MobileNumbers="+obj.number;
                 //string ull = "http://services.smsq.global/sms/api?action=send-sms&api_key="+ apiKey +"&to= " + obj.number + "&from=8804445620753&sms=" + obj.msg;
                 res = await uri.GetJsonAsync<SendSms>();
                 if(res.code == "ok")
@@ -78,6 +83,7 @@ namespace SHikkhanobishAPI.Controllers
             }
             return res;
         }
+        
 
         #endregion
 
@@ -3080,6 +3086,41 @@ forthChoiceName: 'Chapter 1'
 
         //......................................//
 
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response approveOrDisapprovedQuestino(Question obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("approveOrDisapprovedQuestino", conn);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@questionID", obj.questionID);
+                cmd.Parameters.AddWithValue("@review", obj.review);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
         #endregion
 
         #region TeacherQuestionHistory
@@ -3097,7 +3138,7 @@ forthChoiceName: 'Chapter 1'
                 cmd.Parameters.AddWithValue("@tqID", obj.tqID);
                 cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
                 cmd.Parameters.AddWithValue("@questionID", obj.questionID);
-                cmd.Parameters.AddWithValue("@review", "n/a");
+                cmd.Parameters.AddWithValue("@review", obj.review);
 
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
