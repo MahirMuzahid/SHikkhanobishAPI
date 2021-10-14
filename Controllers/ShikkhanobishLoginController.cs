@@ -3266,5 +3266,114 @@ forthChoiceName: 'Chapter 1'
         }
 
         #endregion
+
+        #region TuitionLog
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task<Response> setTuiTionLog(TuiTionLog obj)
+        {
+            int id = random.Next(100000, 999999);
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTuiTionLog", conn);
+
+                
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@tuitionLogID", id);
+                cmd.Parameters.AddWithValue("@studentName", obj.studentName);
+                cmd.Parameters.AddWithValue("@subjectname", obj.subjectname);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+
+            await Task.Delay(120000);
+            var res = await "https://api.shikkhanobish.com/api/ShikkhanobishLogin/deleteTuitionLog".PostUrlEncodedAsync(new { tuitionLogID = id }).ReceiveJson<Response>();
+
+            return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<TuiTionLog> getTuiTionLogNeW()
+        {
+            List<TuiTionLog> objRList = new List<TuiTionLog>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTuiTionLog", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TuiTionLog objAdd = new TuiTionLog();
+                    objAdd.tuitionLogID = Convert.ToInt32(reader["tuitionLogID"]);
+                    objAdd.subjectname = reader["subjectname"].ToString();
+                    objAdd.studentName = reader["studentName"].ToString();
+                    objAdd.Response = "ok";
+
+
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TuiTionLog objAdd = new TuiTionLog();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response deleteTuitionLog(TuiTionLog obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("deleteTuitionLog", conn);
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@tuitionLogID", obj.tuitionLogID);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        #endregion
     }
 }

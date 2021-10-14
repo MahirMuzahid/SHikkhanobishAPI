@@ -300,6 +300,8 @@
     <Compile Include="Models\Shikkhanobish\TeacherActivityStatus.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherQuestionHistory.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherTest.cs" />
+    <Compile Include="Models\Shikkhanobish\TuiTionLog.cs" />
+    <Compile Include="Models\Shikkhanobish\UpdateTeacher.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Shikkhanobish\ChangeTeacherInfo.cs" />

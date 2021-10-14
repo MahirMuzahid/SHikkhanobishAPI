@@ -41,9 +41,9 @@ namespace SHikkhanobishAPI.Controllers
             return toalRating;
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public string SearchActiveTeacher()
+        public async Task<string> SearchActiveTeacher()
         {
-            SeacherTeacher();
+            await SeacherTeacher();
 
             return "started";
         }
@@ -92,20 +92,25 @@ namespace SHikkhanobishAPI.Controllers
                     }
                     else
                     {
+                        bool isInPureActive = false;
                         for (int i = 0; i < AllTeacher.Count; i++)
                         {
                             if (AllTeacher[i].activeStatus == 1)
                             {
                                 for (int j = 0; j < pureActive.Count; j++)
                                 {
-                                    if (pureActive[j].teacherID != AllTeacher[i].teacherID)
+                                    if (pureActive[j].teacherID == AllTeacher[i].teacherID)
                                     {
-                                        inactiveID.Add(AllTeacher[i].teacherID);
+                                        isInPureActive = true;
+                                        break;
                                     }
                                 }
-
+                                if (!isInPureActive)
+                                {
+                                    inactiveID.Add(AllTeacher[i].teacherID);
+                                }
                             }
-
+                           
                         }
                     }
 
@@ -1710,6 +1715,81 @@ namespace SHikkhanobishAPI.Controllers
             return response;
 
         }
+        #endregion
+
+        #region Update Tecaher
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setUpdateTeacher(UpdateTeacher obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setUpdateTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                string date = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                cmd.Parameters.AddWithValue("@title", obj.title);
+                cmd.Parameters.AddWithValue("@description", obj.description);
+                cmd.Parameters.AddWithValue("@updateTdate", date);
+
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+//      insert into UpdateTeacher(title, description, updateTdate)
+//      values('Now Earn By Submitting Questions!', 'Teachers can now earn by sibmitting questions in Shikkhanobish. Click on question maker to learn more', '12-10-2021 14:26:44')
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<UpdateTeacher> getUpdateTeacher()
+        {
+            List<UpdateTeacher> objRList = new List<UpdateTeacher>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getUpdateTeacher", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    UpdateTeacher objAdd = new UpdateTeacher();
+
+                    objAdd.title = reader["title"].ToString();
+                    objAdd.description = reader["description"].ToString();
+                    objAdd.updateTdate = reader["updateTdate"].ToString();
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                UpdateTeacher objAdd = new UpdateTeacher();
+                var Response = ex.InnerException;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+
+        }
+
+
         #endregion
 
     }
