@@ -10,7 +10,7 @@ namespace SHikkhanobishAPI.Models.Shikkhanobish
         public string referralID { get; set; }
         public int studentID { get; set; }
         public int referredStudentID { get; set; }
-        public DateTime referralDate { get; set; }
+        public string referralDate { get; set; }
         public string Response { get; set; }
 
     }

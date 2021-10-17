@@ -2770,7 +2770,7 @@ forthChoiceName: 'Chapter 1'
                     objAdd.studentID = Convert.ToInt32(reader["studentID"]);
                     objAdd.referredStudentID = Convert.ToInt32(reader["referredStudentID"]);
 
-                    objAdd.referralDate = Convert.ToDateTime(reader["referralDate"]);
+                    objAdd.referralDate = reader["referralDate"].ToString();
 
                     objRList.Add(objAdd);
                 }
@@ -2808,6 +2808,7 @@ forthChoiceName: 'Chapter 1'
                     response.Massage = "Unsuccesfull!";
                     response.Status = 1;
                 }
+
             }
             catch (Exception ex)
             {
@@ -2831,11 +2832,24 @@ forthChoiceName: 'Chapter 1'
                     SqlCommand cmd = new SqlCommand("registerReferral", conn);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@referredStudentID", obj.referredStudentID);
-                    cmd.Parameters.AddWithValue("@referralDate", obj.referralDate.ToString("dd/mm/yyyy"));
+                    cmd.Parameters.AddWithValue("@referralDate", DateTime.Now.ToString("dd/mm/yyyy"));
+                    cmd.Parameters.AddWithValue("@referralID", obj.referralID);
 
+
+                    SqlCommand cmd2 = new SqlCommand("addFererralMin", conn);
+                    cmd2.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd2.Parameters.AddWithValue("@freemin", 5);
+                    cmd2.Parameters.AddWithValue("@studentID", obj.studentID);
+                    
+                    SqlCommand cmd3 = new SqlCommand("addFererralMin", conn);
+                    cmd3.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd3.Parameters.AddWithValue("@freemin", 5);
+                    cmd3.Parameters.AddWithValue("@studentID", obj.referredStudentID);
                     conn.Open();
                     int i = cmd.ExecuteNonQuery();
-                    if (i != 0)
+                    int j = cmd2.ExecuteNonQuery();
+                    int k = cmd3.ExecuteNonQuery();
+                    if (i != 0&& j != 0 && k != 0)
                     {
                         response.Massage = "Succesfull!";
                         response.Status = 0;

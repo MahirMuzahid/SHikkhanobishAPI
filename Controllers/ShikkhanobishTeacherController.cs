@@ -689,6 +689,42 @@ namespace SHikkhanobishAPI.Controllers
             return response;
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response acceptOrDeclineWithdrawRequest(TeacherWithdrawHistory obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("acceptOrDeclineWithdrawRequest", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@withdrawID", obj.withdrawID);
+                cmd.Parameters.AddWithValue("@status", obj.status);
+                cmd.Parameters.AddWithValue("@trxID", obj.trxID);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@amount", obj.amountTaka);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 1;
+            }
+            return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public Response setTeacherWithdrawHistory(TeacherWithdrawHistory obj)
         {
             Response response = new Response();
@@ -728,13 +764,13 @@ namespace SHikkhanobishAPI.Controllers
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public List<TeacherWithdrawHistory> getAllTeacherWithdrawHistor(TeacherWithdrawHistory obj)
+        public List<TeacherWithdrawHistory> getAllTeacherWithdrawHistory(TeacherWithdrawHistory obj)
         {
             List<TeacherWithdrawHistory> objRList = new List<TeacherWithdrawHistory>();
             try
             {
                 Connection();
-                SqlCommand cmd = new SqlCommand("getAllTeacherWithdrawHistor", conn);
+                SqlCommand cmd = new SqlCommand("getAllTeacherWithdrawHistory", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
