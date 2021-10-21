@@ -297,6 +297,7 @@
     <Compile Include="Models\Shikkhanobish\ReferralTable.cs" />
     <Compile Include="Models\Shikkhanobish\requestPayment.cs" />
     <Compile Include="Models\Shikkhanobish\searchForActiveTeacher.cs" />
+    <Compile Include="Models\Shikkhanobish\StudentReport.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherActivityStatus.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherQuestionHistory.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherTest.cs" />

@@ -3389,5 +3389,233 @@ forthChoiceName: 'Chapter 1'
             return response;
         }
         #endregion
+
+        #region Student Report
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+
+        public Response setStudentReport(StudentReport obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setStudentReport", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentReportID", obj.studentReportID);
+                cmd.Parameters.AddWithValue("@reportType", obj.reportType);
+                cmd.Parameters.AddWithValue("@description", obj.description);
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                cmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setStudentReportWithID(StudentReport obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setStudentReportWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentReportID", obj.studentReportID);
+                cmd.Parameters.AddWithValue("@reportType", obj.reportType);
+                cmd.Parameters.AddWithValue("@description", obj.description);
+                cmd.Parameters.AddWithValue("@description", obj.studentID);
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<StudentReport> getStudentReport()
+        {
+            List<StudentReport> objRList = new List<StudentReport>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getStudentReport", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    StudentReport objAdd = new StudentReport();
+                    objAdd.studentReportID = Convert.ToInt32(reader["studentReportID"]);
+                    objAdd.reportType = Convert.ToInt32(reader["reportType"]);
+                    objAdd.description = reader["description"].ToString();
+                    objAdd.studentID = Convert.ToInt32(reader["studentID"]);
+                    objAdd.teacherID = Convert.ToInt32(reader["teacherID"]);
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                StudentReport objAdd = new StudentReport();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public StudentReport getStudentReportWithID(StudentReport obj)
+        {
+            StudentReport objR = new StudentReport();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getStudentWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentReportID", obj.studentReportID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.studentReportID = Convert.ToInt32(reader["studentReportID"]);
+                    objR.reportType = Convert.ToInt32(reader["reportType"]);
+                    objR.description = reader["description"].ToString();
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public async Task<List<StudentReport>> getStudentReportWithStudentID(StudentReport obj)
+        {
+            List<StudentReport> objRList = new List<StudentReport>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getStudentReportWithStudentID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    StudentReport objAdd = new StudentReport();
+                    objAdd.studentReportID = Convert.ToInt32(reader["studentReportID"]);
+                    objAdd.reportType = Convert.ToInt32(reader["reportType"]);
+                    objAdd.description = reader["description"].ToString();
+                    objAdd.studentID = Convert.ToInt32(reader["studentID"]);
+                    objAdd.teacherID = Convert.ToInt32(reader["teacherID"]);
+                    objAdd.date = reader["date"].ToString();
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                StudentReport objAdd = new StudentReport();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+
+            List<Teacher> allTeacher = await "https://api.shikkhanobish.com/api/ShikkhanobishTeacher/getAllTeacher"
+              .PostUrlEncodedAsync(new { })
+              .ReceiveJson<List<Teacher>>();
+            for (int i = 0; i < objRList.Count; i++)
+            {
+                if (objRList[i].reportType == 1)
+                {
+                    objRList[i].ReportTypeText = "Aggresive Behave";
+                }
+                if (objRList[i].reportType == 2)
+                {
+                    objRList[i].ReportTypeText = "Bad Internet Connection";
+                }
+                for (int j = 0; j < allTeacher.Count; j++)
+                {
+                    if (objRList[i].teacherID == allTeacher[j].teacherID)
+                    {
+                        objRList[i].teacherName = allTeacher[j].name;
+                    }
+                }
+            }
+            return objRList;
+            
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public StudentReport getStudentReportWithTeacherID(StudentReport obj)
+        {
+            StudentReport objR = new StudentReport();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getStudentReportWithStudentID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@teacherID", obj.teacherID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.studentReportID = Convert.ToInt32(reader["studentReportID"]);
+                    objR.reportType = Convert.ToInt32(reader["reportType"]);
+                    objR.description = reader["description"].ToString();
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.teacherID = Convert.ToInt32(reader["teacherID"]);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
+
+
+
+        #endregion
     }
 }

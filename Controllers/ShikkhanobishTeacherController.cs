@@ -697,6 +697,7 @@ namespace SHikkhanobishAPI.Controllers
                 Connection();
                 SqlCommand cmd = new SqlCommand("acceptOrDeclineWithdrawRequest", conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
                 cmd.Parameters.AddWithValue("@withdrawID", obj.withdrawID);
                 cmd.Parameters.AddWithValue("@status", obj.status);
                 cmd.Parameters.AddWithValue("@trxID", obj.trxID);
