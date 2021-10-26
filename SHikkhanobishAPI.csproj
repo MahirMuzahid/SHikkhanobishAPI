@@ -288,9 +288,12 @@
     <Compile Include="Models\Medhabi\QuestionMaker.cs" />
     <Compile Include="Models\Medhabi\Questions.cs" />
     <Compile Include="Models\Shikkhanobish\activeStatusTable.cs" />
+    <Compile Include="Models\Shikkhanobish\Answer.cs" />
     <Compile Include="Models\Shikkhanobish\AppVersion.cs" />
     <Compile Include="Models\Shikkhanobish\CallBackPayment.cs" />
+    <Compile Include="Models\Shikkhanobish\ClassChoice.cs" />
     <Compile Include="Models\Shikkhanobish\pendingRatting.cs" />
+    <Compile Include="Models\Shikkhanobish\Post.cs" />
     <Compile Include="Models\Shikkhanobish\PromotionalImage.cs" />
     <Compile Include="Models\Shikkhanobish\PromotionalMassage.cs" />
     <Compile Include="Models\Shikkhanobish\Question.cs" />
@@ -298,8 +301,10 @@
     <Compile Include="Models\Shikkhanobish\requestPayment.cs" />
     <Compile Include="Models\Shikkhanobish\searchForActiveTeacher.cs" />
     <Compile Include="Models\Shikkhanobish\StudentReport.cs" />
+    <Compile Include="Models\Shikkhanobish\Tag.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherActivityStatus.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherQuestionHistory.cs" />
+    <Compile Include="Models\Shikkhanobish\TeacherReputation.cs" />
     <Compile Include="Models\Shikkhanobish\TeacherTest.cs" />
     <Compile Include="Models\Shikkhanobish\TuiTionLog.cs" />
     <Compile Include="Models\Shikkhanobish\UpdateTeacher.cs" />
