@@ -3762,6 +3762,7 @@ forthChoiceName: 'Chapter 1'
                 cmd.Parameters.AddWithValue("@userID", obj.userID);
                 cmd.Parameters.AddWithValue("@userType", obj.userType);
                 cmd.Parameters.AddWithValue("@imgSrc", obj.imgSrc);
+                cmd.Parameters.AddWithValue("@postTitle", obj.postTitle);
                 cmd.Parameters.AddWithValue("@noOfComment", obj.noOfComment);
                 cmd.Parameters.AddWithValue("@tagID", obj.tagID);
                 conn.Open();
@@ -3800,6 +3801,7 @@ forthChoiceName: 'Chapter 1'
                 cmd.Parameters.AddWithValue("@userID", obj.userID);
                 cmd.Parameters.AddWithValue("@userType", obj.userType);
                 cmd.Parameters.AddWithValue("@imgSrc", obj.imgSrc);
+                cmd.Parameters.AddWithValue("@postTitle", obj.postTitle);
                 cmd.Parameters.AddWithValue("@noOfComment", obj.noOfComment);
                 cmd.Parameters.AddWithValue("@tagID", obj.tagID);
 
@@ -3845,9 +3847,10 @@ forthChoiceName: 'Chapter 1'
                     objAdd.postDate = reader["postDate"].ToString();
                     objAdd.userID = Convert.ToInt32(reader["userID"]);
                     objAdd.userType = Convert.ToInt32(reader["userType"]);
-                    objAdd.tagID = Convert.ToInt32(reader["tagID"]);
                     objAdd.imgSrc = reader["imgSrc"].ToString();
+                    objAdd.postTitle = reader["postTitle"].ToString();
                     objAdd.noOfComment = Convert.ToInt32(reader["noOfComment"]);
+                    objAdd.tagID = Convert.ToInt32(reader["tagID"]);
 
                     objRList.Add(objAdd);
                 }
@@ -3883,8 +3886,9 @@ forthChoiceName: 'Chapter 1'
                     objR.userID = Convert.ToInt32(reader["userID"]);
                     objR.userType = Convert.ToInt32(reader["userType"]);
                     objR.imgSrc = reader["imgSrc"].ToString();
+                    objR.postTitle = reader["postTitle"].ToString();
                     objR.noOfComment = Convert.ToInt32(reader["noOfComment"]);
-
+                    objR.tagID = Convert.ToInt32(reader["tagID"]);
                 }
                 conn.Close();
             }
@@ -3917,8 +3921,9 @@ forthChoiceName: 'Chapter 1'
                     objR.userID = Convert.ToInt32(reader["userID"]);
                     objR.userType = Convert.ToInt32(reader["userType"]);
                     objR.imgSrc = reader["imgSrc"].ToString();
+                    objR.postTitle = reader["postTitle"].ToString();
                     objR.noOfComment = Convert.ToInt32(reader["noOfComment"]);
-
+                    objR.tagID = Convert.ToInt32(reader["tagID"]);
                 }
                 conn.Close();
             }
@@ -3950,7 +3955,9 @@ forthChoiceName: 'Chapter 1'
                     objR.userID = Convert.ToInt32(reader["userID"]);
                     objR.userType = Convert.ToInt32(reader["userType"]);
                     objR.imgSrc = reader["imgSrc"].ToString();
+                    objR.postTitle = reader["postTitle"].ToString();
                     objR.noOfComment = Convert.ToInt32(reader["noOfComment"]);
+                    objR.tagID = Convert.ToInt32(reader["tagID"]);
 
                 }
                 conn.Close();
@@ -3963,6 +3970,7 @@ forthChoiceName: 'Chapter 1'
         }
 
         #endregion
+
 
 
         #region TeacherReputation
@@ -4383,6 +4391,203 @@ forthChoiceName: 'Chapter 1'
         }
         #endregion
 
+        #region TagStudentConnector
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setTagStudentConnector(TagStudentConnector obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTagStudentConnector", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@tagStudentID", obj.tagStudentID);
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                cmd.Parameters.AddWithValue("@tagID", obj.tagID);
 
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i != 0)
+                {
+                    response.Massage = "Succesfull!";
+                    response.Status = 0;
+                }
+                else
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setTagStudentConnectorWithID(TagStudentConnector obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTagStudentConnectorWithID", conn);
+                cmd.Parameters.AddWithValue("@tagStudentID", obj.tagStudentID);
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                cmd.Parameters.AddWithValue("@tagID", obj.tagID);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                    if (i != 0)
+                    {
+                        response.Massage = "Succesfull!";
+                        response.Status = 0;
+                    }
+                    else
+                    {
+                        response.Massage = "Unsuccesfull!";
+                        response.Status = 1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public Response setTagStudentConnectorWithStudentID(TagStudentConnector obj)
+        {
+            Response response = new Response();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("setTagStudentConnectorWithStudentID", conn);
+                cmd.Parameters.AddWithValue("@tagStudentID", obj.tagStudentID);
+                cmd.Parameters.AddWithValue("@studentID", obj.studentID);
+                cmd.Parameters.AddWithValue("@tagID", obj.tagID);
+
+                conn.Open();
+                int i = cmd.ExecuteNonQuery();
+                {
+                    response.Massage = "Unsuccesfull!";
+                    response.Status = 1;
+                    if (i != 0)
+                    {
+                        response.Massage = "Succesfull!";
+                        response.Status = 0;
+                    }
+                    else
+                    {
+                        response.Massage = "Unsuccesfull!";
+                        response.Status = 1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Massage = ex.Message;
+                response.Status = 0;
+            }
+            return response;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public List<TagStudentConnector> getTagStudentConnector()
+        {
+            List<TagStudentConnector> objRList = new List<TagStudentConnector>();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTagStudentConnector", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TagStudentConnector objAdd = new TagStudentConnector();
+                    objAdd.tagStudentID = Convert.ToInt32(reader["tagStudentID"]);
+                    objAdd.studentID = Convert.ToInt32(reader["studentID"]);
+                    objAdd.tagID = Convert.ToInt32(reader["tagID"]);
+
+
+                    objRList.Add(objAdd);
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TagStudentConnector objAdd = new TagStudentConnector();
+                objAdd.Response = ex.Message;
+                objRList.Add(objAdd);
+            }
+            return objRList;
+        }
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public TagStudentConnector getTagStudentConnectorWithID(TagStudentConnector obj)
+        {
+            TagStudentConnector objR = new TagStudentConnector();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTagStudentConnectorWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@tagStudentID", obj.tagStudentID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.tagStudentID = Convert.ToInt32(reader["tagStudentID"]);
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.tagID = Convert.ToInt32(reader["tagID"]);
+
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public TagStudentConnector getTagStudentConnectorTagWithID(TagStudentConnector obj)
+        {
+            TagStudentConnector objR = new TagStudentConnector();
+            try
+            {
+                Connection();
+                SqlCommand cmd = new SqlCommand("getTagStudentConnectorTagWithID", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@tagID", obj.tagID);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    objR.tagStudentID = Convert.ToInt32(reader["tagStudentID"]);
+                    objR.studentID = Convert.ToInt32(reader["studentID"]);
+                    objR.tagID = Convert.ToInt32(reader["tagID"]);
+
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                objR.Response = ex.Message;
+            }
+            return objR;
+        }
+
+
+        #endregion
     }
 }
